@@ -1,0 +1,47 @@
+<div class="card-dashboard-container type-column">
+    <div class="card-dashboard-header">
+        <h1>Saques</h1>
+    </div>
+    <div class="card-dashboard-content">
+        <div class="card-dashboard-subtitle">
+            <h2>Detalhes sobre saques</h2>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Saques Aprovados
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-permited-withdraw-gain">{{metrics.approved}}</span></span>
+                    <span><span class="count-total-permited-withdraw-gain">{{metrics.count_approved}}</span> saque(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Saques Recusados
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-recused-withdraw-gain">{{metrics.recused}}</span></span>
+                    <span><span class="count-total-recused-withdraw-gain">{{metrics.count_recused}}</span> saque(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-column">
+            <div class="card-dashboard-item type-row full-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Saques Pendentes
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-pending-withdraw-gain">{{metrics.pending}}</span></span>
+                    <span><span class="count-total-pending-withdraw-gain">{{metrics.count_pending}}</span> saque(s)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,274 @@
+<div class="card-dashboard" id="dash-gains">
+    <div class="card-dashboard-container type-column">
+        <div class="card-dashboard-header">
+            <h1>Dashboard</h1>
+        </div>
+        <div class="card-dashboard-content">
+            <div class="card-dashboard-subtitle">
+                <h2>Ganhos Gerais</h2>
+            </div>
+            <div class="card-dashboard-content-container type-row">
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Ganhos Usuários
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-user-gain">{{gains.users}}</span></span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            Ganhos Casa
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-house-gain">{{gains.home}}</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-dashboard-content-container type-row">
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            Aposta (Hoje)
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-bet-today-gain">{{gains.game_today}}</span></span>
+                        <span><span class="count-total-bet-today-gain">{{gains.count_game_today}}</span> aposta(s)</span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Aposta (Semanal)
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-week-bet-gain">{{gains.game_week}}</span></span>
+                        <span><span class="count-total-week-bet-gain">{{gains.count_game_week}}</span> aposta(s)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-dashboard-content-container type-column">
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            Aposta (Mensal)
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-month-bet-gain">{{gains.game_month}}</span></span>
+                        <span><span class="count-total-month-bet-gain">{{gains.count_game_month}}</span> aposta(s)</span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Aposta Total
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-full-bet-gain">{{gains.game_total}}</span></span>
+                        <span><span class="count-total-full-bet-gain">{{gains.count_game_total}}</span> aposta(s)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-dashboard-full half-top-column">
+    <div class="card-dashboard margin-more card-dashboard-half separete-dashboards" id="dash-registers">
+        <div class="card-dashboard-container type-column">
+            <div class="card-dashboard-header">
+                <h1>Cadastros</h1>
+            </div>
+            <div class="card-dashboard-content">
+                <div class="card-dashboard-subtitle">
+                    <h2>Detalhes sobre cadastros</h2>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Hoje
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span><span class="count-total-today-gain-register">{{register.today}}</span> cadastro(s)</span>
+                        </div>
+                    </div>
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-2">
+                            <span>
+                                Semana Atual
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span><span class="count-total-today-week-register">{{register.week}}</span> cadastro(s)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-2">
+                            <span>
+                                Mês Atual
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span><span class="count-total-month-gain-register">{{register.month}}</span> cadastro(s)</span>
+                        </div>
+                    </div>
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Mês Passado
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span><span class="count-total-lmonth-gain-register">{{register.last_month}}</span> cadastro(s)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row full-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Ganhos Totais
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span><span class="count-total-full-gain-register">{{register.total}}</span> cadastro(s)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-dashboard margin-more card-dashboard-half separete-dashboards" id="dash-deposits">
+        <div class="card-dashboard-container type-column">
+            <div class="card-dashboard-header">
+                <h1>Depositos</h1>
+            </div>
+            <div class="card-dashboard-content">
+                <div class="card-dashboard-subtitle">
+                    <h2>Detalhes sobre Depositos</h2>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Primeiro Deposito
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span>R$ <span class="total-first-deposit-gain">{{deposits.first_deposit}}</span></span>
+                            <span><span class="count-total-first-deposit-gain">{{deposits.count_first_deposit}}</span> deposito(s)</span>
+                        </div>
+                    </div>
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-2">
+                            <span>
+                                Hoje
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span>R$ <span class="total-today-deposit-gain">{{deposits.today}}</span></span>
+                            <span><span class="count-total-today-deposit-gain">{{deposits.count_today}}</span> deposito(s)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-2">
+                            <span>
+                                Semana Atual
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span>R$ <span class="total-week-deposit-gain">{{deposits.week}}</span></span>
+                            <span><span class="count-total-week-deposit-gain">{{deposits.count_week}}</span> deposito(s)</span>
+                        </div>
+                    </div>
+                    <div class="card-dashboard-item type-row half-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Mês Atual
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span>R$ <span class="total-month-deposit-gain">{{deposits.month}}</span></span>
+                            <span><span class="count-total-month-deposit-gain">{{deposits.count_month}}</span> deposito(s)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row full-div type-column">
+                        <div class="card-dashboard-item-metric alternate-1">
+                            <span>
+                                Ganhos Totais
+                            </span>
+                        </div>
+                        <div class="card-dashboard-item-metric-result">
+                            <span>R$ <span class="total-full-deposit-gain">{{deposits.total}}</span></span>
+                            <span><span class="count-total-full-deposit-gain">{{deposits.count_total}}</span> deposito(s)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-dashboard margin-more" id="dash-withdraws">
+    <div class="card-dashboard-container type-column">
+        <div class="card-dashboard-header">
+            <h1>Saques</h1>
+        </div>
+        <div class="card-dashboard-content">
+            <div class="card-dashboard-subtitle">
+                <h2>Detalhes sobre saques</h2>
+            </div>
+            <div class="card-dashboard-content-container type-row">
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Saques Aprovados
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-permited-withdraw-gain">{{withdraws.approved}}</span></span>
+                        <span><span class="count-total-permited-withdraw-gain">{{withdraws.count_approved}}</span> saque(s)</span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            Saques Recusados
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-recused-withdraw-gain">{{withdraws.recused}}</span></span>
+                        <span><span class="count-total-recused-withdraw-gain">{{withdraws.count_recused}}</span> saque(s)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-dashboard-content-container type-column">
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Saques Pendentes
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-pending-withdraw-gain">{{withdraws.pending}}</span></span>
+                        <span><span class="count-total-pending-withdraw-gain">{{withdraws.count_pending}}</span> saque(s)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

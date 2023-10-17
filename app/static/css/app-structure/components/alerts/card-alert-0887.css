@@ -1,0 +1,118 @@
+.alert-main{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width:100%;
+    height: 100%;
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+}
+
+.alert-main-container{
+    width: 95%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-main-card{
+    position: relative;
+    width: 60rem;
+    min-height: 18rem;
+    background-color: #fff;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.alert-main-card-container{
+    width:100%;
+    height: 100%;
+}
+
+.alert-main-top{
+    width:100%;
+    height: 4rem;
+    background-color: var(--secondary-background-color);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-main-top-container{
+    position: relative;
+    width: 95%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#alert-main-title-error{
+    font-size: 1.68rem;
+}
+
+.btn-close-main{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: .25rem;
+    margin-right: .5rem;
+    font-size: 1.45rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .25s;
+    user-select: none;
+}
+
+.btn-close-main:hover{
+    transform: scale(1.2);
+}
+
+.alert-main-bottom{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.alert-main-bottom-container{
+    margin: 2rem 0;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#alert-main-error-img{
+    width:3rem;
+    height: auto;
+}
+
+#alert-main-error-message{
+    margin-left: 2rem;
+    font-size: 2.1rem;
+    font-weight: 500;
+}
+
+.personalized-card{
+    display: none;
+}
+
+@media only screen and (max-width:999px) {
+    .alert-main-card{
+        width:100%;
+        min-height: 20rem;
+        padding-bottom: .75rem;
+    }
+}

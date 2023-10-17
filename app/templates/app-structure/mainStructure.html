@@ -1,0 +1,47 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        {%block add_head%}{%endblock%}
+        <title>{%block application_name%}{{app_name}}{%endblock%} | {%block title%}Página Estrutural{%endblock%}</title>
+        <link rel="icon" href="{%static 'image/app-structure/logo.png'%}" type="image/x-icon"> 
+        <link rel='stylesheet' href='{%static "css/app-structure/mainStructure.css"%}'>
+        <link rel='stylesheet' href='{%static "css/app-structure/animations.css"%}'>
+        <link rel='stylesheet' href='{%static "css/app-structure/clientConfig.css"%}'>
+        <link rel='stylesheet' href='{%static "css/app-structure/components/alerts/card-alert-0887.css"%}'>
+        <link rel='stylesheet' href='{%static "css/fonts.css"%}'>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+        {%block static%}{%endblock%} 
+        {%block fonts%}{%endblock%}
+    </head>
+
+    <body>
+        {%block navbar%}{%endblock%}
+        <section class='main'>
+            {%block content%}{%endblock%}
+        </section>
+        {%block popup%}{%endblock%}
+        {%block out-main%}{%endblock%}
+        <section class="alert-main">
+            {%include 'app-structure/components/alerts/card-alert-0887.html'%}
+        </section>
+        {%block alerts%}{%endblock%}
+        {%block scripts%}{%endblock%}
+        <section class="footer">
+            {%block footer%}
+                {%include 'app-structure/personalized/footer.html'%}
+            {%endblock%}
+        </section>
+        {%csrf_token%}
+        <script type="module" src='{%static "js/app-structure/default-client/funct-min-82092.js"%}'></script>
+        <script type="module" src='{%static "js/app-structure/default-client/alert-main-min-23826.js"%}'></script>
+        <script type="module" src='{%static "js/app-structure/default-client/mask-min-9746.js"%}'></script>
+    </body>
+</html>

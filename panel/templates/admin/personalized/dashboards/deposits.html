@@ -1,0 +1,71 @@
+<div class="card-dashboard-container type-column">
+    <div class="card-dashboard-header">
+        <h1>Depositos</h1>
+    </div>
+    <div class="card-dashboard-content">
+        <div class="card-dashboard-subtitle">
+            <h2>Detalhes sobre Depositos</h2>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Primeiro Deposito
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-first-deposit-gain">{{metrics.first_deposit}}</span></span>
+                    <span><span class="count-total-first-deposit-gain">{{metrics.count_first_deposit}}</span> deposito(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Hoje
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-today-deposit-gain">{{metrics.today}}</span></span>
+                    <span><span class="count-total-today-deposit-gain">{{metrics.count_today}}</span> deposito(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Semana Atual
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-week-deposit-gain">{{metrics.week}}</span></span>
+                    <span><span class="count-total-week-deposit-gain">{{metrics.count_week}}</span> deposito(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Mês Atual
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-month-deposit-gain">{{metrics.month}}</span></span>
+                    <span><span class="count-total-month-deposit-gain">{{metrics.count_month}}</span> deposito(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row full-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Ganhos Totais
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-full-deposit-gain">{{metrics.total}}</span></span>
+                    <span><span class="count-total-full-deposit-gain">{{metrics.count_total}}</span> deposito(s)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

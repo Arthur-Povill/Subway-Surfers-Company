@@ -1,0 +1,118 @@
+{%extends 'admin/default-admin/index.html'%}
+{%load static%}
+
+{%block in_static%}
+    <link rel='stylesheet' href='{%static "css/panel/configs.css"%}'>
+{%endblock%}
+
+{%block popup%}
+    <div class="container-card-config" style="display:none;"></div>
+{%endblock%}
+
+{%block main-container%}
+<div class="card-config">
+    <div class="card-config-container">
+        <div class="card-config-header">
+            <span>Configurações</span>
+        </div>
+        <div class="card-config-content">
+            <div class="card-config-item">
+                <div class="card-config-title">
+                    <span>Aplicação</span>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Nome Aplicação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="app-name" class="input" value="{{app_name}}" placeholder="FruitCash">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Nome Aplicação (Espaço)</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="app-name-separated" class="input" value="{{app_name_separated}}" placeholder="Fruit Cash">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>E-mail Aplicação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="app-emaile" class="input" value="{{app_email}}" placeholder="contato@fruitcash.com">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Link Suporte</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="support-link" class="input" value="{{support_link}}" placeholder="https://google.com">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Copy Telefone</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="copy-get-phone" class="input" value="{{copy_get_phone}}" placeholder="Mensagem para pegar telefone">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-config-item">
+                <div class="card-config-title">
+                    <span>Deposito</span>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Deposito Permitido</span>
+                        </div>
+                        <div class="input-container">
+                            <span>R$</span>
+                            <input type="text" id="app-name" class="input" value="{{permited_deposit}}" placeholder="25">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-config-item">
+                <div class="card-config-title">
+                    <span>Saque</span>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Saque Permitido</span>
+                        </div>
+                        <div class="input-container">
+                            <span>R$</span>
+                            <input type="text" id="app-name" class="input" value="{{permited_withdraw}}" placeholder="25">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-btn-confirm-update">
+            <div class="btn-confirm-update">
+                <span>Atualizar</span>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{%block in_script%}
+    <!--<script type="module" src='{%static "js/admin/withdraws-admin-019294.js"%}'></script>-->
+{%endblock%}

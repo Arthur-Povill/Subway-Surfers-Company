@@ -1,0 +1,22 @@
+{%for game in games%}
+    <div class="container-game" data-name="{{ game.name_dev }}" data-permited="{{ game.permitted_js }}">
+        <div class="game-image">
+            <img src="{{ game.photo_name }}"/>
+            {%if game.permitted and game.maintenance == False%}
+                <div id="{{game.name_dev}}-blocked" class="disabled-bet" style="display: none;" data-id="true"></div>
+            {%elif game.maintenance%}
+                <div id="{{game.name_dev}}-blocked" class="disabled-bet" style="display: flex;" data-id="false" data-status="maintenance">
+                    <div class="container-message-maintenance">
+                        <p>Bloqueado</p>
+                    </div>
+                </div>
+            {%else%}                                        
+                <div id="{{game.name_dev}}-blocked" class="disabled-bet" style="display: flex;" data-id="false" data-status="invalid"></div>
+            {%endif%}
+            <input id="{{ game.name_dev }}-link-game" value="{{ game.link }}" style="display:none;">
+        </div>
+        <div class="game-name no-mobile">
+            <p>{{ game.name }}</p>
+        </div>
+    </div>
+{%endfor%}

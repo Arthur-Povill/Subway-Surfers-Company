@@ -1,0 +1,50 @@
+{%extends 'sharkbot/structure.html'%} 
+{%load static%} 
+
+{%block title%}Home{%endblock%} 
+
+{%block static%}
+    <link rel='stylesheet' href='{%static "css/sharkbot/index.css"%}'>
+    <link rel='stylesheet' href='{%static "css/sharkbot/mainRight.css"%}'>
+{%endblock%} 
+
+{%block fonts%} 
+
+{%endblock%} 
+
+
+{%block content%}
+    <div class="main-container">
+        <div class="main-left">
+            <div class="bets-house">
+                <div class="bets-house-container">
+                    <div class="bets-house-container-auto">
+                        {%for bet in bets%}
+                            <div id="{{bet.name_dev}}" class="container-img-bet">
+                                <div class="input-not-show">{{bet.link}}</div>
+                                <div class="cont-img">
+                                    <img src="{{bet.photo_name}}">
+                                    {%if bet.permitted %}
+                                        <div id="{{bet.name_dev}}-blocked" class="disabled-bet" style="display: none;" data-id="true"></div>
+                                    {%else%}                                        
+                                        <div id="{{bet.name_dev}}-blocked" class="disabled-bet" style="display: flex;" data-id="false"></div>
+                                    {%endif%}
+                                </div>
+                                <span>{{bet.name}}</span>
+                                <div class="block-drag-drop"></div>
+                            </div> 
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-right">
+            
+        </div>
+    </div>
+{%endblock%} 
+
+{%block scripts%}
+    <script type="module" src='{%static "js/sharkbot/btnIndex.js"%}'></script>
+    <script type="module" src='{%static "js/sharkbot/funct.js"%}'></script>
+{%endblock%}

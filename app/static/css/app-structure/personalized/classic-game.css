@@ -1,0 +1,112 @@
+body{
+	margin:0;
+	overflow: hidden;
+}
+
+#extra, #view{
+	width: 100%;
+	height: 100vh;
+}
+
+#view{
+	display: block;
+	background: transparent url(blank.gif) repeat 0 0;
+	cursor: default;
+	z-index: 20;
+}
+
+#extra .layer{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+}
+
+div#sair{
+    position: absolute;
+    display: none;
+    bottom: 190px;
+    left: calc(50% - 95px);
+    width: 190px;
+    line-height: 32px;
+    font-size: 16px;
+    font-family: sans-serif;
+    text-align: center;
+    color: #ffc107;
+    background-color: #2e1a07e8;
+    box-shadow: 0 0 6px 0 #fff;
+    border: 0.5px solid #120904;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+div.buylife{
+    position: absolute;
+    display: none;
+    width: 260px;
+    height: 250px;
+    top: 220px;
+    left: calc(50vw - 130px);
+    background: #ffd321;
+    border: 2px solid #6a3409;
+    border-radius: 10px;
+    box-shadow: 0 0 6px 0 #000;
+    color: #3E2723;
+    font-family: monospace;
+    z-index: 10;
+}
+
+div.buylife h2{
+    text-align: center;
+    width: 190px;
+    margin: 30px auto;
+}
+
+div.buylife p{
+    display: block;
+    width: 230px;
+    text-align: center;
+    margin: 30px auto;
+}
+
+div.buylife a.comprar{
+    display: block;
+    width: 120px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    margin: 0px auto;
+    text-decoration: none;
+    border-radius: 10px;
+    background: #8bcb39;
+    box-shadow: 0 0 6px 0 #000;
+}
+
+div.buylife a.abandonar{
+    display: block;
+    width: 100px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    margin: 0px auto;
+    text-decoration: none;
+    border-radius: 10px;
+    background: #F44336;
+    box-shadow: 0 0 6px 0 #000;
+}
+
+div.buylife img.fruta1{
+    position: absolute;
+    width: 70px;
+    margin: 212px 0px 0px -30px;
+    transform: rotate(35deg);
+}
+
+div.buylife img.fruta2{
+    position: absolute;
+    width: 60px;
+    margin: -20px 0px 0px 220px;
+    transform: rotate(105deg);
+}

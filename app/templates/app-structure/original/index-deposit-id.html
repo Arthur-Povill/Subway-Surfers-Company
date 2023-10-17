@@ -1,0 +1,200 @@
+{%extends "app-structure/original/originalStructure.html"%}
+{%load static%}
+
+{%block main-page%}
+
+<div>
+    <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+    <div class="container w-container">
+    <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
+    <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+    <div class="nav-link logo">FruitCash</div>
+    </a>
+    <nav role="navigation" class="nav-menu w-nav-menu">
+    <a href="/game" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+    <a href="/cashier/withdraw" class="nav-link w-nav-link" style="max-width: 940px;">Saque</a>
+    <a href="/partnership" class="nav-link w-nav-link" style="max-width: 940px;">Link de Afiliado</a>
+    <a href="/referral" class="nav-link w-nav-link" style="max-width: 940px;">Indique um amigo</a>
+    <a href="/auth/logout" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
+    <a href="/deposit" class="button nav w-button w--current">Depositar</a>
+    </nav>
+    <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+    <div class="" style="-webkit-user-select: text;">
+    <a href="/deposit" class="menu-button w-nav-dep nav w-button w--current">DEPOSITAR</a>
+    </div>
+    </div>
+    <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+    <div class="icon w-icon-nav-menu"></div>
+    </div>
+    </div>
+    <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div></div>
+    <div class="nav-bar">
+    <a href="/game" class="link-block rarity w-inline-block">
+    <div>Jogar</div>
+    </a>
+    <a href="/cashier/withdraw" class="link-block last w-inline-block">
+    <div class="text-block-8">Saque</div>
+    </a>
+    <a href="/partnership" class="link-block last w-inline-block">
+    <div class="text-block-8">Link de Afiliado</div>
+    </a>
+    <a href="/referral" class="link-block last w-inline-block">
+    <div class="text-block-8">Indique um amigo</div>
+    </a>
+    <a href="/auth/logout" class="link-block last w-inline-block">
+    <div class="text-block-8">Sair</div>
+    </a>
+    <a href="/deposit" class="button w-button w--current">Depositar</a>
+    </div>
+    <section id="hero" class="hero-section dark wf-section">
+    <div class="minting-container w-container">
+    <img src="https://fruitcash.net/assets/img/pay/done.png" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
+    <h2>BÔNUS DE R$
+    {{deposit.value}} VÁLIDO<br>POR ATÉ<br><span id="tempo">9:40</span></h2>
+    <img src="/{{deposit.qr_code}}" loading=" lazy" alt="" class="nft-image">
+    <div id="page" style="width: 100%;height: 100%;">
+    <p style="display: unset;overflow-wrap: break-word;">
+    {{deposit.pix_code}} </p>
+    </div>
+    <h2>
+    R$ {{deposit.value}} </h2>
+    <a id="depCopiaCodigo" href="javascript:void(0);" onclick="if (!window.__cfRLUnblockHandlers) return false; copyToClipboard(this,'00020101021226790014br.gov.bcb.pix2557brcode.starkinfra.com/v2/8b1f4f6efbb845f2815ee250a6f331815204000053039865802BR5925Mdl Softpay Servicos Ltda6009Sao Paulo62070503***6304AB11')" type="submit" class="primary-button dark w-button">Copiar código para pagamento</a>
+    <br><br>
+    <div>
+    <h2>Pague e será creditado na hora!</h2>
+    <h3>Como pagar?</h3>
+    <p>1. Abra o aplicativo do seu banco e acesse a área Pix!</p>
+    <p>2. Selecione a opção pagar com código Pix Copia e Cola</p>
+    <p>3. Cole o código no espaço indicado no aplicativo</p>
+    <p>4. Efetue o pagamento e volte no site.</p>
+    </div>
+    <script type="text/javascript">
+                    window.onload = function() {
+                        analise();
+                        ts();
+                    };
+                    analise();
+    
+                    function ts() {
+                        var tempoEmMinutos = 10;
+                        var expiracao = new Date(new Date().getTime() + tempoEmMinutos * 60000);
+    
+                        contador = window.setInterval(function() {
+                            faltam = expiracao - new Date();
+                            if (faltam <= 0) {
+                                window.clearInerval(contador);
+                            }
+                            minutos = Math.floor(faltam / 60000);
+                            segundos = faltam % 60000;
+                            tempoRestante = `${minutos}:${segundos.toString().substring(0, 2)}`;
+                            document.getElementById('tempo').innerText = tempoRestante;
+                        }, 1000);
+                    }
+    
+                    function analise() {
+                        $.post("/system/payment/payment.php", {
+                            key: '5662937750962176',
+                            value: '30'
+                        }, function(data) {
+                            let status = data;
+                            if (status == 'paid') {
+                                location.href = "/game"
+                            } else if (status == 'pending' || status == 'expired') {
+                                setTimeout('analise()', 1500);
+                            }
+                        });
+                    }
+                    </script>
+    </div>
+    </section>
+    <div class="intermission wf-section"></div>
+    <div id="about" class="comic-book white wf-section">
+    <div class="minting-container left w-container">
+    <div class="w-layout-grid grid-2">
+    <img src="https://fruitcash.net/assets/img/affiliate/money.png" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
+    <div>
+    <h2>Indique um amigo e ganhe R$ no PIX</h2>
+    <h3>Como funciona?</h3>
+    <p>Convide seus amigos que ainda não estão na plataforma. Você receberá R$5 por cada amigo que
+    se
+    inscrever e fizer um depósito. Não há limite para quantos amigos você pode convidar. Isso
+    significa que também não há limite para quanto você pode ganhar!</p>
+    <h3>Como recebo o dinheiro?</h3>
+    <p>O saldo é adicionado diretamente ao seu saldo no painel abaixo, com o qual você pode sacar
+    via
+    PIX.</p>
+    
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="footer-section wf-section">
+    <div class="domo-text">FRUIT <br>
+    </div>
+    <div class="domo-text purple">CASH <br>
+    </div>
+    <div class="follow-test">© Copyright GTWC Limited, with registered
+    offices at
+    Dr. M.L. King
+    Boulevard 117, accredited by license GLH-16286002012. </div>
+    <div class="follow-test">
+    <a href="/legal">
+    <strong class="bold-white-link">Termos de uso</strong>
+    </a>
+    </div>
+    <div class="follow-test">{{app_email}}</div>
+    </div>
+    <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript">
+    </script>
+    
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=9fd3c47d-bb7c-4856-9414-28fa6f89d543" type="text/javascript">
+    </script>
+    
+    <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+    <!--[if lte IE 9]><script src="https://fruitcash.net//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+    
+    
+    <script type="text/javascript">
+            var hidden = false;
+    
+            function copyToClipboard(bt, text) {
+                const elem = document.createElement('textarea');
+                elem.value = text;
+                document.body.appendChild(elem);
+                elem.select();
+                document.execCommand('copy');
+                document.body.removeChild(elem);
+                document.getElementById('depCopiaCodigo').innerHTML = "Código Copiado";
+            }
+    
+            function onGenerate() {
+    
+                var depositAmountElement = document.getElementById("depositAmount").value;
+    
+                let fname = document.getElementById("depositFullName").value;
+                let famount = document.getElementById("depositAmount").value;
+                let fdocument = document.getElementById("depositDocument").value;
+    
+                if (fname == "" || famount == "" || fdocument == "") {
+                    alert("Preencha todos os campos.");
+                    return;
+                }
+    
+                if (depositAmountElement < 25) {
+                    alert("Mínimo de R$25!");
+                    return;
+                }
+    
+                document.getElementById("pixgenerator").textContent = "Aguarde, estamos gerando";
+                document.getElementById("pixgenerator").style.visibility = 'hidden';
+            }
+            </script>
+    
+    </div>
+    <style>
+        .nft-image{
+            width: 15rem !important;
+            height: auto
+        }
+    </style>
+{%endblock%}

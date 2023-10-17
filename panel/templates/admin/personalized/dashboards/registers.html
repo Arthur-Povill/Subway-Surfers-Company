@@ -1,0 +1,66 @@
+<div class="card-dashboard-container type-column">
+    <div class="card-dashboard-header">
+        <h1>Cadastros</h1>
+    </div>
+    <div class="card-dashboard-content">
+        <div class="card-dashboard-subtitle">
+            <h2>Detalhes sobre cadastros</h2>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Hoje
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span><span class="count-total-today-gain-register">{{metrics.today}}</span> cadastro(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Semana Atual
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span><span class="count-total-today-week-register">{{metrics.week}}</span> cadastro(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Mês Atual
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span><span class="count-total-month-gain-register">{{metrics.month}}</span> cadastro(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Mês Passado
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span><span class="count-total-lmonth-gain-register">{{metrics.last_month}}</span> cadastro(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row full-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Ganhos Totais
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span><span class="count-total-full-gain-register">{{metrics.total}}</span> cadastro(s)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

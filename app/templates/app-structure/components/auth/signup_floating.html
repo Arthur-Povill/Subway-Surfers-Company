@@ -1,0 +1,226 @@
+
+{%load static%}
+<div class="card-auth-container">
+    <div class="card-auth-content">
+        <div class="card-auth-logo">
+            <img src="{% static 'image/app-structure/logo.png' %}" alt="logo" class="logo-auth">
+            <h2>{{app_name}}</h2>
+        </div>
+        <div class="type-auth">
+            <h2>Criar minha conta</h2>
+        </div>
+        <div class="card-auth-inputs">
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                            <path d="M2335 5105 c-273 -42 -517 -172 -708 -375 -210 -223 -319 -481 -334
+                            -790 -21 -432 191 -845 557 -1084 180 -118 353 -178 563 -195 389 -30 721 92
+                            989 365 213 216 321 452 347 753 36 402 -116 776 -419 1038 -196 168 -376 252
+                            -625 288 -120 17 -260 18 -370 0z"/>
+                            <path d="M1427 2639 c-452 -48 -766 -372 -912 -944 -97 -381 -122 -839 -60
+                            -1090 51 -201 218 -405 411 -503 87 -44 212 -80 317 -92 62 -8 534 -10 1437
+                            -8 l1345 3 85 24 c316 86 532 298 611 596 41 155 36 525 -12 817 -105 650
+                            -371 1040 -792 1162 -96 28 -268 49 -319 39 -49 -9 -117 -45 -271 -144 -164
+                            -106 -187 -118 -310 -164 -142 -53 -259 -76 -396 -76 -140 0 -248 20 -390 70
+                            -134 48 -140 51 -350 184 -110 70 -192 115 -224 124 -56 14 -56 14 -170 2z"/>
+                        </g>
+                    </svg>
+                    <span>Nome Completo</span>
+                </div>
+                <div class="input-container">
+                    <input type="text" name="full-name" id="full-name" class="input" placeholder="Digite seu nome completo">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                       <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                       fill="#000000" stroke="none">
+                           <path d="M78 4489 c-23 -12 -46 -35 -58 -59 -20 -39 -20 -56 -20 -1870 0
+                           -1815 0 -1831 20 -1870 13 -26 34 -47 60 -60 39 -20 53 -20 2480 -20 2427 0
+                           2441 0 2480 20 26 13 47 34 60 60 20 39 20 55 20 1870 0 1815 0 1831 -20 1870
+                           -13 26 -34 47 -60 60 -39 20 -53 20 -2482 20 -2413 -1 -2443 -1 -2480 -21z
+                           m1617 -794 c184 -38 361 -176 444 -345 89 -183 94 -382 11 -557 l-30 -65 33
+                           -26 c152 -122 273 -310 327 -507 20 -71 23 -111 27 -371 5 -281 4 -292 -16
+                           -332 -14 -28 -35 -49 -61 -62 -38 -20 -57 -20 -871 -20 l-832 0 -42 24 c-75
+                           44 -78 60 -72 392 4 258 7 298 27 369 54 197 184 399 328 506 l33 25 -31 65
+                           c-58 124 -74 267 -45 404 38 184 176 361 345 444 139 68 279 87 425 56z m2435
+                           -305 c45 -23 80 -80 80 -130 0 -50 -35 -107 -80 -130 -38 -19 -58 -20 -521
+                           -20 -480 0 -481 0 -521 22 -101 57 -102 194 -2 254 l39 24 483 0 c464 0 484
+                           -1 522 -20z m300 -700 c45 -23 80 -80 80 -130 0 -50 -35 -107 -80 -130 -38
+                           -19 -58 -20 -671 -20 l-631 0 -40 22 c-101 57 -102 194 -2 254 l39 24 633 0
+                           c615 0 634 -1 672 -20z m0 -700 c45 -23 80 -80 80 -130 0 -50 -35 -107 -80
+                           -130 -38 -19 -58 -20 -671 -20 l-631 0 -40 22 c-101 57 -102 194 -2 254 l39
+                           24 633 0 c615 0 634 -1 672 -20z"/>
+                           <path d="M1463 3396 c-103 -34 -176 -98 -222 -196 -22 -46 -26 -69 -26 -140 0
+                           -76 4 -93 33 -152 38 -77 92 -130 171 -167 47 -22 70 -26 141 -26 71 0 94 4
+                           141 26 79 37 133 90 171 167 29 59 33 76 33 152 0 71 -4 94 -26 141 -58 124
+                           -169 199 -302 205 -43 3 -89 -2 -114 -10z"/>
+                           <path d="M1173 2481 c-70 -51 -151 -149 -193 -234 -55 -112 -70 -190 -70 -379
+                           l0 -158 650 0 650 0 0 158 c0 189 -15 267 -70 379 -42 85 -123 183 -193 234
+                           l-38 28 -72 -35 c-178 -84 -376 -84 -554 0 l-72 35 -38 -28z"/>
+                       </g>
+                    </svg>
+                    <span>CPF</span>
+                </div>
+                <div class="input-container">
+                    <input type="text" name="cpf" id="cpf" class="input" placeholder="Digite seu CPF">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                       <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                       fill="#000000" stroke="none">
+                           <path d="M2321 5110 c-868 -84 -1644 -610 -2037 -1382 -139 -273 -221 -536
+                           -266 -853 -20 -140 -17 -504 6 -660 39 -278 121 -541 247 -794 249 -502 647
+                           -900 1150 -1150 815 -406 1779 -350 2539 147 297 194 579 482 771 788 74 116
+                           184 342 234 478 51 138 110 376 131 531 23 157 26 521 6 660 -43 299 -120 554
+                           -246 810 -378 768 -1090 1285 -1941 1411 -122 18 -466 26 -594 14z m-550 -991
+                           c33 -18 75 -51 93 -73 38 -47 245 -394 267 -446 23 -56 18 -185 -10 -241 -39
+                           -82 -85 -126 -179 -170 -48 -23 -98 -51 -110 -63 -41 -36 -66 -96 -66 -156 -1
+                           -69 25 -122 137 -282 212 -302 456 -550 742 -754 160 -115 244 -163 296 -170
+                           103 -14 199 48 238 155 37 102 103 172 201 212 45 18 175 18 220 0 53 -22 399
+                           -229 447 -268 27 -21 54 -57 75 -101 29 -59 33 -75 32 -147 -1 -98 -18 -139
+                           -103 -252 -262 -347 -719 -489 -1130 -348 -148 50 -440 220 -661 383 -389 288
+                           -702 616 -966 1012 -110 166 -231 381 -265 470 -159 420 -26 897 323 1163 128
+                           97 184 119 291 112 51 -3 81 -11 128 -36z"/>
+                       </g>
+                    </svg>
+                    <span>Telefone</span>
+                </div>
+                <div class="input-container">
+                    <input type="text" name="phone" id="phone" class="input" placeholder="Digite seu telefone">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                            <path d="M340 4344 c-30 -8 -59 -19 -65 -25 -11 -11 2161 -2190 2207 -2215 35
+                            -18 121 -18 156 0 46 25 2218 2204 2207 2215 -6 6 -37 17 -70 25 -53 14 -298
+                            16 -2220 15 -1871 0 -2167 -2 -2215 -15z"/>
+                            <path d="M23 4048 c-17 -50 -18 -123 -18 -1488 0 -1365 1 -1438 18 -1487 10
+                            -29 22 -53 25 -53 4 0 354 347 777 770 l770 770 -770 770 c-423 424 -773 770
+                            -777 770 -3 0 -15 -24 -25 -52z"/>
+                            <path d="M4295 3330 l-770 -770 770 -770 c423 -423 773 -770 777 -770 3 0 15
+                            24 25 53 17 49 18 122 18 1487 0 1365 -1 1438 -18 1488 -10 28 -22 52 -25 52
+                            -4 0 -354 -346 -777 -770z"/>
+                            <path d="M1030 1575 c-495 -495 -761 -768 -755 -774 6 -6 37 -17 70 -25 53
+                            -14 299 -16 2215 -16 1916 0 2162 2 2215 16 33 8 64 19 70 25 6 6 -260 279
+                            -757 776 l-767 767 -238 -235 c-218 -216 -245 -239 -317 -275 l-80 -39 -126 0
+                            -126 0 -80 39 c-72 36 -100 60 -315 273 -129 128 -237 233 -240 233 -2 0 -348
+                            -344 -769 -765z"/>
+                        </g>
+                    </svg>
+                    <span>E-mail</span>
+                </div>
+                <div class="input-container">
+                    <input type="text" name="email-signup" id="email-signup" class="input" placeholder="Digite seu e-mail">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                            <path d="M2380 5109 c-663 -64 -1260 -524 -1490 -1149 -60 -163 -105 -377
+                            -112 -540 l-3 -55 -80 -6 c-132 -10 -230 -75 -284 -189 l-26 -55 0 -1435 0
+                            -1435 23 -46 c36 -74 87 -125 160 -161 l67 -33 1925 0 1925 0 67 33 c73 36
+                            124 87 160 161 l23 46 0 1435 0 1435 -26 55 c-54 114 -152 179 -284 189 l-80
+                            6 -3 55 c-11 233 -80 498 -187 709 -334 665 -1033 1052 -1775 980z m355 -713
+                            c345 -63 632 -275 788 -583 57 -111 107 -301 107 -404 l0 -49 -1070 0 -1070 0
+                            0 54 c0 100 50 288 107 399 133 263 381 471 658 553 151 44 335 56 480 30z
+                            m20 -1635 c295 -99 475 -423 400 -716 -36 -138 -107 -250 -217 -340 l-58 -47
+                            0 -429 c0 -490 -1 -497 -82 -576 -75 -72 -117 -88 -238 -88 -121 0 -163 16
+                            -238 88 -81 79 -82 86 -82 576 l0 429 -57 47 c-150 122 -233 293 -233 477 0
+                            105 15 168 61 265 134 280 450 413 744 314z"/>
+                        </g>
+</svg>
+                    <span>Senha</span>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="password-signup" id="password-signup" class="password" placeholder="Digite seu e-mail">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                            <path d="M2380 5109 c-663 -64 -1260 -524 -1490 -1149 -60 -163 -105 -377
+                            -112 -540 l-3 -55 -80 -6 c-132 -10 -230 -75 -284 -189 l-26 -55 0 -1435 0
+                            -1435 23 -46 c36 -74 87 -125 160 -161 l67 -33 1925 0 1925 0 67 33 c73 36
+                            124 87 160 161 l23 46 0 1435 0 1435 -26 55 c-54 114 -152 179 -284 189 l-80
+                            6 -3 55 c-11 233 -80 498 -187 709 -334 665 -1033 1052 -1775 980z m355 -713
+                            c345 -63 632 -275 788 -583 57 -111 107 -301 107 -404 l0 -49 -1070 0 -1070 0
+                            0 54 c0 100 50 288 107 399 133 263 381 471 658 553 151 44 335 56 480 30z
+                            m20 -1635 c295 -99 475 -423 400 -716 -36 -138 -107 -250 -217 -340 l-58 -47
+                            0 -429 c0 -490 -1 -497 -82 -576 -75 -72 -117 -88 -238 -88 -121 0 -163 16
+                            -238 88 -81 79 -82 86 -82 576 l0 429 -57 47 c-150 122 -233 293 -233 477 0
+                            105 15 168 61 265 134 280 450 413 744 314z"/>
+                        </g>
+</svg>
+                    <span>Confirmar senha</span>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="confirm-password" id="confirm-password" class="password" placeholder="Confirme a senha digitada">
+                    <div class="status-circle"></div>
+                </div>
+            </div>
+            <div class="item-inputs">
+                <div class="input-title">
+                    <svg class="icon-input" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                    width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+                    preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                            <path d="M2335 5105 c-273 -42 -517 -172 -708 -375 -210 -223 -319 -481 -334
+                            -790 -21 -432 191 -845 557 -1084 180 -118 353 -178 563 -195 389 -30 721 92
+                            989 365 213 216 321 452 347 753 36 402 -116 776 -419 1038 -196 168 -376 252
+                            -625 288 -120 17 -260 18 -370 0z"/>
+                            <path d="M1427 2639 c-452 -48 -766 -372 -912 -944 -97 -381 -122 -839 -60
+                            -1090 51 -201 218 -405 411 -503 87 -44 212 -80 317 -92 62 -8 534 -10 1437
+                            -8 l1345 3 85 24 c316 86 532 298 611 596 41 155 36 525 -12 817 -105 650
+                            -371 1040 -792 1162 -96 28 -268 49 -319 39 -49 -9 -117 -45 -271 -144 -164
+                            -106 -187 -118 -310 -164 -142 -53 -259 -76 -396 -76 -140 0 -248 20 -390 70
+                            -134 48 -140 51 -350 184 -110 70 -192 115 -224 124 -56 14 -56 14 -170 2z"/>
+                        </g>
+                    </svg>
+                    <span>Código</span>
+                </div>
+                <div class="input-container">
+                    <div class="secret-affiliate-code" style="display:none;">{{affiliate_code}}</div>
+                    <input type="text" name="affiliate-code" id="affiliate-code" class="input" placeholder="Digite seu nome completo" value="{{affiliate_code}}" disabled style="user-select: none;">
+                </div>
+            </div>
+        </div>
+        <div class="card-auth-buttons">
+            <div class="btn btn-signup main-button-auth" data-type="post">Confirmar Cadastro</div>
+            <div class="btn btn-signin" data-type="get">Entrar</div>
+        </div>
+    </div>
+    <div class="close-btn close-auth" data-type="signup">
+        <h2>x</h2>
+    </div>
+</div>

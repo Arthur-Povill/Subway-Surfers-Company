@@ -1,0 +1,27 @@
+{%extends 'app-structure/mainStructure.html'%} 
+{%load static%} 
+
+{%block title%}{%endblock%} 
+
+{%block static%}
+    <link rel='stylesheet' href='{%static "css/app-structure/personalized/footer.css"%}'>
+    <link rel='stylesheet' href='{%static "css/app-structure/personalized/game.css"%}'>
+    {%block in_static%}{%endblock%}
+{%endblock%} 
+
+{%block fonts%} 
+
+{%endblock%} 
+
+{%block navbar%}
+{%endblock%}
+
+{%block content%}
+    <div class="main-container">
+        {%block mainContent%}{%endblock%}
+    </div>
+{%endblock%} 
+
+{%block scripts%}
+
+{%endblock%}

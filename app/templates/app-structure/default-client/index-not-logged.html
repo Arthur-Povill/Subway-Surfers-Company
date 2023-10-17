@@ -1,0 +1,41 @@
+{%extends 'app-structure/mainStructure.html'%} 
+{%load static%} 
+
+{%block title%}Jogo da Frutinha{%endblock%} 
+
+{%block static%}
+    <link rel='stylesheet' href='{%static "css/app-structure/navbars/navbar-00656.css"%}'>
+    <link rel='stylesheet' href='{%static "css/app-structure/default-client/auth.css"%}'>
+    <link rel='stylesheet' href='{%static "css/app-structure/personalized/landing-page.css"%}'>
+    <link rel='stylesheet' href='{%static "css/app-structure/personalized/footer.css"%}'>
+    <link rel='stylesheet' href='{%static "css/app-structure/components/alerts/card-alert-0887.css"%}'>
+
+{%endblock%} 
+
+{%block fonts%} 
+
+{%endblock%} 
+
+{%block navbar%}
+    {%include 'app-structure/components/navbars/navbar-00656.html'%}
+{%endblock%}
+
+{%block content%}
+    <div class="main-container">
+        {%include 'app-structure/personalized/landing-page.html'%}
+    </div>
+    <div class="containers-cards-auth">
+        <div class="card-auth card-signin">
+            {%include 'app-structure/components/auth/signin_floating.html'%}
+        </div>
+        <div class="card-auth card-signup">
+            {%include 'app-structure/components/auth/signup_floating.html'%}
+        </div>
+    </div>
+{%endblock%} 
+
+{%block scripts%}
+    <script type="module" src='{%static "js/app-structure/navbars/navbar-00656-min-9983.js"%}'></script>
+    <script src='{%static "js/app-structure/personalized/index-not-logged-min-6576.js"%}'></script>
+    <script type="module" src='{%static "js/app-structure/default-client/auth-min-32394.js"%}'></script>
+{%endblock%}

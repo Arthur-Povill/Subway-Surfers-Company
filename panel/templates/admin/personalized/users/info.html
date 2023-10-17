@@ -1,0 +1,157 @@
+<div class="card-user">
+    <div class="card-user-container">
+        <div class="card-user-header">
+            <span>Atualizar Usuários</span>
+        </div>
+        <div class="card-user-content">
+            <div class="card-user-item">
+                <div class="card-user-title">
+                    <span>Dados Usuário</span>
+                </div>
+                <div class="card-user-item-content">
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Inluenciador</span>
+                        </div>
+                        <div class="input-container-status">
+                            {%if metrics.profile.influencer%}
+                                <div class="borded green" name="influencer" id="influencer-profile"></div>
+                                <span>Ativado</span>
+                            {%else%}
+                                <div class="borded red" name="influencer" id="influencer-profile"></div>
+                                <span>Desativado</span>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Conta Ativada</span>
+                        </div>
+                        <div class="input-container-status">
+                            {%if metrics.profile.activated%}
+                                <div class="borded green" name="activated" id="activated-profile"></div>
+                                <span>Ativado</span>
+                            {%else%}
+                                <div class="borded red" name="activated" id="activated-profile"></div>
+                                <span>Desativado</span>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>ID</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="id" id="id-profile" class="input" value="{{metrics.profile.id}}" disabled>
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Nome Completo</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="full-name" id="full-name-profile" class="input" value="{{metrics.profile.full_name}}">
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>E-mail</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="email" id="email-profile" class="input" value="{{metrics.profile.email}}">
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>CPF</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="cpf" id="cpf-profile" class="input" value="{{metrics.profile.cpf}}">
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Telefone</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="phone" id="phone-profile" class="input" value="{{metrics.profile.phone}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-user-item">
+                <div class="card-user-title">
+                    <span>Afiliado</span>
+                </div>
+                <div class="card-user-item-content">
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Código</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="code-affiliate" id="code-affiliate" class="input" value="{{metrics.affiliate.code}}">
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Porcentagem CPA</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="cpa-percent" id="cpa-percent" class="input" value="{{metrics.affiliate.cpa_percent}}">
+                            <span>%</span>
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Porcentagem Revenue Share</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="revshare-percent" id="revshare-percent" class="input" value="{{metrics.affiliate.revshare_percent}}">
+                            <span>%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-user-item">
+                <div class="card-user-title">
+                    <span>Carteira</span>
+                </div>
+                <div class="card-user-item-content">
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Saque Permitido</span>
+                        </div>
+                        <div class="input-container-status">
+                            {%if metrics.balance.permited_withdraw%}
+                                <div class="borded green" name="permited-balance" id="permited-balance"></div>
+                                <span>Ativado</span>
+                            {%else%}
+                                <div class="borded red" name="permited-balance" id="permited-balance"></div>
+                                <span>Desativado</span>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div class="card-user-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>Saldo</span>
+                        </div>
+                        <div class="input-container">
+                            <span>R$</span>
+                            <input type="text" name="value-balance" id="value-balance" class="input" value="{{metrics.balance.value}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-btn-confirm-update">
+            <div class="btn-confirm-update">
+                <span>Atualizar</span>
+            </div>
+        </div>
+        <div class="container-close-card-user">
+            <div class="close-card-user">
+                <span>x</span>
+            </div>
+        </div>
+    </div>
+</div>

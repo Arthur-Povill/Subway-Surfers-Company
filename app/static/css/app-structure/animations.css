@@ -1,0 +1,49 @@
+/*animation pulse*/
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/*animation text shadow rgba*/
+@keyframes text-shadow-rgba {
+    0% {
+        text-shadow: -10px 8px 0 #9929DA;
+    }
+    30% {
+        text-shadow: -10px 8px 0 #2954DA;
+    }
+    60% {
+        text-shadow: -10px 8px 0 #2EDA29;
+    }
+    90% {
+        text-shadow: -10px 8px 0 #DA9F29;
+    }
+    100%{
+        text-shadow: -10px 8px 0 #9929DA;
+    }
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-110%);
+    }
+    to {
+        transform: translateY(110%);
+    }
+}
+
+@keyframes rotateShuriken {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

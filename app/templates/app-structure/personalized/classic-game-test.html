@@ -1,0 +1,36 @@
+{%extends 'app-structure/default-client/game.html'%} 
+{%load static%} 
+
+{%block title%}Modo: Classico{%endblock%} 
+{%block in_static%}
+    <link rel='stylesheet' href='{%static "css/app-structure/personalized/classic-game.css"%}'>
+{%endblock%} 
+
+
+{%block add_head%}
+    <meta charset="utf-8">
+    <meta name="description" content="A simple HTML5 Template">
+    <meta name="author" content="dron">
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+{%endblock%}
+
+{%block fonts%} 
+
+{%endblock%} 
+
+{%block navbar%}
+{%endblock%}
+
+{%block mainContent%}
+<div id="extra"></div>
+<div id="desc">
+   <div id="browser"></div>
+</div>
+{%endblock%}
+
+{%block scripts%}
+    <script src="{%static 'js/app-structure/personalized/games/classic/classic-dev.js'%}"></script>
+    <script src="{%static 'js/jquery.js'%}" type="text/javascript"></script>
+{%endblock%}

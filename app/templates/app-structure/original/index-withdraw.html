@@ -1,0 +1,153 @@
+{%extends "app-structure/original/originalStructure.html"%}
+{%load static%}
+
+{%block main-page%}
+    <div>
+        <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+        <div class="container w-container">
+            <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
+                <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+                <div class="nav-link logo">{{app_name}}</div>
+            </a>
+            <nav role="navigation" class="nav-menu w-nav-menu">
+                <a href="/game" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+                <a href="/cashier/withdraw" class="nav-link w-nav-link w--current" style="max-width: 940px;">Saque</a>
+                <a href="/partnership" class="nav-link w-nav-link" style="max-width: 940px;">Link de Afiliado</a>
+                <a href="/referral" class="nav-link w-nav-link" style="max-width: 940px;">Indique um amigo</a>
+                <a href="/auth/logout" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
+                <a href="/deposit" class="button nav w-button">Depositar</a>
+            </nav>
+            <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+                <div class="" style="-webkit-user-select: text;">
+                    <a href="/deposit" class="menu-button w-nav-dep nav w-button">DEPOSITAR</a>
+                </div>
+            </div>
+            <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+                <div class="icon w-icon-nav-menu"></div>
+            </div>
+        </div>
+        <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
+        </div>
+        <div class="nav-bar">
+        <a href="/game" class="link-block rarity w-inline-block">
+            <div>Jogar</div>
+        </a>
+        <a href="/cashier/withdraw" class="link-block last w-inline-block w--current">
+            <div class="text-block-8">Saque</div>
+        </a>
+        <a href="/partnership" class="link-block last w-inline-block">
+            <div class="text-block-8">Link de Afiliado</div>
+        </a>
+        <a href="/referral" class="link-block last w-inline-block">
+            <div class="text-block-8">Indique um amigo</div>
+        </a>
+        <a href="/auth/logout" class="link-block last w-inline-block">
+            <div class="text-block-8">Sair</div>
+        </a>
+        <a href="/deposit" class="button w-button">Depositar</a>
+        </div>
+        <section id="hero" class="hero-section dark wf-section">
+        <div class="minting-container w-container">
+            <img src="https://fruitcash.net/assets/img/pay/with.gif" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
+            <h2>Saque</h2>
+            <p>PIX: saques instantâneos com muita praticidade. <br></p>
+            <form data-name="" id="payment_pix" name="payment_pix" method="post" aria-label="Form">
+                <div class="properties">
+                    <h4 class="rarity-heading">Nome do destinatário:</h4>
+                    <div class="rarity-row roboto-type2">
+                        {%if profile.user.name == ''%}
+                            <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input name-withdraw" maxlength="256" name="withdrawName" placeholder="Nome do Destinatario" id="withdrawName" required="">
+                        {%else%}
+                            <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input name-withdraw" maxlength="256" name="withdrawName" placeholder="Nome do Destinatario" id="withdrawName" required="" value="{{profile.user.full_name}}" disabled>
+                        {%endif%}
+                    </div>
+                    <h4 class="rarity-heading">Chave PIX CPF:</h4>
+                    <div class="rarity-row roboto-type2">
+                        {%if profile.user.cpf == ''%}
+                            <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input cpf-withdraw" maxlength="256" name="withdrawCPF" placeholder="Seu número de CPF" id="withdrawCPF" value="" required="">
+                        {%else%}   
+                            <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input cpf-withdraw" maxlength="256" name="withdrawCPF" placeholder="Seu número de CPF" id="withdrawCPF" value="{{profile.user.cpf}}" required="" disabled>
+                        {%endif%}
+                    </div>
+                    <h4 class=" rarity-heading">Valor para saque</h4>
+                    <div class="rarity-row roboto-type2">
+                    <input type="text" data-name="Valor de saque" name="withdrawValue" id="withdrawValue" value="0,00" placeholder="Sem pontos, virgulas ou centavos" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input value-withdraw">
+                    </div>
+                </div>
+                <div class="">
+                    <input value="Sacar via PIX" id="pixgenerator" class="primary-button w-button btn-confirm-withdraw"><br><br>
+                    <p>Ao solicitar saque você concorda com os
+                    <a href="/legal/">
+                    termos de serviço</a> e a <br>taxa de 10% e receberá o valor total de <span id="updatedValue">0</span>
+                    </p>
+                </div>
+            </form>
+        </div>
+        </section>
+        <div class="intermission wf-section"></div>
+        <div id="rarity" class="rarity-section wf-section">
+        <div class="minting-container w-container">
+            <img src="https://media.tenor.com/d_P1ag60gP8AAAAM/money-cash.gif" loading="lazy" width="240" alt="Robopet 6340" class="mint-card-image">
+            <h2>Histórico financeiro</h2>
+            <p class="paragraph">As retiradas para sua conta bancária são processadas pelo setor financeiro.
+                <br>
+            </p>
+            <div class="properties">
+                <h3 class="rarity-heading">Saques realizados</h3>
+            </div>
+        </div>
+        </div>
+        <div class="intermission wf-section"></div>
+        <div id="about" class="comic-book white wf-section">
+        <div class="minting-container left w-container">
+            <div class="w-layout-grid grid-2">
+                <img src="https://fruitcash.net/assets/img/affiliate/money.png" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
+                <div>
+                    <h2>Indique um amigo e ganhe R$ no PIX</h2>
+                    <h3>Como funciona?</h3>
+                    <p>Convide seus amigos que ainda não estão na plataforma. Você receberá R$5 por cada amigo que
+                    se
+                    inscrever e fizer um depósito. Não há limite para quantos amigos você pode convidar. Isso
+                    significa que também não há limite para quanto você pode ganhar!
+                    </p>
+                    <h3>Como recebo o dinheiro?</h3>
+                    <p>O saldo é adicionado diretamente ao seu saldo no painel abaixo, com o qual você pode sacar
+                    via
+                    PIX.
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="footer-section wf-section">
+        <div class="domo-text">{{app_name_split_1}} <br></div>
+        <div class="domo-text purple">{{app_name_split_2}} <br></div>
+        <div class="follow-test">© Copyright GTWC Limited, with registered
+            offices at
+            Dr. M.L. King
+            Boulevard 117, accredited by license GLH-16286002012. 
+        </div>
+        <div class="follow-test">
+            <a href="/legal">
+            <strong class="bold-white-link">Termos de uso</strong>
+            </a>
+        </div>
+        <div class="follow-test">{{app_email}}</div>
+        </div>
+        <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
+        <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+        <!--[if lte IE 9]><script src="https://fruitcash.net//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+        <script type="text/javascript">
+        $("#withdrawValue").keyup(function(e) {
+            var value = $("[name='withdrawValue']").val();
+        
+            var final = (value / 100) * 95;
+        
+            $('#updatedValue').text('' + final.toFixed(2));
+        });
+        </script>
+        {%block scripts-page%}
+            <script type="module" src='{%static "js/original/withdraw.js"%}'></script>
+        {%endblock%}
+    </div>
+{%endblock%}

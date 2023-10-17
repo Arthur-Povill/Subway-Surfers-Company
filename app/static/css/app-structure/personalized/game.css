@@ -1,0 +1,30 @@
+.container-log-game{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width:100%;
+    height: 100%;
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 999;
+    user-select: none;
+}
+
+.card-log-game{
+    position: relative;
+    width: 60rem;
+    min-height: 18rem;
+    background-color: #fff;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.card-log-game-container{
+    width:100%;
+    height: 100%;
+}

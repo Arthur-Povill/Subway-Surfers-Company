@@ -1,0 +1,246 @@
+@font-face {
+    font-family: 'JetBrainsMono';
+    src: url('assets/fonts/JetBrainsMono.woff2') format('truetype');
+}
+@font-face {
+    font-family: 'JetBrainsMonoBold';
+    src: url('assets/fonts/JetBrainsMonoBold.woff2') format('truetype');
+}
+
+body{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: 'JetBrainsMono', sans-serif;
+}
+
+.auth-panel{
+    margin: 5px;
+    position:relative;
+    background-color: #272B41;
+    width: 400px;
+    height: 350px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.9);
+}
+
+.panel-top{
+    position: relative;
+    margin: 0;
+    padding: 1px 0;
+    width:100%;
+    background-color: #f12c4c;
+    text-align: center;
+    color: #fff;
+    user-select: none;
+}
+
+.image-logo{
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-logo svg{
+    width: auto;
+    height: 90%;
+    margin-left: 5px;
+}
+
+.image-logo svg path{
+    fill: #fff;
+}
+
+.panel-top h3{
+    margin: 3px 0;
+    font-weight: bold;
+    font-size: 21px;
+    padding: 5px 0;
+}
+
+.panel-center{
+    width:100%;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-center{
+    width:90%;
+    color: #fff;
+    margin-top: 25px;
+}
+
+.center-entry-container{
+    width:100%;
+}
+
+.center-entry-container span{
+    font-size: 18.75px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin: 0 7px;
+    user-select: none;
+}
+
+.container-input{
+    margin: 5px 0;
+    padding: 5.5px 0;
+    width:100%;
+    background-color: #333a44;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-entry-container input{
+    width:95%;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 16.5px;
+}
+
+.center-more-entry{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-more-entry-container{
+    width:95%;
+    display: flex;
+    flex-direction: row;
+    margin: 8px 0;
+    justify-content: space-between;
+}
+
+.container-error{
+    color: #f12c4c;
+    font-size: 16.5px;
+    width: 18rem;
+}
+
+.my-access{
+    width: fit-content;
+    height: fit-content;
+}
+
+.my-access a{
+    color: #fff;
+    font-weight: bold;
+}
+
+.center-section-2{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-section-2-container{
+    width: 90%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+
+.btn-entry{
+    width: fit-content;
+    height: fit-content;
+    background-color: #f12c4c;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.9);
+    padding: 6px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+}
+
+.btn-entry:hover{
+    background-color: #F4526C;
+}
+
+.panel-bottom{
+    position:absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #333a44;
+    width:100%;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-bottom{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container-bottom img{
+    width: 70px;
+    height: auto;
+}
+
+.load-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.load{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(51, 58, 68, 0.85);
+}
+
+.load svg{
+    width: 60px;
+    height: auto;
+    animation: pulse 1s infinite;
+}
+
+.load svg path{
+    fill: #fff;
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }

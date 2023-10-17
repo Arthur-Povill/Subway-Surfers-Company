@@ -1,0 +1,48 @@
+<div class="card-bottom-table-title card-bottom-table-deposit-title mode-row">
+    <div class="table-column table-column-deposit table-column-id table-column-title alternate-1">
+        <span>ID</span>
+    </div>
+    <div class="table-column table-column-deposit table-column-value table-column-title alternate-2">
+        <span>Valor</span>
+    </div>
+    <div class="table-column table-column-deposit table-column-status table-column-title alternate-1">
+        <span>Status</span>
+    </div>
+    <div class="table-column table-column-deposit table-column-date table-column-title alternate-2">
+        <span>Data</span>
+    </div>
+</div>
+<div class="card-bottom-table-row card-bottom-table-deposit-row">
+    {% for deposit in deposits %}
+        <div class="table-item-row table-item-row-deposit mode-row">
+            <div class="table-column table-column-deposit table-column-id">
+                <span>{{ deposit.id }}</span>
+            </div>
+            <div class="table-column table-column-deposit table-column-value">
+                <span>R$ {{ deposit.value }}</span>
+            </div>
+            <div class="table-column table-column-deposit table-column-status">
+                {%if deposit.status == 'pending' %}
+                    <div class="border-status status-value pendent">
+                        <span>Pendente</span>
+                    </div>
+                {% elif deposit.status == 'approved' %}
+                    <div class="border-status status-value approved">
+                        <span>Aprovado</span>
+                    </div>
+                {% elif deposit.status == 'canceled' %}
+                    <div class="border-status status-value canceled">
+                        <span>Cancelado</span>
+                    </div>
+                {% else %}
+                    <div class="border-status status-value in-progress">
+                        <span>Em Andamento</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="table-column table-column-deposit table-column-date">
+                <span>{{ deposit.created_at }}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>

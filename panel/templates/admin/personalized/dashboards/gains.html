@@ -1,0 +1,80 @@
++ <div class="card-dashboard-container type-column">
+    <div class="card-dashboard-header">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="card-dashboard-content">
+        <div class="card-dashboard-subtitle">
+            <h2>Ganhos Gerais</h2>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Ganhos Usuários
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-user-gain">{{metrics.users}}</span></span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Ganhos Casa
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-house-gain">{{metrics.home}}</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-row">
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Aposta (Hoje)
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-bet-today-gain">{{metrics.game_today}}</span></span>
+                    <span><span class="count-total-bet-today-gain">{{metrics.count_game_today}}</span> aposta(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row half-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Aposta (Semanal)
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-week-bet-gain">{{metrics.game_week}}</span></span>
+                    <span><span class="count-total-week-bet-gain">{{metrics.count_game_week}}</span> aposta(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-dashboard-content-container type-column">
+            <div class="card-dashboard-item type-row full-div type-column">
+                <div class="card-dashboard-item-metric alternate-2">
+                    <span>
+                        Aposta (Mensal)
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-month-bet-gain">{{metrics.game_month}}</span></span>
+                    <span><span class="count-total-month-bet-gain">{{metrics.count_game_month}}</span> aposta(s)</span>
+                </div>
+            </div>
+            <div class="card-dashboard-item type-row full-div type-column">
+                <div class="card-dashboard-item-metric alternate-1">
+                    <span>
+                        Aposta Total
+                    </span>
+                </div>
+                <div class="card-dashboard-item-metric-result">
+                    <span>R$ <span class="total-full-bet-gain">{{metrics.game_total}}</span></span>
+                    <span><span class="count-total-full-bet-gain">{{metrics.count_game_total}}</span> aposta(s)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

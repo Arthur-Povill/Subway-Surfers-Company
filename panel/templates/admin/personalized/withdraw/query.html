@@ -1,0 +1,52 @@
+{%for withdraw in withdraws%}
+    <div class="item-users table-row">
+        <div class="table-column table-column-result column-id">
+            <span class="id-user">{{withdraw.id}}</span>
+        </div>
+        <div class="table-column table-column-result">
+            <span>{{withdraw.full_name}}</span>
+        </div>
+        <div class="table-column table-column-result result-email">
+            <span>{{withdraw.email}}</span>
+        </div>
+        <div class="table-column table-column-result no-mobile">
+            <span>R$ {{withdraw.value}}</span>
+        </div>
+        <div class="table-column table-column-result no-mobile no-mobile">
+            <span>R$ {{withdraw.all_withdraw}}</span>
+        </div>
+        <div class="table-column table-column-result no-mobile">
+            {%if withdraw.status == 'pending' %}
+                <div class="border-status status-value pendent">
+                    <span>Pendente</span>
+                </div>
+            {% elif withdraw.status == 'approved' %}
+                <div class="border-status status-value approved">
+                    <span>Aprovado</span>
+                </div>
+            {% elif withdraw.status == 'canceled' %}
+                <div class="border-status status-value canceled">
+                    <span>Cancelado</span>
+                </div>
+            {% else %}
+                <div class="border-status status-value in-progress">
+                    <span>Em Andamento</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="table-column table-column-result no-mobile no-mobile">
+            {%if withdraw.status == 'pending'%}
+                <div class="container-btns-approved">
+                    <div class="btn-approved btn-approved-yes" data-id="{{withdraw.id}}">
+                        <span>Aprovar</span>
+                    </div>
+                    <div class="btn-approved btn-approved-no" data-id="{{withdraw.id}}">
+                        <span>Recusar</span>
+                    </div>
+                </div>
+            {%else%}
+                <span>-</span>
+            {%endif%}   
+        </div>
+    </div>
+{%endfor%}

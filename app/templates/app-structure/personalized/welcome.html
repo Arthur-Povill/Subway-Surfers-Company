@@ -1,0 +1,51 @@
+{%extends 'app-structure/default-client/index-logged.html'%} 
+{%load static%} 
+
+{%block in_static%}
+<link rel='stylesheet' href="{%static 'css/app-structure/personalized/welcome.css'%}">
+{%endblock%}
+
+{%block out-main%}
+    <div class="welcome-animation">
+        <h1>
+            <div class="first-welcome div-welcomed">
+                <span>B</span>
+                <span>E</span>
+                <span>M</span>
+            </div>
+            <div class="second-welcome div-welcomed">
+                <span>V</span>
+                <span>I</span>
+                <span>N</span>
+                <span>D</span>
+                <span>o</span>
+            </div>
+        </h1>
+        <div class="alert-main-card card-game-free">
+            <div class="alert-main-card-container card-game-free-content">
+                <div class="alert-main-top">
+                    <div class="alert-main-top-container">
+                        <h3 id="alert-main-title-error">Bônus Liberado</h3>
+                    </div>
+                </div>
+                <div class="alert-main-bottom">
+                    <div class="alert-main-bottom-container">
+                        <span id="alert-main-error-message">Liberamos uma rodada grátis para você experimentar, deseja jogar essa roda demonstrativa:</span>
+                    </div>
+                    <div class="alert-main-btns">
+                        <div class="accept btn-choose-free">
+                            <span>Sim</span>
+                        </div>
+                        <div class="deny btn-choose-free">
+                            <span>Não</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}
+
+{%block in_script%}
+<script type="module" src='{%static "js/app-structure/personalized/welcome-min-82394.js"%}'></script>
+{%endblock%}

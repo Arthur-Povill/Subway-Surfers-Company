@@ -1,0 +1,205 @@
+{%extends "app-structure/original/originalStructure.html"%}
+{%load static%}
+
+{%block main-page%}
+<div>
+    <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+       <div class="container w-container">
+          <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
+             <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+             <div class="nav-link logo">{{app_name}}</div>
+          </a>
+          <nav role="navigation" class="nav-menu w-nav-menu">
+             <a href="/game" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+             <a href="/cashier/withdraw" class="nav-link w-nav-link" style="max-width: 940px;">Saque</a>
+             <a href="/partnership" class="nav-link w-nav-link w--current" style="max-width: 940px;">Link de Afiliado</a>
+             <a href="/referral" class="nav-link w-nav-link" style="max-width: 940px;">Indique um amigo</a>
+             <a href="/auth/logout" class="nav-link w-nav-link" style="max-width: 940px;">Sair</a>
+             <a href="/deposit" class="button nav w-button">Depositar</a>
+          </nav>
+          <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+             <div class="" style="-webkit-user-select: text;">
+                <a href="/deposit" class="menu-button w-nav-dep nav w-button">DEPOSITAR</a>
+             </div>
+          </div>
+          <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+             <div class="icon w-icon-nav-menu"></div>
+          </div>
+       </div>
+       <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
+    </div>
+    <div class="nav-bar">
+       <a href="/game" class="link-block rarity w-inline-block">
+          <div>Jogar</div>
+       </a>
+       <a href="/cashier/withdraw" class="link-block last w-inline-block">
+          <div class="text-block-8">Saque</div>
+       </a>
+       <a href="/partnership" class="link-block last w-inline-block w--current">
+          <div class="text-block-8">Link de Afiliado</div>
+       </a>
+       <a href="/referral" class="link-block last w-inline-block">
+          <div class="text-block-8">Indique um amigo</div>
+       </a>
+       <a href="/auth/logout" class="link-block last w-inline-block">
+          <div class="text-block-8">Sair</div>
+       </a>
+       <a href="/deposit" class="button w-button">Depositar</a>
+    </div>
+    <section id="hero" class="hero-section dark wf-section">
+       <div class="minting-container w-container">
+          <img src="https://fruitcash.net/assets/img/affiliate/affiliate.gif" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
+          <h2>Painel de afiliado</h2>
+          <p>Este é o resumo de seu resultado como afiliado. <br></p>
+          <p>Seu link de afiliado é: <br>
+             <span id="link-affiliate">{{affiliate.link}}</span>
+          </p>
+          <br>
+          <a id="depCopiaCodigo" href="javascript:void(0);" class="primary-button dark w-button btn-copy" val="2" data-type="link-affiliate">Copiar link de afiliado</a>
+          <br><br>
+          <div class="properties">
+             <h3 class="rarity-heading">Extrato</h3>
+             <div class="rarity-row roboto-type">
+                <div class="rarity-number full">Contabilização pode demorar até 1 hora.</div>
+             </div>
+             <div class="rarity-row roboto-type">
+                <div class="rarity-number full">Saldo disponível:</div>
+                <div class="padded">R$&nbsp;
+                   0.00 
+                </div>
+             </div>
+             <div class="w-layout-grid grid">
+                <div>
+                   <div class="rarity-row blue">
+                      <div class="rarity-number">Cadastro ativo</div>
+                      <div>R$
+                      {{affiliate.total_earning}} 
+                      </div>
+                   </div>
+                   <div class="rarity-row">
+                      <div class="rarity-number">Recorrência</div>
+                      <div>R$
+                        {{affiliate.revshare_total_earnings}} 
+                     </div>
+                  </div>
+                  <div class="rarity-row blue">
+                     <div class="rarity-number">Indicação</div>
+                     <div>R$
+                         {{affiliate.cpa_total_earnings}}
+                      </div>
+                   </div>
+                   <div class="rarity-row">
+                      <div class="rarity-number">Bônus</div>
+                      <div>R$
+                         0.00 
+                      </div>
+                   </div>
+                </div>
+                <div>
+                   <div class="rarity-row blue">
+                      <div class="rarity-number">Cadastros ativos</div>
+                      <div>
+                        {{affiliate.cpa_count}} cadastros
+                      </div>
+                   </div>
+                   <div class="rarity-row">
+                      <div class="rarity-number">Valor por ativo</div>
+                      <div>R$
+                         18 
+                      </div>
+                   </div>
+                   <div class="rarity-row blue">
+                      <div class="rarity-number">Recorrência</div>
+                      <div>
+                        {{affiliate.revshare_percent}}%
+                     </div>
+                  </div>
+                  <div class="rarity-row">
+                     <div class="rarity-number">Indicação</div>
+                     <div>
+                         {{affiliate.cpa_percent}}%
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="grid-box">
+                <a href="/partnership/withdraw" class="primary-button w-button">Sacar saldo disponível</a> <a href="/partnership/contact" class="primary-button dark w-button">Suporte para afiliados</a>
+             </div>
+             <br>
+             <div class="grid-box">
+                <center><a href="/partnership/contactx" class="primary-button w-button">Agente de afiliados</a></center>
+                <a href="https://t.me/fruitcash " class="primary-button dark w-button">Telegram</a>
+             </div>
+          </div>
+       </div>
+    </section>
+    <div class="intermission wf-section"></div>
+    <div class="intermission wf-section"></div>
+    <!--<div id="about" class="comic-book white wf-section">
+       <div class="w-container">
+          <img src="https://fruitcash.net/assets/img/affiliate/Tabelv.png">
+       </div>
+    </div>-->
+    <div class="intermission wf-section"></div>
+    <div id="about" class="comic-book white wf-section">
+       <div class="minting-container left w-container">
+          <div class="w-layout-grid grid-2">
+             <img src="https://fruitcash.net/assets/img/affiliate/work.png" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
+             <div>
+                <h2>Como funciona o sistema de afiliados?</h2>
+                <h3>Divulgue seu público e fature</h3>
+                <p>O sistema de afiliados é construído para páginas, influenciadores, gestores de tráfego e
+                   profissionais do marketing digital. Você pode faturar muito mais divulgando a plataforma
+                   para o
+                   seu público.
+                </p>
+                <h3>Criativos</h3>
+                <p>Nossa equipe possui uma gama de criativos prontos para divulgação, contate o suporte para
+                   afiliados e obtenha os criativos para a divulgação.
+                </p>
+                <h3>Saques para a conta bancária</h3>
+                <p>Nossos saques ocorrem 24 horas por dia e 7 dias por semana. Basta solicitar via chave PIX no
+                   seu
+                   painel e em até 1 hora o dinheiro já estará na sua conta.
+                </p>
+             </div>
+          </div>
+       </div>
+    </div>
+    <!--<div id="rarity" class="rarity-section wf-section">
+       <div class="minting-container w-container">
+          <img src="https://fruitcash.net/assets/img/affiliate/withdraw.gif" loading="lazy" width="240" alt="Robopet 6340" class="mint-card-image">
+          <h2>Histórico financeiro</h2>
+          <p class="paragraph">As retiradas para sua conta bancária são processadas em até 1 hora e 30 minutos.
+             <br>
+             <br>Você já sacou <b>R$
+             0.00.
+             </b>
+          </p>
+          <div class="properties">
+             <h3 class="rarity-heading">Saques realizados</h3>
+          </div>
+       </div>
+    </div>-->
+    <div class="footer-section wf-section">
+       <div class="domo-text">{{app_name_split_1}} <br></div>
+       <div class="domo-text purple">{{app_name_split_2}} <br></div>
+       <div class="follow-test">© Copyright GTWC Limited, with registered
+          offices at
+          Dr. M.L. King
+          Boulevard 117, accredited by license GLH-16286002012. 
+       </div>
+       <div class="follow-test">
+          <a href="/legal">
+          <strong class="bold-white-link">Termos de uso</strong>
+          </a>
+       </div>
+       <div class="follow-test">{{app_email}}</div>
+    </div>
+    <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
+    <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+    {%block scripts-page%}
+      <script type="module" src='{%static "js/original/affiliates.js"%}'></script>
+    {%endblock%}
+ </div>
+{%endblock%}
