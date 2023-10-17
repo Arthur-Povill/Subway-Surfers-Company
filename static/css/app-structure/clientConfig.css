@@ -1,0 +1,23 @@
+html{
+    /*  variable color declaration, must be changed according to each client */
+    --primary-background-color: #E8E8E8;
+    --dark-primary-background-color: #A7A7A7;
+    --light-secondary-background-color: #FD6A6A;
+    --secondary-background-color: #F95F5F;
+    --heavy-secondary-background-color: #fd5b5b;
+    --easy-secondary-background-color: #fa8686;
+    --dark-secondary-background-color: #F26E6E;
+    --primary-text-color: #333;
+    --opost-text-color: #fff;
+    --secondary-text-color: #FD6A6A;
+    --default-navbar-color: #fff;
+    --dark-default-navbar-color: #000;
+    --menu-backgroud-color: #fff;
+    --backgroud-first-session: #eb0d18;
+    --backgroud-second-session: #8BFD6A;
+    --green: #339966;
+    --light-green: #36D485;
+
+    /*  declaration default font-family */
+    font-family: 'Ubuntu', sans-serif;
+}

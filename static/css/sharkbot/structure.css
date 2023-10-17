@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+*:focus {
+    outline: none;
+}
+
+html {
+    font-size: 62.5%;
+    --red-light: #F95F5F;
+    --red: #ff1010;
+    --red-dark: #D40000;
+    --white: #fff;
+    --black: #000;
+    --grey-black: #333;
+    --dark-blue: #000325;
+    --red-brown-light: #976C6C;
+    --red-brown-medium-light: #6F3737;
+    --blue-dark: #1282a2;
+    --white-alternative: #fefcfb;
+    --color-extrapit: #A03ED5;
+    --purple-light: #7b01c0;
+    --blue-dark: #023d75;
+    --blue-light: #2899bf;
+    --gray-background: #E8E8E8;
+    --gray-dark: #A7A7A7;
+    --grey-blue-dark: #333a44;
+}
+
+body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--gray-background);
+    color: #333;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 10.75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.9);
+    background-color: #fff;
+}
+
+.main{
+    display: 100%;
+    height: 89.25vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+
+@media only screen and (max-width:999px) {
+    .no-mobile{
+        display: none;
+    }
+}
+

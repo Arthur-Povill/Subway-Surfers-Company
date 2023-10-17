@@ -1,0 +1,199 @@
+.player-balance-container{
+    position: fixed;
+    background-color: transparent;
+    width: 100%;
+    top: 14%;
+    left: 0;
+    z-index: 999;
+    user-select: none;
+}
+
+.flag-player-balance{
+    background-color: var(--secondary-background-color);
+    width: fit-content;
+    height: fit-content;
+    padding: .75rem .75rem;
+    padding-right: 5rem;
+    color: var(--opost-text-color);
+    font-size: .85rem;
+    border-radius: .25rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,.5);
+}
+
+.flag-player-balance h3{
+    font-size: 2.1rem;
+}
+
+.container-bet-game{
+    position: relative;
+    background-color: transparent;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.75rem;
+}
+
+.container-bet-game-header{
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bet-game-header-title{
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    text-align: start;
+    margin-bottom: 1rem;
+}
+
+.bet-game-header-content{
+    color: var(--opost-text-color);
+    text-align: start;
+    font-size: 2.15rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 0 1rem rgba(0,0,0,.5);
+    border-radius: .75rem;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+}
+
+.games-modes{
+    position: relative;
+    background-color: transparent;
+    width: 20rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: .75rem 1rem;
+    align-items: center;
+    transition: .3s;
+    background-color: var(--secondary-background-color);
+}
+
+.selected-mode{
+    background-color: var(--light-green);
+}
+
+.container-bet-game-body{
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.container-bet-game-body .item-inputs{
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+
+}
+
+.container-bet-game-body .input-container{
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.container-bet-game-body .input-container input{
+    font-size: 1.95rem;
+    font-weight: 500;
+    text-align: center;
+
+}
+
+.container-flip-buttons{
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.flip-button{
+    position: relative;
+    background-color: transparent;
+    width: 10rem;
+    height: 3.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: .25rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,.5);
+    cursor: pointer;
+    transition: .3s;
+    background-color: var(--secondary-background-color);
+    color: var(--opost-text-color);
+    font-size: 1.75rem;
+    font-weight: bold;
+    padding: 0 1rem;
+    user-select: none;
+}
+
+.flip-button:hover{
+    background-color: var(--light-green);
+}
+
+.flip-button span{
+    margin: 0 .5rem;
+}
+
+.container-bet-game-body .input-container span{
+    font-size: 1.75rem !important;
+}
+
+.btn-confirm-bet{
+    position: relative;
+    background-color: transparent;
+    height: 3.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: .25rem;
+    box-shadow: 0 0 1rem rgba(0,0,0,.5);
+    cursor: pointer;
+    transition: .3s;
+    background-color: var(--secondary-background-color);
+    color: var(--opost-text-color);
+    font-size: 1.75rem;
+    font-weight: bold;
+    padding: 0 3rem;
+    user-select: none;
+    margin-top: 1rem;
+}
+
+.btn-confirm-bet:hover{
+    background-color: var(--easy-secondary-background-color);
+}
+
+@media only screen and (max-width:850px) {
+    .flag-player-balance{
+        margin-top: 1.75rem;
+    }
+    .container-bet-game{
+        height: 100%;
+    }
+}

@@ -1,0 +1,636 @@
+/*
+    First Session
+*/
+.first-session{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    min-height: 55rem;
+    max-height: fit-content;
+    background-image: linear-gradient(180deg, var(--backgroud-first-session), var(--secondary-background-color), var(--light-secondary-background-color));
+    padding-bottom: 10rem;
+    overflow: hidden;
+}
+
+.first-session .container-fruit-images{
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    z-index: 950;
+}
+
+.first-session .container-fruits-images img{
+    position: absolute;
+    width: 12rem;
+    height: auto;
+    opacity: .8;
+}
+.first-session .container-fruits-images img:nth-child(1){
+    left: auto;
+    top: 5%;
+    right: 2%;
+    bottom: auto;
+}
+.first-session .container-fruits-images img:nth-child(2){
+    left: 1%;
+    top: 20%;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(3){
+    left: auto;
+    top: 38.9%;
+    right: 12%;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(4){
+    left: auto;
+    top: 65%;
+    right: 2%;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(5){
+    left: 28%;
+    top: 59%;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(6){
+    left: auto;
+    top: 70%;
+    right: 28%;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(7){
+    left: 8%;
+    top: 72%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(8){
+    left: 23%;
+    top: 5%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(9){
+    left: 54%;
+    top: 5%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(10){
+    left: 75%;
+    top: 5%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(11){
+    left: 50%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .container-fruits-images img:nth-child(12){
+    left: 23%;
+    top: 86%;
+    right: auto;
+    bottom: auto;
+    z-index: 0;
+}
+
+.first-session .dummy-fill{
+    width:100%;
+    height:10rem;
+}
+
+.first-session .apresentation{
+    width:100%;
+    margin-top:.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 951;
+}
+
+.first-session .apresentation-container{
+    position: relative;
+    width: 90%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.first-session .title-game{
+    font-size: 10rem;
+    font-weight: bold;
+    color: var(--opost-text-color);
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;;
+    text-shadow: -10px 8px 0 #1f2024;
+    animation: text-shadow-rgba 5s infinite;
+    text-transform: uppercase;user-select: none;
+}
+
+.btn-to-play {
+    width: 24rem;
+    height: 7rem;
+    border-radius: 1rem;
+    background-color: var(--opost-text-color);
+    color: var(--primary-text-color);
+    font-size: 2.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+    box-shadow: -11px 11px 0 0 #1f2024;
+    user-select: none;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.btn-to-play:hover{
+    transform: scale(1.1);
+    box-shadow: -11px 11px 0 0 var(--backgroud-first-session);
+    color: var(--backgroud-first-session);
+}
+
+.first-session .description-game{
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-session-text{
+    margin: .5rem 0;
+}
+
+.footer-first-1{
+    font-size: 1.95rem;
+    color: var(--primary-text-color);
+    background-color: var(--opost-text-color);
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    user-select: none;
+}
+
+.bolded{
+    font-weight: bold;
+}
+
+
+/*
+    Second Session
+*/
+.second-session{
+    position:relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8rem 0;
+    background-color: var(--backgroud-second-session);
+    background-image: url('/static/image/app-structure/personalized/html/session-2.png');
+    background-position: 50% 50%;
+    background-size: auto;
+}
+
+.second-session .game-info{
+    width:100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.second-session .card-apresentation-game{
+    width: 90rem;
+    height: fit-content;
+    border-radius: 1rem;
+    background-color: var(--primary-background-color);
+    display: flex;
+    padding: .75rem 1rem;
+    padding-bottom: 4rem;
+    box-shadow: -11px 11px 6px 0 #1f2024;
+    margin-top: 2rem;
+}
+.card-apresentation-game-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.second-session .card-apresentation-game .card-apresentation-game-title{
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-img-card-apresentation{
+    position:absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(180deg, 
+        var(--light-secondary-background-color),
+        var(--backgroud-second-session)
+    );
+    width: 16rem;
+    height: 16rem;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+}
+.container-img-card-apresentation-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+}
+
+
+.container-img-card-apresentation .ninja-people{
+    width: 12rem;
+    height: auto;
+    margin-right: 1rem;
+}
+
+
+.snowfall {
+    position: absolute;
+    width:100%;
+    height: 100%;;
+    top: 0;
+    left: 0;
+    background-image: url('/static/image/app-structure/personalized/html/snow_2280280.svg');
+    background-repeat: repeat;
+    background-size: 30% 30%;
+    opacity: .55;
+    animation: fall 10s infinite linear;
+}
+
+.card-apresentation-game-title h2{
+    margin-top: 3rem;
+    font-size: 4.8rem;
+    color: var(--primary-text-color);
+    font-weight: bold;
+    text-align: center;
+    user-select: none;
+}
+
+.card-apresentation-game-description{
+    margin-top: 1rem;
+    font-size: 2.1rem;
+    color: var(--primary-text-color);
+    text-align: center;
+    user-select: none;
+    width:90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-apresentation-game-description p{
+    margin: .5rem 0;
+}
+
+.dummy-aleatory-messsage{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+    background-color: #9929DA;
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: var(--opost-text-color);
+    padding: 1rem 0;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    user-select: none;
+}
+
+.dummy-aleatory-messsage svg{
+    width: 3rem;
+    height: auto;
+    margin: 0 .85rem;
+    animation: rotateShuriken 2s infinite linear;
+}
+
+.dummy-aleatory-messsage svg path{
+    fill: var(--opost-text-color);
+}
+
+/*
+    Third Session
+*/
+.third-session{
+    position:relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    background-color: var(--primary-background-color);
+}
+
+.game-table-info{
+    width: 90%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-table-info-container{
+    width:100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-table-info-container .card-table-title{
+    font-size: 3.2rem;
+    font-weight: bold;
+    color: var(--opost-text-color);
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    user-select: none;
+    background-color: var(--secondary-background-color);
+    padding: .5rem 3rem;
+    box-shadow: -11px 11px 6px 0 #1f2024;
+    border-radius: .5rem;
+}
+
+.game-table-info-container .card-table-description{
+    width :82rem;
+    height: fit-content;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 2rem;
+    font-weight: 600;
+    letter-spacing: .05rem;
+}
+
+.card-game-table{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.card-game-table-container{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-fruit{
+    width: 42rem;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--opost-text-color);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    border-radius: .75rem;
+    overflow: hidden;
+    padding-right: .25rem;
+    margin: .75rem 1rem;
+}
+
+.item-fruit-image{
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    padding: 0 1rem;
+    background-color: var(--primary-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-fruit-image img{
+    width: 4rem;
+    height: auto;
+    margin: 0 .5rem;
+    animation: pulse 1s infinite;
+}
+
+.item-fruit-info {
+    margin: .5rem 2rem ;
+}
+
+.item-fruit-info .name-fruit{
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: var(--primary-text-color);
+    user-select: none;
+}
+
+.item-fruit-info .description-fruit{
+    font-size: 1.8rem;
+    color: var(--primary-text-color);
+    user-select: none;
+    margin-top: .5rem;
+}
+
+.item-fruit-info .item-fruit-info-more{
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--primary-text-color);
+}
+
+.type-fruit{
+    text-transform: uppercase;
+}
+
+.price-fruit{
+    font-size: 2.1rem;
+}
+
+/*
+    Third Session
+*/
+.fourth-session{
+    position:relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    background-color: var(--primary-background-color);
+}
+
+.fourth-session-container{
+    width: 90%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fourth-session-title{
+    font-size: 3.2rem;
+    font-weight: bold;
+    background-color: var(--opost-text-color);
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    user-select: none;
+    color: var(--secondary-background-color);
+    padding: .5rem 3rem;
+    box-shadow: -11px 11px 6px 0 var(--secondary-background-color);
+    border-radius: .5rem;
+}
+
+.fourth-bottom{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.answer-cards-faq{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.answer-card-faq{
+    width: 42rem;
+    height: 21rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: .75rem 1rem;
+    background-color: var(--opost-text-color);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    border-radius: .75rem;
+    overflow: hidden;
+}
+
+.answer-card-faq-title{
+    font-size: 1.8rem;
+    font-weight: bold;
+    background-color: var(--secondary-background-color);
+    color: var(--opost-text-color);
+    user-select: none;
+    margin-bottom: .5rem;
+    width:100%;
+    padding-bottom: .5rem;
+}
+
+.answer-card-faq-title h3{
+    margin: .5rem 1rem;
+}
+
+.answer-card-faq-description{
+    color: var(--primary-text-color);
+    background-color: var(--opost-text-color);
+    font-size: 1.85rem;
+}
+
+.answer-card-faq-description p{
+    margin: .5rem 1rem;
+    font-weight: 500;
+}
+
+/*
+    Responsive edit
+*/
+@media only screen and (max-width:850px) {
+    .first-session .title-game{
+        font-size: 11.25vw;
+    }
+    .first-session .container-fruits-images img{
+        width: 8rem;
+    }
+    .second-session .card-apresentation-game{
+        width: 90%;
+    }
+    .game-table-info-container .card-table-title{
+        width: 100%;
+        padding: .5rem 0;
+    }
+    .game-table-info-container .card-table-description{
+        width: 95%;
+    }
+    .item-fruit{
+        width: 100%;
+        margin: .75rem 0;
+    }
+    .answer-card-faq{
+        width: 100%;
+        height: fit-content;
+        margin: .75rem 0;
+    }
+}
