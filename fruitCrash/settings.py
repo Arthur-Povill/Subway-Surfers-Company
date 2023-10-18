@@ -23,18 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cgl6hnbjl!-v7q9*-4m9at=oy5$jdafkr8bklzc9iwf6h04nfg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitcashpatrick-production.up.railway.app',
-    'frutacash.com.br'
+    'frutacash.com.br',
+    'www.frutacash.com.br'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://fruitcashpatrick-production.up.railway.app',
-    'https://frutacash.com.br'
+    'https://frutacash.com.br',
+    'https://www.frutacash.com.br'
 ]
 
 # Application definition
