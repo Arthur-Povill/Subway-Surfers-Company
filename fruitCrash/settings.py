@@ -142,7 +142,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 folder_client = 'fruitCash_223220'
-BASE_URL = 'https://thisfarias.com/public_html/' + folder_client
+BASE_URL = 'https://thisfarias.com/' + folder_client
 if DEBUG is True:
     STATIC_URL = '/static/'
     #MEDIA_URL = '/media/'
