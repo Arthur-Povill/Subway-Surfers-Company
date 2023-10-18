@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitcashpatrick-production.up.railway.app',
     'frutacash.com.br',
-    'www.frutacash.com.br'
+    'www.frutacash.com.br',
     'thisfarias.com',
     'igamiesoft.com'
 ]
