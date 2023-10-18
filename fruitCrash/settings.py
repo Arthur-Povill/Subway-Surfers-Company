@@ -29,18 +29,14 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitcashpatrick-production.up.railway.app',
     'frutacash.com.br',
-    'www.frutacash.com.br',
-    'thisfarias.com',
-    'igamiesoft.com'
+    'www.frutacash.com.br'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://fruitcashpatrick-production.up.railway.app',
     'https://frutacash.com.br',
-    'https://www.frutacash.com.br',  # Adicione uma vírgula aqui
-    'https://thisfarias.com',
-    'https://igamiesoft.com'
+    'https://www.frutacash.com.br'
 ]
 
 # Application definition
@@ -145,11 +141,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 folder_client = 'fruitCash_223220'
-BASE_URL = 'https://thisfarias.com/' + folder_client + '/'
+BASE_URL = 'https://thisfarias.com/' + folder_client
 if DEBUG is True:
     STATIC_URL = '/static/'
+    #MEDIA_URL = '/media/'
 else:
-    STATIC_URL = BASE_URL + 'static/'
+    STATIC_URL = BASE_URL + '/static/'
 
 
 
