@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cgl6hnbjl!-v7q9*-4m9at=oy5$jdafkr8bklzc9iwf6h04nfg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -141,12 +141,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 folder_client = 'fruitCash_223220'
-BASE_URL = 'https://gamiesoft.com/' + folder_client
+BASE_URL = 'https://thisfarias.com/' + folder_client + '/'
 if DEBUG is True:
-    STATIC_URL = 'static/'
+    STATIC_URL = '/static/'
     #MEDIA_URL = '/media/'
 else:
-    STATIC_URL = '/static/'
+    STATIC_URL = BASE_URL + 'static/'
 
 
 
