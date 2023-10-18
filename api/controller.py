@@ -1251,7 +1251,13 @@ def webhook_deposit(data):
         deposit.status = status
         if status == 'approved':
             balance = admin_models.balance.objects.get(user=deposit.user)
-            balance.value = balance.value + deposit.value
+            profile = admin_models.profile.objects.get(user=deposit.user)
+            deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
+            if len(deposits) == 0 and profile.phone != None and profile.phone != '':
+                bonus = 2
+            else:
+                bonus = 1
+            balance.value = balance.value + (deposit.value * bonus)
             if deposit.affiliate_user != None:
                 email = str(deposit.affiliate_user)
                 user = User.objects.get(email=email)
