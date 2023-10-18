@@ -1374,6 +1374,7 @@ def application_info():
         'permited_withdraw': admin_models.configsApplication.objects.get(name='permited_withdraw').value,
         'support_link': admin_models.configsApplication.objects.get(name='support_link').value,
         'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
+        'static_url': settings.STATIC_URL,
     }
 
     return data

@@ -1,6 +1,185 @@
-import { obfuscateMessage, deobfuscateMessage, getCSRFToken, enabledPopupAlert, enabledLoad, disabledLoad, encodedBase64, decodeBase64, saveDataStorage, loadDataStorage } from './funct-min-82092.js';
-export { displayMenuAuth, openMenuSignin, openMenuSignup, closeMenuSuspended };
+import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js').then(module => {
+    const { obfuscateMessage, deobfuscateMessage, getCSRFToken, enabledPopupAlert, enabledLoad, disabledLoad, encodedBase64, decodeBase64, saveDataStorage, loadDataStorage } = module;
 
+    function actionButtonSignin(){
+        let data_type = this.getAttribute('data-type');
+        if(data_type === 'post'){
+            let email = document.getElementById('email').value
+            let password = document.getElementById('password').value
+            if(email !== ''){
+                if(password !== ''){
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/api/v1/signin', true);
+                    const csrfToken = getCSRFToken();
+                    if (csrfToken) {
+                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                    }
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    let data = {
+                        'email': email,
+                        'password': password
+                    }
+                    let data_obfuscated = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
+                    xhr.send(data_obfuscated);
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var response = JSON.parse(this.response);
+                            var response_decrypted = deobfuscateMessage(response.response);
+                            var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
+                            let data = JSON.parse(jsonStringFormated);
+                            if(data.status_boolean === true){
+                                window.location.href = '/';
+                            }else{
+                                let card_signin = document.getElementsByClassName('card-signin')[0];
+                                card_signin.querySelectorAll('.status-circle')[0].style.opacity = '1';
+                                card_signin.querySelectorAll('.status-circle')[1].style.opacity = '1';
+                                var alert_message = data.message;
+                                enabledPopupAlert(alert_message);
+                            }
+                        }
+                    }
+                }else{
+                    let card_signin = document.getElementsByClassName('card-signin')[0];
+                    let status_circle = card_signin.querySelectorAll('.status-circle')[1]
+                    status_circle.style.opacity = '1';
+                    enabledPopupAlert('Preencha o campo senha!');
+                }
+            }else{
+                let card_signin = document.getElementsByClassName('card-signin')[0];
+                let status_circle = card_signin.querySelectorAll('.status-circle')[0]
+                status_circle.style.opacity = '1';
+                enabledPopupAlert('Preencha o campo email!');
+            }
+        }else{
+            openMenuSignin();
+        }
+    }
+    
+    function actionButtonSignup(){
+        let data_type = this.getAttribute('data-type');
+        if(data_type === 'post'){
+            let full_name = document.getElementById('full-name').value
+            let cpf = document.getElementById('cpf').value
+            let phone = document.getElementById('phone').value
+            let email = document.getElementById('email-signup').value
+            let password = document.getElementById('password-signup').value
+            let password_confirm = document.getElementById('confirm-password').value
+            if(full_name !== ''){
+                if(cpf !== ''){
+                    let formatted_cpf = cpf.replace('.', '').replace('.', '').replace('-', '');
+                    if(formatted_cpf.length === 11){
+                        cpf = formatted_cpf;
+                        if(phone !== ''){
+                            let formated_phone = phone.replace('(', '').replace(')', '').replace('-', '').replace(' ', '');
+                            if(formated_phone.length === 11){
+                                phone = formated_phone;
+                                if(email !== ''){
+                                    if(email.includes('@') || email.includes('.')){
+                                        if(password !== ''){
+                                            if(password_confirm !== ''){
+                                                if(password === password_confirm){
+                                                    let xhr = new XMLHttpRequest();
+                                                    xhr.open('POST', '/api/v1/signup', true);
+                                                    const csrfToken = getCSRFToken();
+                                                    if (csrfToken) {
+                                                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                                                    }
+                                                    xhr.setRequestHeader('Content-Type', 'application/json');
+                                                    let data = {
+                                                        'full_name': full_name,
+                                                        'cpf': cpf,
+                                                        'phone': phone,
+                                                        'email': email,
+                                                        'password': password,
+                                                        'after_signup': true
+                                                    }
+                                                    let data_obfuscated = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
+                                                    xhr.send(data_obfuscated);
+                                                    xhr.onreadystatechange = function(){
+                                                        if(xhr.readyState === 4 && xhr.status === 200){
+                                                            var response = JSON.parse(this.response);
+                                                            var response_decrypted = deobfuscateMessage(response.response);
+                                                            var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
+                                                            let data = JSON.parse(jsonStringFormated);
+                                                            if(data.status_boolean === true){
+                                                                window.location.href = '/';
+                                                            }else{
+                                                                let card_signin = document.getElementsByClassName('card-signin')[0];
+                                                                card_signin.querySelectorAll('.status-circle')[0].style.opacity = '1';
+                                                                card_signin.querySelectorAll('.status-circle')[1].style.opacity = '1';
+                                                                var alert_message = data.message;
+                                                                enabledPopupAlert(alert_message);
+                                                            }
+                                                        }
+                                                    }
+                                                }else{
+                                                    let card_signup = document.getElementsByClassName('card-signup')[0];
+                                                    card_signup.querySelectorAll('.status-circle')[4].style.opacity = '1';
+                                                    card_signup.querySelectorAll('.status-circle')[5].style.opacity = '1';
+                                                    enabledPopupAlert('As senhas não coincidem!');
+                                                }
+                                            }else{
+                                                let card_signup = document.getElementsByClassName('card-signup')[0];
+                                                card_signup.querySelectorAll('.status-circle')[5].style.opacity = '1';
+                                                enabledPopupAlert('Preencha o campo confirmar senha!');
+                                            }
+                                        }else{
+                                            let card_signup = document.getElementsByClassName('card-signup')[0];
+                                            card_signup.querySelectorAll('.status-circle')[4].style.opacity = '1';
+                                            enabledPopupAlert('Preencha o campo senha!');
+                                        }
+                                    }else{
+                                        let card_signup = document.getElementsByClassName('card-signup')[0];
+                                        card_signup.querySelectorAll('.status-circle')[3].style.opacity = '1';
+                                        enabledPopupAlert('Preencha o campo email corretamente!');
+                                    }
+                                }else{
+                                    let card_signup = document.getElementsByClassName('card-signup')[0];
+                                        card_signup.querySelectorAll('.status-circle')[3].style.opacity = '1';
+                                        enabledPopupAlert('Preencha o campo senha!');
+                                }
+                            }else{
+                                let card_signup = document.getElementsByClassName('card-signup')[0];
+                                card_signup.querySelectorAll('.status-circle')[2].style.opacity = '1';
+                                enabledPopupAlert('Preencha o campo telefone corretamente!');
+                            }
+                        }else{
+                            let card_signup = document.getElementsByClassName('card-signup')[0];
+                            card_signup.querySelectorAll('.status-circle')[2].style.opacity = '1';
+                            enabledPopupAlert('Preencha o campo telefone!');
+                        }
+                    }else{
+                        let card_signup = document.getElementsByClassName('card-signup')[0];
+                        card_signup.querySelectorAll('.status-circle')[1].style.opacity = '1';
+                        enabledPopupAlert('Preencha o campo CPF corretamente!');
+                    }
+                }else{
+                    let card_signup = document.getElementsByClassName('card-signup')[0];
+                    card_signup.querySelectorAll('.status-circle')[1].style.opacity = '1';
+                    enabledPopupAlert('Preencha o campo CPF!');
+                }
+            }else{
+                let card_signup = document.getElementsByClassName('card-signup')[0];
+                card_signup.querySelectorAll('.status-circle')[0].style.opacity = '1';
+                enabledPopupAlert('Preencha o campo nome completo!');
+            }
+        }else{
+            openMenuSignup();
+        }
+    }
+
+    let btns_signin = document.getElementsByClassName('btn-signin');
+    for(let i = 0; i < btns_signin.length; i++){
+        btns_signin[i].addEventListener('click', actionButtonSignin);
+    }
+
+    let btns_signup = document.getElementsByClassName('btn-signup');
+    for(let i = 0; i < btns_signup.length; i++){
+        btns_signup[i].addEventListener('click', actionButtonSignup);
+    }
+});
+
+export { displayMenuAuth, openMenuSignin, openMenuSignup, closeMenuSuspended };
 function disabledScrollBody() {
     document.body.style.overflow = 'hidden';
 }
@@ -30,173 +209,6 @@ function closeAuth(){
         let container_signup = document.getElementsByClassName('card-signup')[0];
         displayMenuAuth();
         container_signup.style.display = 'none';
-    }
-}
-
-function actionButtonSignin(){
-    let data_type = this.getAttribute('data-type');
-    if(data_type === 'post'){
-        let email = document.getElementById('email').value
-        let password = document.getElementById('password').value
-        if(email !== ''){
-            if(password !== ''){
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', '/api/v1/signin', true);
-                const csrfToken = getCSRFToken();
-                if (csrfToken) {
-                    xhr.setRequestHeader("X-CSRFToken", csrfToken);
-                }
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                let data = {
-                    'email': email,
-                    'password': password
-                }
-                let data_obfuscated = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
-                xhr.send(data_obfuscated);
-                xhr.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var response = JSON.parse(this.response);
-                        var response_decrypted = deobfuscateMessage(response.response);
-                        var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
-                        let data = JSON.parse(jsonStringFormated);
-                        if(data.status_boolean === true){
-                            window.location.href = '/';
-                        }else{
-                            let card_signin = document.getElementsByClassName('card-signin')[0];
-                            card_signin.querySelectorAll('.status-circle')[0].style.opacity = '1';
-                            card_signin.querySelectorAll('.status-circle')[1].style.opacity = '1';
-                            var alert_message = data.message;
-                            enabledPopupAlert(alert_message);
-                        }
-                    }
-                }
-            }else{
-                let card_signin = document.getElementsByClassName('card-signin')[0];
-                let status_circle = card_signin.querySelectorAll('.status-circle')[1]
-                status_circle.style.opacity = '1';
-                enabledPopupAlert('Preencha o campo senha!');
-            }
-        }else{
-            let card_signin = document.getElementsByClassName('card-signin')[0];
-            let status_circle = card_signin.querySelectorAll('.status-circle')[0]
-            status_circle.style.opacity = '1';
-            enabledPopupAlert('Preencha o campo email!');
-        }
-    }else{
-        openMenuSignin();
-    }
-}
-
-function actionButtonSignup(){
-    let data_type = this.getAttribute('data-type');
-    if(data_type === 'post'){
-        let full_name = document.getElementById('full-name').value
-        let cpf = document.getElementById('cpf').value
-        let phone = document.getElementById('phone').value
-        let email = document.getElementById('email-signup').value
-        let password = document.getElementById('password-signup').value
-        let password_confirm = document.getElementById('confirm-password').value
-        if(full_name !== ''){
-            if(cpf !== ''){
-                let formatted_cpf = cpf.replace('.', '').replace('.', '').replace('-', '');
-                if(formatted_cpf.length === 11){
-                    cpf = formatted_cpf;
-                    if(phone !== ''){
-                        let formated_phone = phone.replace('(', '').replace(')', '').replace('-', '').replace(' ', '');
-                        if(formated_phone.length === 11){
-                            phone = formated_phone;
-                            if(email !== ''){
-                                if(email.includes('@') || email.includes('.')){
-                                    if(password !== ''){
-                                        if(password_confirm !== ''){
-                                            if(password === password_confirm){
-                                                let xhr = new XMLHttpRequest();
-                                                xhr.open('POST', '/api/v1/signup', true);
-                                                const csrfToken = getCSRFToken();
-                                                if (csrfToken) {
-                                                    xhr.setRequestHeader("X-CSRFToken", csrfToken);
-                                                }
-                                                xhr.setRequestHeader('Content-Type', 'application/json');
-                                                let data = {
-                                                    'full_name': full_name,
-                                                    'cpf': cpf,
-                                                    'phone': phone,
-                                                    'email': email,
-                                                    'password': password,
-                                                    'after_signup': true
-                                                }
-                                                let data_obfuscated = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
-                                                xhr.send(data_obfuscated);
-                                                xhr.onreadystatechange = function(){
-                                                    if(xhr.readyState === 4 && xhr.status === 200){
-                                                        var response = JSON.parse(this.response);
-                                                        var response_decrypted = deobfuscateMessage(response.response);
-                                                        var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
-                                                        let data = JSON.parse(jsonStringFormated);
-                                                        if(data.status_boolean === true){
-                                                            window.location.href = '/';
-                                                        }else{
-                                                            let card_signin = document.getElementsByClassName('card-signin')[0];
-                                                            card_signin.querySelectorAll('.status-circle')[0].style.opacity = '1';
-                                                            card_signin.querySelectorAll('.status-circle')[1].style.opacity = '1';
-                                                            var alert_message = data.message;
-                                                            enabledPopupAlert(alert_message);
-                                                        }
-                                                    }
-                                                }
-                                            }else{
-                                                let card_signup = document.getElementsByClassName('card-signup')[0];
-                                                card_signup.querySelectorAll('.status-circle')[4].style.opacity = '1';
-                                                card_signup.querySelectorAll('.status-circle')[5].style.opacity = '1';
-                                                enabledPopupAlert('As senhas não coincidem!');
-                                            }
-                                        }else{
-                                            let card_signup = document.getElementsByClassName('card-signup')[0];
-                                            card_signup.querySelectorAll('.status-circle')[5].style.opacity = '1';
-                                            enabledPopupAlert('Preencha o campo confirmar senha!');
-                                        }
-                                    }else{
-                                        let card_signup = document.getElementsByClassName('card-signup')[0];
-                                        card_signup.querySelectorAll('.status-circle')[4].style.opacity = '1';
-                                        enabledPopupAlert('Preencha o campo senha!');
-                                    }
-                                }else{
-                                    let card_signup = document.getElementsByClassName('card-signup')[0];
-                                    card_signup.querySelectorAll('.status-circle')[3].style.opacity = '1';
-                                    enabledPopupAlert('Preencha o campo email corretamente!');
-                                }
-                            }else{
-                                let card_signup = document.getElementsByClassName('card-signup')[0];
-                                    card_signup.querySelectorAll('.status-circle')[3].style.opacity = '1';
-                                    enabledPopupAlert('Preencha o campo senha!');
-                            }
-                        }else{
-                            let card_signup = document.getElementsByClassName('card-signup')[0];
-                            card_signup.querySelectorAll('.status-circle')[2].style.opacity = '1';
-                            enabledPopupAlert('Preencha o campo telefone corretamente!');
-                        }
-                    }else{
-                        let card_signup = document.getElementsByClassName('card-signup')[0];
-                        card_signup.querySelectorAll('.status-circle')[2].style.opacity = '1';
-                        enabledPopupAlert('Preencha o campo telefone!');
-                    }
-                }else{
-                    let card_signup = document.getElementsByClassName('card-signup')[0];
-                    card_signup.querySelectorAll('.status-circle')[1].style.opacity = '1';
-                    enabledPopupAlert('Preencha o campo CPF corretamente!');
-                }
-            }else{
-                let card_signup = document.getElementsByClassName('card-signup')[0];
-                card_signup.querySelectorAll('.status-circle')[1].style.opacity = '1';
-                enabledPopupAlert('Preencha o campo CPF!');
-            }
-        }else{
-            let card_signup = document.getElementsByClassName('card-signup')[0];
-            card_signup.querySelectorAll('.status-circle')[0].style.opacity = '1';
-            enabledPopupAlert('Preencha o campo nome completo!');
-        }
-    }else{
-        openMenuSignup();
     }
 }
 
@@ -252,16 +264,6 @@ for(let i = 0; i < auth_inputs.length; i++){
         let status_circle = this.parentElement.querySelectorAll('.status-circle')[0]
         status_circle.style.opacity = '0';
     });
-}
-
-let btns_signin = document.getElementsByClassName('btn-signin');
-for(let i = 0; i < btns_signin.length; i++){
-    btns_signin[i].addEventListener('click', actionButtonSignin);
-}
-
-let btns_signup = document.getElementsByClassName('btn-signup');
-for(let i = 0; i < btns_signup.length; i++){
-    btns_signup[i].addEventListener('click', actionButtonSignup);
 }
 
 document.getElementById('confirm-password').addEventListener('keyup', function(){

@@ -1,4 +1,3 @@
-import { obfuscateMessage, deobfuscateMessage, getCSRFToken, enabledPopupAlert, enabledLoad, disabledLoad, encodedBase64, decodeBase64, saveDataStorage, loadDataStorage } from './funct-min-82092.js';
 export { closeMenuSuspended };
 
 function disabledScrollBody() {
