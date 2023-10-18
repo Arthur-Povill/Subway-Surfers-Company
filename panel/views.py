@@ -80,6 +80,14 @@ def configs(request):
     else:
         return redirect('/')
     
+def update_configs(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = request.body.decode('utf-8')
+        response = controller.api_update_configs(data)
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
+    
 def start_configs(request):
     controller.create_fields_configs()
     return redirect('/')

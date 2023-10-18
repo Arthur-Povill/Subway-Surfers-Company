@@ -35,7 +35,8 @@ def get_metrics(dash):
                 dict_gains['users'] += balance.value
 
         for deposit in deposits:
-            dict_gains['home'] += deposit.value
+            if deposit.status == 'approved':
+                dict_gains['home'] += deposit.value
 
         for game in games:
             dict_gains['game_total'] += game.bet
@@ -306,6 +307,46 @@ def api_update_withdraw(data):
     return {
         'status': 200,
         'message': 'Saque atualizado com sucesso!',
+        'data': {}
+    }
+
+def api_update_configs(data):
+    data = api_controller.load_to_json(data)
+    app_name = data['app_name']
+    app_name_separated = data['app_name_separated']
+    app_email = data['app_email']
+    support_link = data['support_link']
+    copy_get_phone = data['copy_get_phone']
+    permited_deposit = data['permited_deposit']
+    permited_withdraw = data['permited_withdraw']
+
+    configs = models.configsApplication.objects.all()
+    for config in configs:
+        if config.name == 'app_name':
+            config.value = app_name
+            config.save()
+        elif config.name == 'app_name_separated':
+            config.value = app_name_separated
+            config.save()
+        elif config.name == 'app_email':
+            config.value = app_email
+            config.save()
+        elif config.name == 'support_link':
+            config.value = support_link
+            config.save()
+        elif config.name == 'copy_get_phone':
+            config.value = copy_get_phone
+            config.save()
+        elif config.name == 'permited_deposit':
+            config.value = permited_deposit
+            config.save()
+        elif config.name == 'permited_withdraw':
+            config.value = permited_withdraw
+            config.save()
+
+    return {
+        'status': 200,
+        'message': 'Configurações atualizadas com sucesso!',
         'data': {}
     }
 
