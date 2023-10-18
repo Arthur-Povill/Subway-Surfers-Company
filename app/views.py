@@ -136,10 +136,12 @@ def classic_game(request):
             profile = controller.profile(request)
             if profile.first_access is True:
                 controller.first_access(request)
-                return render(request, 'app-structure/personalized/classic-game.html')
+                data = controller.data_application()
+                return render(request, 'app-structure/personalized/classic-game.html', data)
             else:
                 return redirect('/')
         else:
+            data = controller.data_application()
             return render(request, 'app-structure/personalized/classic-game.html')
     else:
         return redirect('/')
