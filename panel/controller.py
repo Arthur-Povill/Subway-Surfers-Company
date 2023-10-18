@@ -312,6 +312,69 @@ def application_info():
     data = api_controller.application_info()
     return data
 
+def create_fields_configs():
+    configs = [
+        {
+            'name': 'permited_withdraw',
+            'type_config': 'withdraw',
+            'value': '200,00',
+        },
+        {
+            'name': 'permited_deposit',
+            'type_config': 'deposit',
+            'value': '25,00',
+        },
+        {
+            'name': 'gateway_name',
+            'type_config': 'gateway',
+            'value': 'paggue',
+        },
+        {
+            'name': 'gateway_key',
+            'type_config': 'gateway',
+            'value': '133113041938958950118',
+        },
+        {
+            'name': 'gateway_secret',
+            'type_config': 'gateway',
+            'value': '7879754163838779363151',
+        },
+        {
+            'name': 'app_name',
+            'type_config': 'application',
+            'value': 'FruitGrana',
+        },
+        {
+            'name': 'app_name_separated',
+            'type_config': 'application',
+            'value': 'Fruit Grana',
+        },
+        {
+            'name': 'app_email',
+            'type_config': 'application',
+            'value': 'contato@fruitgrana.com'
+        },
+        {
+            'name': 'support_link',
+            'type_config': 'application',
+            'value': 'https://api.whatsapp.com/send?phone=5519992128098'
+        },
+        {
+            'name': 'copy_get_phone',
+            'type_config': 'application',
+            'value': 'Queremos dar um bônus especialmente para você! Basta coloca seu telefone para liberaos um bônus exclusivo no seu primeiro depósito :)'
+        },
+    ]
+
+    for config in configs:
+        query = models.configsApplication.objects.filter(name=config['name'])
+        if not query.exists():
+            models.configs.objects.create(
+                name=config['name'],
+                type_config=config['type_config'],
+                value=config['value'],
+            )
+
 
 
 

@@ -79,3 +79,7 @@ def configs(request):
         return render(request, 'admin/default-admin/configs.html', data)
     else:
         return redirect('/')
+    
+def start_configs(request):
+    controller.create_fields_configs()
+    return redirect('/')
