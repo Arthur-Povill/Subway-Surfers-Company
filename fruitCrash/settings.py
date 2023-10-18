@@ -38,9 +38,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://fruitcashpatrick-production.up.railway.app',
     'https://frutacash.com.br',
-    'https://www.frutacash.com.br'
+    'https://www.frutacash.com.br',  # Adicione uma vírgula aqui
     'https://thisfarias.com',
-    'https//igamiesoft.com'
+    'https://igamiesoft.com'
 ]
 
 # Corsheaders Settings
@@ -49,7 +49,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     'https://frutacash.com.br',
     'https://thisfarias.com',
-    'https//igamiesoft.com'
+    'https://igamiesoft.com'
 ]
 
 CORS_ALLOW_METHODS = [
@@ -59,6 +59,7 @@ CORS_ALLOW_METHODS = [
 
 CORS_ALLOW_HEADERS = [
     'Content-Type',
+    'Accept',  # Adicione outros cabeçalhos, se necessário
 ]
 
 CORS_ALLOW_CREDENTIALS = True
