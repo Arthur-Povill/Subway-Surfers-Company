@@ -142,7 +142,7 @@ def classic_game(request):
                 return redirect('/')
         else:
             data = controller.data_application()
-            return render(request, 'app-structure/personalized/classic-game.html')
+            return render(request, 'app-structure/personalized/classic-game.html', data)
     else:
         return redirect('/')
 
