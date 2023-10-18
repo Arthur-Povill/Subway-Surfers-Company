@@ -147,7 +147,8 @@ if DEBUG is True:
     STATIC_URL = '/static/'
     #MEDIA_URL = '/media/'
 else:
-    STATIC_URL = BASE_URL + '/static/'
+    #STATIC_URL = BASE_URL + '/static/'
+    STATIC_URL = '/static/'
 
 
 
