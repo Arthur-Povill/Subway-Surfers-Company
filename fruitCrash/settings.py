@@ -30,6 +30,8 @@ ALLOWED_HOSTS = [
     'fruitcashpatrick-production.up.railway.app',
     'frutacash.com.br',
     'www.frutacash.com.br'
+    'thisfarias.com',
+    'igamiesoft.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -37,6 +39,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://fruitcashpatrick-production.up.railway.app',
     'https://frutacash.com.br',
     'https://www.frutacash.com.br'
+    'https://thisfarias.com',
+    'https//igamiesoft.com'
 ]
 
 # Application definition

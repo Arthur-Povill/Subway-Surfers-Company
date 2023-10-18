@@ -458,7 +458,3 @@ def create_fields_configs():
                 type_config=config['type_config'],
                 value=config['value'],
             )
-
-
-
-
