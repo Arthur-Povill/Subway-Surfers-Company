@@ -7905,8 +7905,8 @@ function real_game(){
             multiplier = aposta * 0.20;
             var goal = aposta * 1.85;
             var hash_game = data_game.data.game.hash_game;
-            var path_image = '/static/image/app-structure/personalized/games/classic/';
-            var path_sound = '/static/sound/games/classic/';
+            var path_image = dynamicStaticFile  + '/image/app-structure/personalized/games/classic/';
+            var path_sound = dynamicStaticFile  + '/sound/games/classic/';
             void function(global) {
                 var mapping = {}
                 , cache = {};
