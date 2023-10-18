@@ -43,6 +43,26 @@ CSRF_TRUSTED_ORIGINS = [
     'https//igamiesoft.com'
 ]
 
+# Corsheaders Settings
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    'https://frutacash.com.br',
+    'https://thisfarias.com',
+    'https//igamiesoft.com'
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+]
+
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'livereload',
+    'corsheaders',
     'app',
     'api',
     'panel'
