@@ -6,7 +6,7 @@ from django.dispatch import receiver
 # Create your models here.
 #table profile user
 class profile(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
     cpf = models.CharField(max_length=16, blank=True, null=True)
@@ -32,7 +32,7 @@ class profile(models.Model):
         return self.email
     
 class affiliate(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
     code = models.CharField(max_length=12)
     personalized_code = models.CharField(max_length=30, blank=True, null=True)
@@ -53,7 +53,7 @@ class affiliate(models.Model):
         return self.user.username
     
 class balance(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     permited_withdraw = models.BooleanField(default=True)
@@ -69,7 +69,7 @@ class balance(models.Model):
         return self.user.username
     
 class withdraw(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     STATUS_CHOICES = (
@@ -91,7 +91,7 @@ class withdraw(models.Model):
         return self.user.username
     
 class deposits(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     external_id = models.CharField(max_length=255, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -116,7 +116,7 @@ class deposits(models.Model):
         return self.user.username
     
 class configsApplication(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     type_config = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
@@ -131,7 +131,7 @@ class configsApplication(models.Model):
         return self.name
 
 class game(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
     hash_game = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     bet = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)

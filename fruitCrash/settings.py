@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://151c-186-236-87-65.ngrok-free.app'
+    'https://fruitcashpatrick-production.up.railway.app/'
 ]
 
 # Application definition
