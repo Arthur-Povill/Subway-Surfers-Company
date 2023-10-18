@@ -101,25 +101,26 @@ def get_metrics(dash):
         }
         filtered_users = []
         for deposit in deposits:
-            if deposit.user not in filtered_users:
-                filtered_users.append(deposit.user)
-                dict_deposits['first_deposit'] += deposit.value
-                dict_deposits['count_first_deposit'] += 1
+            if deposit.status == 'approved':
+                if deposit.user not in filtered_users:
+                    filtered_users.append(deposit.user)
+                    dict_deposits['first_deposit'] += deposit.value
+                    dict_deposits['count_first_deposit'] += 1
+                    
+                if deposit.created_at.date() == datetime.date.today():
+                    dict_deposits['today'] += deposit.value
+                    dict_deposits['count_today'] += 1
                 
-            if deposit.created_at.date() == datetime.date.today():
-                dict_deposits['today'] += deposit.value
-                dict_deposits['count_today'] += 1
-            
-            if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
-                dict_deposits['week'] += deposit.value
-                dict_deposits['count_week'] += 1
+                if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
+                    dict_deposits['week'] += deposit.value
+                    dict_deposits['count_week'] += 1
 
-            if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
-                dict_deposits['month'] += deposit.value
-                dict_deposits['count_month'] += 1
+                if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
+                    dict_deposits['month'] += deposit.value
+                    dict_deposits['count_month'] += 1
 
-            dict_deposits['total'] += deposit.value
-            dict_deposits['count_total'] += 1
+                dict_deposits['total'] += deposit.value
+                dict_deposits['count_total'] += 1
 
         dict_deposits['first_deposit'] = api_controller.format_currency_brazilian(dict_deposits['first_deposit'])
         dict_deposits['today'] = api_controller.format_currency_brazilian(dict_deposits['today'])

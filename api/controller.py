@@ -302,11 +302,6 @@ def verify_infos_exists(target, value):
     }
 
 def format_currency_brazilian(number):
-    '''curr = locale.getdefaultlocale()
-    locale.setlocale(locale.LC_ALL, curr)
-    #locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-    formatted_number = locale.currency(number, grouping=True, symbol=None)
-    return formatted_number'''
     try:
         number = float(number)
     except:
