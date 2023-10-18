@@ -45,6 +45,38 @@ class paggue:
 
         return details_response
     
+    def send(self, data):
+        endpoint = 'cash-out'
+        url = self.base_url + endpoint
+        payload = {
+            'external_id': data['external_id'],
+            'amount': int(data['value'] * 100),
+            'type': 1,
+            'pix_key': data['pix_key'],
+            'description': data['description']
+        }
+        response = self.s.post(url, json=payload)
+        details_response = response.json()
+
+        return details_response
+    
+    def balance(self):
+        enpoint = 'balance'
+        url = self.base_url + enpoint
+        response = self.s.get(url)
+        details_response = response.json()
+
+        return details_response
+    
+    def compare(self, value):
+        response = self.balance()
+        balance = int(response['available_value'])
+        value = int(float(value) * 100)
+        if balance >= value:
+            return True
+        else:
+            return False
+    
     def webhook(self, data):
         data =  api_controller.load_to_json(data)
 

@@ -56,6 +56,18 @@ function changeStatus(id, status){
                 enabledPopupAlert(response['message'], 'correct.png');
                 var query = document.getElementsByClassName('search-enginee')[0].value;
                 getWithdraws(query);
+                if(response['data']['status'] === 'approved'){
+                    enabledPopupAlert('Saque aprovado com sucesso!', 'correct.png');
+                    var element_father = this.parentElement.parentElement;
+                    var father = element_father.parentElement.parentElement;
+                    var element_status_value = father.getElementsByClassName('status-value')[0];
+                    element_status_value.classList.remove('pendent');
+                    element_status_value.classList.add('approved');
+                    element_status_value.innerText = 'Aprovado';
+                    element_father.innerHTML = '-';
+                }else{
+                    enabledPopupAlert(response.message, 'correct.png');
+                }
             }
         }
     }
@@ -74,14 +86,6 @@ function setClickedBtnStatus(){
         btn_approved[i].addEventListener('click', function(){
             var id = this.getAttribute('data-id');
             changeStatus(id, 'approved');
-            enabledPopupAlert('Saque aprovado com sucesso!', 'correct.png');
-            var element_father = this.parentElement.parentElement;
-            var father = element_father.parentElement.parentElement;
-            var element_status_value = father.getElementsByClassName('status-value')[0];
-            element_status_value.classList.remove('pendent');
-            element_status_value.classList.add('approved');
-            element_status_value.innerText = 'Aprovado';
-            element_father.innerHTML = '-';
         });
     }
 
@@ -89,7 +93,6 @@ function setClickedBtnStatus(){
         btn_denied[i].addEventListener('click', function(){
             var id = this.getAttribute('data-id');
             changeStatus(id, 'canceled');
-            enabledPopupAlert('Saque negado com sucesso!', 'correct.png');
             var element_father = this.parentElement.parentElement;
             var father = element_father.parentElement;
             var element_status_value = father.getElementsByClassName('status-value')[0];

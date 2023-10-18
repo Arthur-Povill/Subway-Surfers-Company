@@ -1,4 +1,5 @@
 from . import models
+from . import gateway
 from api import controller as api_controller
 import datetime
 
@@ -301,13 +302,54 @@ def api_update_withdraw(data):
     status = data['status']
 
     withdraw = models.withdraw.objects.get(id=id_withdraw)
-    withdraw.status = status
-    withdraw.save()
+    if withdraw.status == 'approved':
+        permited_withdraw = withdraw.user.balance.permited_withdraw
+        if permited_withdraw:
+            value = withdraw.value
+            gateway_selected = gateway.selected_gateway()
+            authorized_withdraw = gateway_selected.compare(value)
+            if authorized_withdraw:
+                player_name = withdraw.user.profile.full_name
+                external_id = api_controller.generate_hash()
+                description = 'Saque realizado por {} no valor de R${}'.format(player_name, api_controller.format_currency_brazilian(value))
+                gateway_selected.send({
+                    'full_name': 'Jogo da Frutinha - {}'.format(player_name),
+                    'value': value,
+                    'external_id': external_id,
+                    'description': description
+                })
+                withdraw.status = 'approved'
+                withdraw.save()
+                status = 200
+                message = 'Saque atualizado e enviado com sucesso!'
+                data = {
+                    'status': 'approved'
+                }
+            else:
+                status = 200
+                message = 'Você não possui saldo suficiente!'
+                data = {
+                    'status': 'not-permited'
+                }
+        else:
+            status = 200
+            message = 'O usuário não tem permissão para realizar saques!'
+            data = {
+                'status': 'not-permited'
+            }
+    else:
+        withdraw.status = 'canceled'
+        withdraw.save()
+        status = 200
+        message = 'Saque atualizado com sucesso!'
+        data = {
+            'status': 'canceled'
+        }
 
     return {
-        'status': 200,
-        'message': 'Saque atualizado com sucesso!',
-        'data': {}
+        'status': status,
+        'message': message,
+        'data': data
     }
 
 def api_update_configs(data):
