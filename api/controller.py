@@ -309,7 +309,7 @@ def format_currency_brazilian(number):
     return formatted_number'''
     try:
         number = float(number)
-    except;
+    except:
         pass
     a = '{:,.2f}'.format(number)
     b = a.replace(',','v')
