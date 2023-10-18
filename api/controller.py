@@ -889,12 +889,16 @@ def api_new_deposit(request, data, encrypted=True):
         qr_code = qrcode.make(response['payment'])
         path_image = 'media/qr_code/{}.png'.format(external_id)
         qr_code.save(path_image)
+        with open(path_image, "rb") as image_file:
+            base64_image = base64.b64encode(image_file.read()).decode('utf-8')
+        os.remove(path_image)
+
         new_deposit = admin_models.deposits.objects.create(
             external_id=external_id,
             user=user,
             value=value,
             pix_code=response['payment'],
-            qr_code=path_image,
+            qr_code=base64_image,
             affiliate_user=profile.affiliate_user
         )
 

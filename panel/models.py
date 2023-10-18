@@ -96,7 +96,7 @@ class deposits(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     pix_code = models.CharField(max_length=255, blank=True, null=True)
-    qr_code = models.CharField(max_length=255, blank=True, null=True)
+    qr_code = models.TextField(blank=True, null=True)
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('approved', 'Approved'),
