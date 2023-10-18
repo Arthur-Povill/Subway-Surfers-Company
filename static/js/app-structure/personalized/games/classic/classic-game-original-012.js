@@ -24,8 +24,8 @@ function demo_game(){
     var frutSpeed = 1000;
     var scoreNumber = 0;
     var aposta = 5;
-    var path_image = '/static/image/app-structure/personalized/games/classic/';
-    var path_sound = '/static/sound/games/classic/';
+    var path_image = dynamicStaticFile  + '/image/app-structure/personalized/games/classic/';
+    var path_sound = dynamicStaticFile  + '/sound/games/classic/';
     void function(global) {
         var mapping = {}
           , cache = {};
