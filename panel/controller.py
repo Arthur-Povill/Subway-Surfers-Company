@@ -369,7 +369,7 @@ def create_fields_configs():
     for config in configs:
         query = models.configsApplication.objects.filter(name=config['name'])
         if not query.exists():
-            models.configs.objects.create(
+            models.configsApplication.objects.create(
                 name=config['name'],
                 type_config=config['type_config'],
                 value=config['value'],
