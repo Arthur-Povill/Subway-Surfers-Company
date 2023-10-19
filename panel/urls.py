@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='home_admin'),
     path('users', views.users, name='users_admin'),
     path('withdraws', views.withdraws, name='withdraws_admin'),
+    path('affiliates', views.affiliates, name='affiliate_admin'),
     path('configs', views.configs, name='configs_admin'),
     path('template/dashboards', views.dashboards, name='dashboards_admin'),
     path('template/users', views.get_users, name='users_admin'),

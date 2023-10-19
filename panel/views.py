@@ -18,12 +18,18 @@ def users(request):
     else:
         return redirect('/')
     
-    
 def withdraws(request):
     if request.user.is_authenticated and request.user.is_superuser:
         return render(request, 'admin/default-admin/withdraws.html')
     else:
         return redirect('/')
+    
+def affiliates(request):
+    return redirect('/panel')
+    '''if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, 'admin/default-admin/withdraws.html')
+    else:
+        return redirect('/')'''
     
 def dashboards(request):
     if request.user.is_authenticated and request.user.is_superuser:
