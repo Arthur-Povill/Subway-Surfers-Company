@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://frutacash-production.up.railway.app/',
+    'https://frutacash-production.up.railway.app',
 ]
 
 # Application definition
