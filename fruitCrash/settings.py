@@ -27,16 +27,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitcashpatrick-production.up.railway.app',
-    'frutacash.com.br',
-    'www.frutacash.com.br'
+    'frutacash-production.up.railway.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitcashpatrick-production.up.railway.app',
-    'https://frutacash.com.br',
-    'https://www.frutacash.com.br'
+    'https://frutacash-production.up.railway.app/',
 ]
 
 # Application definition
