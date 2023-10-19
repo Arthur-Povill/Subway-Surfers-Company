@@ -65,7 +65,6 @@ def deposit(request):
     if request.user.is_authenticated:
         data = controller.data_application()
         data['profile'] = controller.api_profile(request)
-        print(data)
         data['is_admin'] = request.user.is_superuser
         return render(request, 'app-structure/original/index-deposit.html', data)
     else:

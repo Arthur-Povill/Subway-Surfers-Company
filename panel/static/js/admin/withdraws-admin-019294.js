@@ -173,6 +173,34 @@ function updateUser(){
 
 }
 
+var btn_filtered = document.getElementsByClassName('btn-filtered');
+for(var i = 0; i < btn_filtered.length; i++){
+    btn_filtered[i].addEventListener('click', function(){
+        var element_selected = document.getElementsByClassName('btn-filtered-selected')[0];
+        element_selected.classList.remove('btn-filtered-selected');
+        this.classList.add('btn-filtered-selected');
+
+        //get all item-users
+        var text_lower = this.innerText.toLowerCase();
+        var item_users = document.getElementsByClassName('item-users');
+        for(var i = 0; i < item_users.length; i++){
+            if(text_lower === 'todos'){
+                item_users[i].style.display = 'flex';
+            }else{
+                var element_status = item_users[i].querySelector('.border-status span');
+                var status = element_status.innerText.toLowerCase();
+                if(text_lower === status){
+                    item_users[i].style.display = 'flex';
+                }else{
+                    item_users[i].style.display = 'none';
+                }
+            }
+
+        }
+
+    })
+}
+
 getWithdraws('');
 document.getElementsByClassName('search-enginee')[0].addEventListener('keyup', function(){
     var query = this.value;

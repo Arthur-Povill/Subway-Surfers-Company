@@ -39,6 +39,10 @@ document.getElementsByClassName('btn-panel-withdraw')[0].addEventListener('click
     window.location.href = '/panel/withdraws';
 });
 
+document.getElementsByClassName('btn-panel-affiliates')[0].addEventListener('click', function() {
+    window.location.href = '/panel/affiliates';
+});
+
 document.getElementsByClassName('btn-configuration')[0].addEventListener('click', function() {
     window.location.href = '/panel/configs';
 });

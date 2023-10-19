@@ -112,12 +112,11 @@ class primepag:
         string_auth = client_key.value + ':' + client_secret.value
         string_auth_encoded = base64.b64encode(string_auth.encode('ascii')).decode('ascii')
         headers = {
-            'Authorization': 'Basic {}'.format(string_auth_encoded),
-            'Content-Type': 'application/json'
+            'Authorization': 'BASIC {}'.format(string_auth_encoded),
         }
 
         data = {
-            'grant_type': 'client_credentials'
+            "grant_type":"client_credentials"
         }
 
 
@@ -139,18 +138,23 @@ class primepag:
         }
         response = self.s.post(url, json=payload)
         details_response = response.json()
+        formated_dict = {
+            'payment': details_response['qrcode']['content'],
+            'external_id': details_response['qrcode']['reference_code'],
+        }
 
-        return details_response
+        return formated_dict
     
     def send(self, data):
-        endpoint = 'cash-out'
+        endpoint = 'v1/pix/payment'
         url = self.base_url + endpoint
         payload = {
-            'external_id': data['external_id'],
-            'amount': int(data['value'] * 100),
-            'type': 1,
+            'initiation_type': 'dict',
+            'idempotent_id': api_controller.generate_hash(120),
+            'value_cents': int(data['value'] * 100),
+            'pix_key_type': 'cpf',
             'pix_key': data['pix_key'],
-            'description': data['description']
+            'authorized': False
         }
         response = self.s.post(url, json=payload)
         details_response = response.json()
@@ -176,18 +180,15 @@ class primepag:
     
     def webhook(self, data):
         data =  api_controller.load_to_json(data)
-
-        external_id = data['external_id']
-        amount = data['amount']
-        status = int(data['status'])
-        if status == 0:
-            status = 'pending'
-        elif status == 1:
+        external_id = data['message']['reference_code']
+        amount = data['message']['value_cents']
+        status = data['message']['status']
+        if status == 'paid':
             status = 'approved'
-        elif status == 2 or status == 5:
+        elif status == 'pending':
+            status = 'pending'
+        elif status == 'canceled':
             status = 'canceled'
-        else:
-            status = 'in_progress'
 
         return {
             'external_id': external_id,

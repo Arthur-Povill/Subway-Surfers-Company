@@ -96,7 +96,6 @@ def api_info_withdraws(request):
         response_auth = controller.verify_auth(request)
         if response_auth['status_boolean']:            
             response = controller.api_info_withdraws(request)
-            print(response)
             if response['status_boolean']:
                 html = render_to_string('app-structure/default-client/items/withdraw-history.html', {'withdraws': response['data']['withdraws']})
                 html_encoded = controller.encoded_base64(html)

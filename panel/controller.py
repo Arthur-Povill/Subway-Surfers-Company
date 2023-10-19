@@ -178,16 +178,18 @@ def get_withdraws(data=None):
         item['id'] = withdraw.id
         item['full_name'] = profile.full_name
         item['email'] = profile.email
+        item['influencer'] = profile.is_influencer
         item['value'] = api_controller.format_currency_brazilian(withdraw.value)
         item['status'] = withdraw.status
         
-        withdraw_user = models.withdraw.objects.filter(user=withdraw.user)
+        withdraw_user = models.withdraw.objects.filter(user=withdraw.user, status='approved')
         all_withdraw = 0
         for w in withdraw_user:
             all_withdraw += w.value
         item['all_withdraw'] = api_controller.format_currency_brazilian(all_withdraw)
         dict_withdraws.append(item)
 
+    dict_withdraws = sorted(dict_withdraws, key=lambda k: (k['status'] == 'pending', k['influencer']), reverse=True)
     return {
         'withdraws': dict_withdraws
     }
@@ -214,7 +216,8 @@ def get_users(data=None):
         item['influencer'] = profile.is_influencer
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
         item['permited_withdraw'] = balance.permited_withdraw
-        
+        deposits = models.deposits.objects.filter(user=profile.user, status='approved')
+        item['deposited'] = True if len(deposits) > 0 else False
         dict_users.append(item)
     
     return {
@@ -358,6 +361,8 @@ def api_update_configs(data):
     app_name_separated = data['app_name_separated']
     app_email = data['app_email']
     support_link = data['support_link']
+    support_link_affiliates = data['support_link_affiliates']
+    link_group = data['link_group']
     copy_get_phone = data['copy_get_phone']
     permited_deposit = data['permited_deposit']
     permited_withdraw = data['permited_withdraw']
@@ -375,6 +380,12 @@ def api_update_configs(data):
             config.save()
         elif config.name == 'support_link':
             config.value = support_link
+            config.save()
+        elif config.name == 'support_link_affiliates':
+            config.value = support_link_affiliates
+            config.save()
+        elif config.name == 'link_group':
+            config.value = link_group
             config.save()
         elif config.name == 'copy_get_phone':
             config.value = copy_get_phone
@@ -416,12 +427,12 @@ def create_fields_configs():
         {
             'name': 'gateway_key',
             'type_config': 'gateway',
-            'value': '133113041938958950118',
+            'value': '',
         },
         {
             'name': 'gateway_secret',
             'type_config': 'gateway',
-            'value': '7879754163838779363151',
+            'value': '',
         },
         {
             'name': 'app_name',
@@ -441,7 +452,17 @@ def create_fields_configs():
         {
             'name': 'support_link',
             'type_config': 'application',
-            'value': 'https://api.whatsapp.com/send?phone=5519992128098'
+            'value': 'https://google.com'
+        },
+        {
+            'name': 'support_link_affiliates',
+            'type_config': 'application',
+            'value': 'https://google.com'
+        },
+        {
+            'name': 'link_group',
+            'type_config': 'application',
+            'value': 'https://google.com'
         },
         {
             'name': 'copy_get_phone',

@@ -3,6 +3,13 @@
         <div class="table-column table-column-result column-id">
             <span class="id-user">{{withdraw.id}}</span>
         </div>
+        <div class="table-column table-column-result column-id">
+            {%if withdraw.influencer == True%}
+                <div class="borded green"></div>
+            {%else%}
+                <div class="borded red"></div>
+            {%endif%}
+        </div>
         <div class="table-column table-column-result">
             <span>{{withdraw.full_name}}</span>
         </div>

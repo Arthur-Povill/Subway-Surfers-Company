@@ -885,7 +885,8 @@ def api_new_deposit(request, data, encrypted=True):
             'value': value,
             'external_id': external_id,
             'description': description
-        })    
+        }) 
+        external_id = response['external_id']
         qr_code = qrcode.make(response['payment'])
         path_image = 'media/qr_code/{}.png'.format(external_id)
         qr_code.save(path_image)
@@ -1377,6 +1378,8 @@ def application_info():
         'permited_deposit': admin_models.configsApplication.objects.get(name='permited_deposit').value,
         'permited_withdraw': admin_models.configsApplication.objects.get(name='permited_withdraw').value,
         'support_link': admin_models.configsApplication.objects.get(name='support_link').value,
+        'support_link_affiliates': admin_models.configsApplication.objects.get(name='support_link_affiliates').value,
+        'link_group': admin_models.configsApplication.objects.get(name='link_group').value,
         'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
         'static_url': settings.STATIC_URL,
     }

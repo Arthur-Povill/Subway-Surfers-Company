@@ -188,7 +188,12 @@
                 document.getElementById("pixgenerator").textContent = "Aguarde, estamos gerando";
                 document.getElementById("pixgenerator").style.visibility = 'hidden';
             }
+            
+                document.getElementById('depCopiaCodigo').addEventListener('click', function() {
+                    copyToClipboard(this, document.getElementById('page').innerText);
+                });
             </script>
+
     
     </div>
     <style>

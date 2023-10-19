@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '*',
+    'https://85f5-186-236-87-65.ngrok-free.app',
     '127.0.0.1',
     'fruitcashpatrick-production.up.railway.app',
     'frutacash.com.br',
@@ -35,6 +36,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
+    'https://85f5-186-236-87-65.ngrok-free.app',
     'https://fruitcashpatrick-production.up.railway.app',
     'https://frutacash.com.br',
     'https://www.frutacash.com.br'

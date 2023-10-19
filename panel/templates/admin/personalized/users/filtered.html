@@ -9,6 +9,11 @@
         </div>
         <div class="table-column table-column-result column-id">
             <span class="id-user">{{user.id}}</span>
+            <div class="oculted-infos" style="display:none;">
+                {%if user.deposited == True%}
+                    <div class="user-deposisted"></div>
+                {%endif%}
+            </div>
         </div>
         <div class="table-column table-column-result">
             <span>{{user.full_name}}</span>

@@ -102,6 +102,7 @@ function setClickedInUsers(){
         })
     }
     document.getElementsByClassName('count-users')[0].innerText = item_users.length;
+    document.getElementsByClassName('count-users-deposited')[0].innerText = document.getElementsByClassName('user-deposisted').length;
 }
 
 function getUsers(query){
