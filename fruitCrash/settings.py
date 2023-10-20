@@ -34,10 +34,9 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    #'https://fruitgrana-production.up.railway.app',
-    #'https://www.frogti.com'
-    'https://www.fruitgrana.com'
-    #'https://fruitgrana.com',
+    'https://fruitgrana-production.up.railway.app',
+    'https://www.fruitgrana.com',
+    'https://fruitgrana.com',
 ]
 
 # Application definition
