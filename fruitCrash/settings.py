@@ -26,7 +26,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitgrana-production.up.railway.app/',
+    'fruitgrana-production.up.railway.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
