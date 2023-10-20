@@ -133,6 +133,8 @@ def game_v2(request):
         data['is_admin'] = request.user.is_superuser
         if data_profile['user']['influencer'] is True or request.user.is_superuser is True:
             return render(request, 'app-structure/original/index-game-easy.html', data)
+        else:
+            return redirect('/')
     else:
         return redirect('/auth/register')
 
