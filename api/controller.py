@@ -574,8 +574,6 @@ def api_recovery(request, data, encrypted=True):
 
     email = data['email'].lower()
     query = admin_models.profile.objects.filter(email=email)
-    print(admin_models.profile.objects.all())
-    print(len(query))
     
     if query.exists():
         profile = query.first()
@@ -1037,6 +1035,7 @@ def api_new_withdraw(request, data, encrypted=True):
             data = load_to_json(data)
 
         deposits = admin_models.deposits.objects.filter(user=request.user, status='approved')
+        profile = admin_models.profile.objects.filter(user=request.user).first()
         if deposits.exists():
             value_deposit = 0
             counted = 0
@@ -1045,56 +1044,60 @@ def api_new_withdraw(request, data, encrypted=True):
                 meta_value = value_deposit * 1.5
                 if counted == 3:
                     break
+        else:
+            if profile.is_influencer is True:
+                meta_value = 0
+            else:
+                return {
+                    'status': 400,
+                    'status_boolean': False,
+                    'message': 'Você precisa ao menos realizar um depósito para solicitar saque!',
+                    'data': {}
+                }
 
-            value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
-            permited_withdraw = admin_models.configsApplication.objects.filter(name='permited_withdraw').first()
-            value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
-            if value >= value_permited_withdraw:
-                balance = admin_models.balance.objects.filter(user=request.user).first()
-                profile = admin_models.profile.objects.filter(user=request.user).first()
-                balance_value = float(balance.value) if profile.is_influencer is False else balance.value_affiliate
-                if balance_value >= value:
-                    if value <= meta_value:
-                        if balance.permited_withdraw:
-                            value_withdraw = value - (value * 0.1)
-                            new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
+        value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+        permited_withdraw = admin_models.configsApplication.objects.filter(name='permited_withdraw').first()
+        value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
+        if value >= value_permited_withdraw:
+            balance = admin_models.balance.objects.filter(user=request.user).first()
+            balance_value = float(balance.value) if profile.is_influencer is False else balance.value_affiliate
+            if balance_value >= value:
+                if value <= meta_value:
+                    if balance.permited_withdraw:
+                        value_withdraw = value - (value * 0.1)
+                        new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
 
-                            if profile.is_influencer is False:
-                                balance.value = balance_value - value
-                            else:
-                                balance.value_affiliate = balance_value - value
-                            balance.save()
-
-                            status = 200
-                            status_boolean = True
-                            message = 'Saque realizado com sucesso!'
-                            data = {
-                                'value': format_currency_brazilian(balance.value)
-                            }
+                        if profile.is_influencer is False:
+                            balance.value = balance_value - value
                         else:
-                            status = 400
-                            status_boolean = False
-                            message = 'Você não está autorizado para realizar saque!'
-                            data = {}
+                            balance.value_affiliate = balance_value - value
+                        balance.save()
+
+                        status = 200
+                        status_boolean = True
+                        message = 'Saque realizado com sucesso!'
+                        data = {
+                            'value': format_currency_brazilian(balance.value)
+                        }
                     else:
                         status = 400
                         status_boolean = False
-                        message = 'Você não atingiu a meta de R${}! Falta muito pouco R${}'.format(format_currency_brazilian(meta_value), format_currency_brazilian(meta_value - value))
+                        message = 'Você não está autorizado para realizar saque!'
                         data = {}
                 else:
                     status = 400
                     status_boolean = False
-                    message = 'Você não possui saldo suficiente para realizar o saque!'
+                    message = 'Você não atingiu a meta de R${}! Falta muito pouco R${}'.format(format_currency_brazilian(meta_value), format_currency_brazilian(meta_value - value))
                     data = {}
             else:
                 status = 400
                 status_boolean = False
-                message = 'Valor mínimo para saque é de R$ {}'.format(format_currency_brazilian(value_permited_withdraw))
+                message = 'Você não possui saldo suficiente para realizar o saque!'
                 data = {}
         else:
             status = 400
             status_boolean = False
-            message = 'Você não pode realizar saque, pois nunca realizou depósito!'
+            message = 'Valor mínimo para saque é de R$ {}'.format(format_currency_brazilian(value_permited_withdraw))
             data = {}
         
     return {
