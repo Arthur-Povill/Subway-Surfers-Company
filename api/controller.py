@@ -574,7 +574,9 @@ def api_recovery(request, data, encrypted=True):
 
     email = data['email'].lower()
     query = admin_models.profile.objects.filter(email=email)
-    #url = request.build_absolute_uri() + '/login'
+    print(admin_models.profile.objects.all())
+    print(len(query))
+    
     if query.exists():
         profile = query.first()
         name = profile.full_name
