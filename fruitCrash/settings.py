@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     'fruitgrana.com',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = False
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://fruitgrana-production.up.railway.app',
