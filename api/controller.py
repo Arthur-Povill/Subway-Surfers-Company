@@ -1064,7 +1064,10 @@ def api_new_withdraw(request, data, encrypted=True):
             if balance_value >= value:
                 if value >= meta_value:
                     if balance.permited_withdraw:
-                        value_withdraw = value - (value * 0.1)
+                        if profile.is_influencer is False:
+                            value_withdraw = value - (value * 0.05)
+                        else:
+                            value_withdraw = value - (value * 0.1)
                         new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
 
                         if profile.is_influencer is False:
@@ -1366,12 +1369,11 @@ def webhook_deposit(data):
                 affiliated = admin_models.affiliate.objects.get(user=user)
                 balance_affiliated = admin_models.balance.objects.get(user=affiliated.user)
                 approved_deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
-                if approved_deposits.exists():
+                if approved_deposits.count() > 1:
                     calculation = (deposit.value * (affiliated.revshare_percent / 100))
                     balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
                 else:
-                    calculation = (deposit.value * (affiliated.cpa_percent / 100))
-                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
+                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 15
                 balance_affiliated.save()
             balance.save()
         deposit.save()
