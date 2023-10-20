@@ -1062,7 +1062,7 @@ def api_new_withdraw(request, data, encrypted=True):
             balance = admin_models.balance.objects.filter(user=request.user).first()
             balance_value = float(balance.value) if profile.is_influencer is False else balance.value_affiliate
             if balance_value >= value:
-                if value <= meta_value:
+                if value >= meta_value:
                     if balance.permited_withdraw:
                         value_withdraw = value - (value * 0.1)
                         new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
