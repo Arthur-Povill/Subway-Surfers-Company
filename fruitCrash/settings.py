@@ -28,17 +28,16 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitgrana-production.up.railway.app',
     'www.fruitgrana.com',
-    'fruitgrana.com',
-    'www.frogti.com'
+    'fruitgrana.com'
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitgrana-production.up.railway.app',
-    'https://www.frogti.com'
+    #'https://fruitgrana-production.up.railway.app',
+    #'https://www.frogti.com'
     'https://www.fruitgrana.com'
-    'https://fruitgrana.com',
+    #'https://fruitgrana.com',
 ]
 
 # Application definition
