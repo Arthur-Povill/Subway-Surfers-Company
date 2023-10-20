@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitgrana-production.up.railway.app/',
+    'https://fruitgrana-production.up.railway.app',
     'https://www.fruitgrana.com'
     'https://fruitgrana.com'
 ]
