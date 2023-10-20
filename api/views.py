@@ -37,6 +37,15 @@ def api_signout(request):
     else:
         return JsonResponse(response_method)
     
+def api_recovery(request):
+    response_method = controller.verify_request_method(request.method, ['POST'])
+    if response_method['status_boolean']:
+        data = request.body.decode('utf-8')
+        response = controller.api_recovery(request, data)
+        return JsonResponse({"response": controller.obfuscate_message(response)})
+    else:
+        return JsonResponse(response_method)
+    
 def api_my_profile(request):
     response_method = controller.verify_request_method(request.method, ['GET', 'POST'])
     if response_method['status_boolean']:

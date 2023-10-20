@@ -44,7 +44,14 @@ def login(request):
         return render(request, 'app-structure/original/index-login.html', data)
     else:
         return redirect('/')
-    
+
+def recovery(request):
+    if request.user.is_authenticated is False:
+        data = controller.data_application()
+        return render(request, 'app-structure/original/index-recovery.html', data)
+    else:
+        return redirect('/')   
+
 def logout(request):
     if request.user.is_authenticated:
         controller.logout(request)
@@ -117,6 +124,17 @@ def game(request):
         return render(request, 'app-structure/original/index-game.html', data)
     else:
         return redirect('/auth/register')
+    
+def game_v2(request):
+    if request.user.is_authenticated:
+        data = controller.data_application()
+        data_profile = controller.api_profile(request)
+        data['profile'] = data_profile
+        data['is_admin'] = request.user.is_superuser
+        if data_profile['user']['influencer'] is True or request.user.is_superuser is True:
+            return render(request, 'app-structure/original/index-game-easy.html', data)
+    else:
+        return redirect('/auth/register')
 
 def terms(request):
     data = controller.data_application()
@@ -142,6 +160,26 @@ def classic_game(request):
         else:
             data = controller.data_application()
             return render(request, 'app-structure/personalized/classic-game.html', data)
+    else:
+        return redirect('/')
+    
+def classic_game_v2(request):
+    if request.user.is_authenticated:
+        mode = controller.verify_param(request, 'mode')
+        profile = controller.profile(request)
+        if profile.is_influencer is True or request.user.is_superuser is True:
+            if mode == 'demo' or mode == 'free':
+                if profile.first_access is True:
+                    controller.first_access(request)
+                    data = controller.data_application()
+                    return render(request, 'app-structure/personalized/classic-game-easy.html', data)
+                else:
+                    return redirect('/')
+            else:
+                data = controller.data_application()
+                return render(request, 'app-structure/personalized/classic-game-easy.html', data)
+        else:
+            return redirect('/')
     else:
         return redirect('/')
 

@@ -43,6 +43,10 @@ document.getElementsByClassName('btn-panel-affiliates')[0].addEventListener('cli
     window.location.href = '/panel/affiliates';
 });
 
+document.getElementsByClassName('btn-easy-game')[0].addEventListener('click', function() {
+    window.location.href = '/game/v2';
+});
+
 document.getElementsByClassName('btn-configuration')[0].addEventListener('click', function() {
     window.location.href = '/panel/configs';
 });

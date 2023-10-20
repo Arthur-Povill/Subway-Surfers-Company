@@ -1,0 +1,82 @@
+{%extends "app-structure/original/originalStructure.html"%}
+{%load static%}
+
+{%block main-page%}
+    <div>
+        <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
+        <div class="container w-container">
+            <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
+                <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+                <div class="nav-link logo">{{app_name}}</div>
+            </a>
+            <nav role="navigation" class="nav-menu w-nav-menu">
+                <a href="/game" class="nav-link w-nav-link" style="max-width: 940px;">Jogar</a>
+                <a href="/auth/login" class="nav-link w-nav-link" style="max-width: 940px;">Login</a>
+                <a href="/auth/register" class="button nav w-button">Cadastrar</a>
+            </nav>
+            <div class="w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+            </div>
+            <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+                <div class="icon w-icon-nav-menu"></div>
+            </div>
+        </div>
+        <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0"></div>
+        </div>
+        <div class="nav-bar">
+        <a href="/game" class="link-block rarity w-inline-block">
+            <div>Jogar</div>
+        </a>
+        <a href="/auth/login" class="link-block last w-inline-block">
+            <div class="text-block-8">Login</div>
+        </a>
+        <a href="/auth/register" class="button w-button">Cadastrar</a>
+        </div>
+        <section id="hero" class="hero-section dark wf-section">
+        <div class="minting-container w-container">
+            <h2>RECUPERAR SENHA</h2>
+            <a href="/auth/register">
+                <p>Não possui conta? Clique aqui <br>
+                </p>
+            </a>
+            <form data-name="" id="auth" name="email-form" method="post" aria-label="Form">
+                <div class="properties">
+                    <h4 class="rarity-heading">E-mail</h4>
+                    <div class="rarity-row roboto-type2">
+                    <input type="e-mail" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input" maxlength="256" name="email" placeholder="seuemail@gmail.com" id="email" data-gtm-form-interact-field-id="0">
+                    </div>
+                </div>
+                <a href="/auth/login">
+                    <p>Lembrou sua senha? Clique aqui <br>
+                    </p>
+                </a>
+                <div class="">
+                    <input value="Recuperar senha" class="primary-button w-button btn-recovery"><br><br>
+                </div>
+            </form>
+        </div>
+        </section>
+        <div class="footer-section wf-section">
+        <div class="domo-text">{{app_name_split_1}} <br>
+        </div>
+        <div class="domo-text purple">{{app_name_split_2}} <br>
+        </div>
+        <div class="follow-test">© Copyright GTWC Limited, with registered
+            offices at
+            Dr. M.L. King
+            Boulevard 117, accredited by license GLH-16286002012. 
+        </div>
+        <div class="follow-test">
+            <a href="/legal">
+            <strong class="bold-white-link">Termos de uso</strong>
+            </a>
+        </div>
+        <div class="follow-test">{{app_email}}</div>
+        </div>
+        <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
+        <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+        {%block scripts-page%}
+            <script type="module" src='{%static "js/original/recovery-min-0939.js"%}'></script>
+        {%endblock%}
+    </div>
+{%endblock%}
+

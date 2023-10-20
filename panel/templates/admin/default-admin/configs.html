@@ -26,7 +26,7 @@
                             <span>Nome Aplicação</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="app-name" class="input" value="{{app_name}}" placeholder="FruitCash">
+                            <input type="text" id="app-name" class="input input-configs-application" value="{{app_name}}" placeholder="FruitCash">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                             <span>Nome Aplicação (Espaço)</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="app-name-separated" class="input" value="{{app_name_separated}}" placeholder="Fruit Cash">
+                            <input type="text" id="app-name-separated" class="input input-configs-application" value="{{app_name_separated}}" placeholder="Fruit Cash">
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             <span>E-mail Aplicação</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="app-email" class="input" value="{{app_email}}" placeholder="contato@fruitcash.com">
+                            <input type="text" id="app-email" class="input input-configs-application" value="{{app_email}}" placeholder="contato@fruitcash.com">
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                             <span>Link Suporte</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="support-link" class="input" value="{{support_link}}" placeholder="https://google.com">
+                            <input type="text" id="support-link" class="input input-configs-application" value="{{support_link}}" placeholder="https://google.com">
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                             <span>Link Suporte Afiliados</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="support-link-affiliates" class="input" value="{{support_link_affiliates}}" placeholder="https://google.com">
+                            <input type="text" id="support-link-affiliates" class="input input-configs-application" value="{{support_link_affiliates}}" placeholder="https://google.com">
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                             <span>Link do Grupo</span>
                         </div>
                         <div class="input-container">
-                            <input type="text" id="link-group" class="input" value="{{link_group}}" placeholder="https://google.com">
+                            <input type="text" id="link-group" class="input input-configs-application" value="{{link_group}}" placeholder="https://google.com">
                         </div>
                     </div>
                 </div>
@@ -86,8 +86,8 @@
                             <span>Copy Telefone</span>
                         </div>
                         <div class="textarea-container">
-                            <!--<input type="text" id="copy-get-phone" class="input" value="{{copy_get_phone}}" placeholder="Mensagem para pegar telefone">-->
-                            <textarea id="copy-get-phone-textarea" class="textarea" placeholder="Mensagem para pegar telefone">{{copy_get_phone}}</textarea>
+                            <!--<input type="text" id="copy-get-phone" class="input input-configs-application" value="{{copy_get_phone}}" placeholder="Mensagem para pegar telefone">-->
+                            <textarea id="copy-get-phone-textarea" class="textarea input-configs-application" placeholder="Mensagem para pegar telefone">{{copy_get_phone}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="input-container">
                             <span>R$</span>
-                            <input type="text" id="permited-deposit" class="input" value="{{permited_deposit}}" placeholder="25">
+                            <input type="text" id="permited-deposit" class="input input-configs-application" value="{{permited_deposit}}" placeholder="25">
                         </div>
                     </div>
                 </div>
@@ -119,9 +119,67 @@
                         </div>
                         <div class="input-container">
                             <span>R$</span>
-                            <input type="text" id="permited-withdraw" class="input" value="{{permited_withdraw}}" placeholder="25">
+                            <input type="text" id="permited-withdraw" class="input input-configs-application" value="{{permited_withdraw}}" placeholder="25">
                         </div>
                     </div>
+                </div>
+            </div>
+            {%if sms_funnel_status == True%}
+                <div class="card-config-item">
+                    <div class="card-config-title">
+                        <span>SMS Funnel</span>
+                    </div>
+                    <div class="card-config-item-content">
+                        <div class="card-config-item-inputs item-inputs">
+                            <div class="input-title">
+                                <span>Pix Gerado</span>
+                            </div>
+                            <div class="input-container">
+                                <span>R$</span>
+                                <input type="text" id="permited-withdraw" class="input input-configs-application" value="{{permited_withdraw}}" placeholder="25">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {%endif%}
+            <div class="card-config-item">
+                <div class="card-config-title">
+                    <span>Email</span>
+                </div>
+                <div class="card-config-item-content">
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>SMTP Host Recuperação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="smtp-host-recovery" class="input input-configs-application" value="{{smtp_host_recovery}}" placeholder="smtp.hostinger.com">
+                        </div>
+                    </div>
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>SMTP Porta Recuperação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="smtp-port-recovery" class="input input-configs-application" value="{{smtp_port_recovery}}" placeholder="587">
+                        </div>
+                    </div>
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>SMTP Email Recuperação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="smtp-email-recovery" class="input input-configs-application" value="{{smtp_email_recovery}}" placeholder="587">
+                        </div>
+                    </div>
+                    <div class="card-config-item-inputs item-inputs">
+                        <div class="input-title">
+                            <span>SMTP Senha Recuperação</span>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" id="smtp-password-recovery" class="input input-configs-application" value="{{smtp_password_recovery}}" placeholder="teste@123">
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

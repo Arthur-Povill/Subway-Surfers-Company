@@ -33,7 +33,7 @@ function getCSRFToken() {
 
 function enabledPopupAlert(alertMessage, alertLink=''){
     if(alertLink !== '' && alertLink !== null && alertLink !== undefined){
-        document.getElementById('alert-main-error-img').setAttribute('src', '/static/image/app-structure/alerts/' + alertLink);
+        document.getElementById('alert-main-error-img').setAttribute('src', dynamicStaticFile + 'image/app-structure/alerts/' + alertLink);
     }else if(alertLink === null || alertLink === undefined){
         document.getElementById('alert-main-error-img').style.display = 'none';
     }

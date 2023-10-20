@@ -56,6 +56,7 @@ class balance(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    value_affiliate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     permited_withdraw = models.BooleanField(default=True)
     only_fake = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -141,6 +142,17 @@ class game(models.Model):
     is_finished = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+'''class smsFunnel(models.Model):
+    id = models.AutoField(primary_key=True)
+    external_id = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'smsFunnel'
+        managed = True
+    
+    def __str__(self):
+        return self.external_id'''
 
 #when User is created also created profile
 @receiver(post_save, sender=User)

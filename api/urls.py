@@ -5,6 +5,7 @@ urlpatterns = [
     path('v1/signin', views.api_signin, name='v1_api_signin'),
     path('v1/signup', views.api_signup, name='v1_api_signup'),
     path('v1/signout', views.api_signout, name='v1_api_signout'),
+    path('v1/recovery', views.api_recovery, name='v1_api_recovery'),
     path('v1/my/profile', views.api_my_profile, name='v1_api_my_profile'),
     path('v1/my/profile/update', views.api_update_my_profile, name='v1_api_update_my_profile'),
     path('v1/my/profile/update/phone', views.api_update_phone, name='v1_api_update_my_profile_phone'),

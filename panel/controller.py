@@ -32,7 +32,8 @@ def get_metrics(dash):
         }
 
         for balance in balances:
-            if balance.permited_withdraw:
+            profile = models.profile.objects.get(user=balance.user)
+            if balance.permited_withdraw and profile.is_influencer is False:
                 dict_gains['users'] += balance.value
 
         for deposit in deposits:
@@ -40,20 +41,22 @@ def get_metrics(dash):
                 dict_gains['home'] += deposit.value
 
         for game in games:
-            dict_gains['game_total'] += game.bet
-            dict_gains['count_game_total'] += 1
+            profile = models.profile.objects.get(user=game.user)
+            if profile.is_influencer is False:
+                dict_gains['game_total'] += game.bet
+                dict_gains['count_game_total'] += 1
 
-            if game.created_at.date() == datetime.date.today():
-                dict_gains['game_today'] += game.bet
-                dict_gains['count_game_today'] += 1
+                if game.created_at.date() == datetime.date.today():
+                    dict_gains['game_today'] += game.bet
+                    dict_gains['count_game_today'] += 1
 
-            if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
-                dict_gains['game_week'] += game.bet
-                dict_gains['count_game_week'] += 1
+                if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
+                    dict_gains['game_week'] += game.bet
+                    dict_gains['count_game_week'] += 1
 
-            if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
-                dict_gains['game_month'] += game.bet
-                dict_gains['count_game_month'] += 1
+                if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
+                    dict_gains['game_month'] += game.bet
+                    dict_gains['count_game_month'] += 1
 
         dict_gains['users'] = api_controller.format_currency_brazilian(dict_gains['users'])
         dict_gains['home'] = api_controller.format_currency_brazilian(dict_gains['home'])
@@ -258,46 +261,55 @@ def get_info_user(data):
     }
 
 def update_user(data):
-    data = api_controller.load_to_json(data)
-    id_user = data['id_user']
-    influencer = data['influencer']
-    activated = data['activated']
-    full_name = data['full_name']
-    email = data['email']
-    cpf = data['cpf']
-    phone = data['phone']
-    code_affiliate = data['code_affiliate']
-    permited_withdraw = data['permited_withdraw']
-    cpa_percent = float(data['cpa_percent'].replace(',', '.'))
-    revshare_percent = float(data['revshare_percent'].replace(',', '.'))
-    value = float(data['value_balance'].replace(',', '.'))
+    try:
+        data = api_controller.load_to_json(data)
+        id_user = data['id_user']
+        influencer = data['influencer']
+        activated = data['activated']
+        full_name = data['full_name']
+        email = data['email']
+        cpf = data['cpf']
+        phone = data['phone']
+        code_affiliate = data['code_affiliate']
+        permited_withdraw = data['permited_withdraw']
+        cpa_percent = float(data['cpa_percent'].replace(',', '.'))
+        revshare_percent = float(data['revshare_percent'].replace(',', '.'))
+        value = float(api_controller.desformat_currency_brazilian(data['value_balance']))
 
-    user = models.profile.objects.get(user__id=id_user)
-    user.user.is_active = activated
-    user.user.save()
-    user.full_name = full_name
-    user.user.email = email
-    user.cpf = cpf
-    user.phone = phone
-    user.is_influencer = influencer
-    user.save()
+        user = models.profile.objects.get(user__id=id_user)
+        user.user.is_active = activated
+        user.user.save()
+        user.full_name = full_name
+        user.user.email = email
+        user.cpf = cpf
+        user.phone = phone
+        user.is_influencer = influencer
+        user.save()
 
-    balance = models.balance.objects.get(user__id=id_user)  
-    balance.permited_withdraw = permited_withdraw
-    balance.value = value
-    balance.save()
+        balance = models.balance.objects.get(user__id=id_user)  
+        balance.permited_withdraw = permited_withdraw
+        balance.value = value
+        balance.save()
 
-    affiliate = models.affiliate.objects.get(user__id=id_user)
-    affiliate.code = code_affiliate
-    affiliate.cpa_percent = cpa_percent
-    affiliate.revshare_percent = revshare_percent
-    affiliate.save()
+        affiliate = models.affiliate.objects.get(user__id=id_user)
+        affiliate.code = code_affiliate
+        affiliate.cpa_percent = cpa_percent
+        affiliate.revshare_percent = revshare_percent
+        affiliate.save()
 
-    return {
-        'status': 200,
-        'message': 'Usuário atualizado com sucesso!',
-        'data': {}
-    }
+        return {
+            'status': 200,
+            'message': 'Usuário atualizado com sucesso!',
+            'data': {}
+        }
+    except Exception as e:
+        return {
+            'status': 500,
+            'message': 'Erro ao atualizar o usuário!',
+            'data': {
+                'error': str(e)
+            }
+        }
 
 def api_update_withdraw(data):
     data = api_controller.load_to_json(data)
@@ -341,7 +353,10 @@ def api_update_withdraw(data):
                 'status': 'not-permited'
             }
     else:
-        withdraw.status = 'canceled'
+        balance = models.balance.objects.get(user=withdraw.user)
+        withdraw.status = 'canceled'    
+        balance.value = balance.value + withdraw.value
+        balance.save()
         withdraw.save()
         status = 200
         message = 'Saque atualizado com sucesso!'
@@ -357,7 +372,14 @@ def api_update_withdraw(data):
 
 def api_update_configs(data):
     data = api_controller.load_to_json(data)
-    app_name = data['app_name']
+    print(data)
+    configs = models.configsApplication.objects.all()
+    for config in configs:
+        name = config.name
+        if name in data:
+            config.value = data[name]
+            config.save()
+    '''app_name = data['app_name']
     app_name_separated = data['app_name_separated']
     app_email = data['app_email']
     support_link = data['support_link']
@@ -396,6 +418,8 @@ def api_update_configs(data):
         elif config.name == 'permited_withdraw':
             config.value = permited_withdraw
             config.save()
+        elif config.name == '':
+            pass'''
 
     return {
         'status': 200,
@@ -468,6 +492,31 @@ def create_fields_configs():
             'name': 'copy_get_phone',
             'type_config': 'application',
             'value': 'Queremos dar um bônus especialmente para você! Basta coloca seu telefone para liberaos um bônus exclusivo no seu primeiro depósito :)'
+        },
+        {
+            'name': 'sms_funnel_status',
+            'type_config': 'smsFunnel',
+            'value': 'false'
+        },
+        {
+            'name': 'smtp_host_recovery',
+            'type_config': 'email',
+            'value': 'smtp.hostinger.com'
+        },
+        {
+            'name': 'smtp_port_recovery',
+            'type_config': 'email',
+            'value': '465'
+        },
+        {
+            'name': 'smtp_email_recovery',
+            'type_config': 'email',
+            'value': 'default-test@engenbot.com'
+        },
+        {
+            'name': 'smtp_password_recovery',
+            'type_config': 'email',
+            'value': '@Aa12345678'
         },
     ]
 

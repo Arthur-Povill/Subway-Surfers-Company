@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login as loginProcess, logout as l
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
-from . import models
+from . import models, smsFunnel, emailController
 from panel import gateway
 import json
 import os
@@ -17,6 +17,8 @@ import locale
 import hashlib
 import secrets
 import qrcode
+import io
+from PIL import Image
 
 '''
     ----------- Defaults Vars, lists and Dict  ------------
@@ -562,6 +564,58 @@ def api_signout(request):
         'data': data
     }
 
+def api_recovery(request, data, encrypted=True):
+    if encrypted:
+        data = load_to_json(data)
+        data = deobfuscate_message(data['response'])
+        data = load_to_json(data)
+    else:
+        data = load_to_json(data)
+
+    email = data['email'].lower()
+    query = admin_models.profile.objects.filter(email=email)
+    #url = request.build_absolute_uri() + '/login'
+    if query.exists():
+        profile = query.first()
+        name = profile.full_name
+        if name is None or name == '':
+            name = 'Usuário'
+        password = profile.password
+        app_name = admin_models.configsApplication.objects.get(name='app_name').value
+        msg = '''
+        Olá {nome}!
+
+        A senha cadastrada é {senha} 
+
+        Não compartilhe sua senha com estranhos. Ela garante a segurança de sua conta.
+
+        Esta é uma mensagem automática, não responda a este e-mail.
+
+        Att,
+        Equipe {app_name}
+        '''.format(nome=name, senha=password, app_name=app_name)
+
+        email_controller = emailController.email()
+        email_controller.send(email, 'Recuperação de senha', msg)
+        
+        status = 200
+        status_boolean = True
+        message = 'Sua senha foi enviado para o seu e-mail! Verifique sua caixa de spam.'
+        data = {}
+    else:
+        status = 404
+        status_boolean = False
+        message = 'E-mail não encontrado!'
+        data = {}
+
+    return {
+        'status': status,
+        'status_boolean': status_boolean,
+        'message': message,
+        'data': data
+    }
+
+
 def api_verify_session(username, close=False):
     status = 404
     status_boolean = False
@@ -597,6 +651,7 @@ def api_my_profile(request):
     data = {
         'user': {
             'full_name': user_profile.full_name if user_profile.full_name != None else '',
+            'influencer': user_profile.is_influencer,
             'cpf': user_profile.cpf if user_profile.cpf != None else '',
             'phone': user_profile.phone if user_profile.phone != None else '',
             'email': user_profile.email,
@@ -859,7 +914,7 @@ def api_info_withdraws(request):
 def api_new_deposit(request, data, encrypted=True):
     if encrypted:
         data = load_to_json(data)
-        data = deobfuscate_message(data['response'])
+        data = deobfuscate_message(data['response'] )
         data = load_to_json(data)
     else:
         data = load_to_json(data)
@@ -887,12 +942,18 @@ def api_new_deposit(request, data, encrypted=True):
             'description': description
         }) 
         external_id = response['external_id']
-        qr_code = qrcode.make(response['payment'])
-        path_image = 'media/qr_code/{}.png'.format(external_id)
-        qr_code.save(path_image)
-        with open(path_image, "rb") as image_file:
-            base64_image = base64.b64encode(image_file.read()).decode('utf-8')
-        os.remove(path_image)
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(response['payment'])
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        image_buffer = io.BytesIO()
+        img.save(image_buffer, format='PNG')
+        base64_image = base64.b64encode(image_buffer.getvalue()).decode('utf-8')
 
         new_deposit = admin_models.deposits.objects.create(
             external_id=external_id,
@@ -902,6 +963,18 @@ def api_new_deposit(request, data, encrypted=True):
             qr_code=base64_image,
             affiliate_user=profile.affiliate_user
         )
+
+        send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+        if send_sms is True:
+            data_sms = {
+                'webhook': admin_models.configsApplication.objects.filter(name='pix_generated').first().value,
+                'name': profile.full_name,
+                'phone': profile.phone,
+                'email': profile.email,
+                'customized_url': request.build_absolute_uri() + 'depositos/{}'.format(external_id),
+            }
+            sms_funnel = smsFunnel.integratySmsFunnel()
+            response = sms_funnel.send(data_sms)
 
         status = 200
         status_boolean = True
@@ -961,46 +1034,65 @@ def api_new_withdraw(request, data, encrypted=True):
         else:
             data = load_to_json(data)
 
-        value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
-        permited_withdraw = admin_models.configsApplication.objects.filter(name='permited_withdraw').first()
-        value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
-        if value >= value_permited_withdraw:
-            balance = admin_models.balance.objects.filter(user=request.user).first()
-            balance_value = float(balance.value)
-            if balance_value >= value:
-                if balance.permited_withdraw:
-                    value_permited_withdraw = 15
-                    if value >= value_permited_withdraw:
-                        new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value)
+        deposits = admin_models.deposits.objects.filter(user=request.user, status='approved')
+        if deposits.exists():
+            value_deposit = 0
+            counted = 0
+            for deposit in deposits:
+                value_deposit += deposit.value
+                meta_value = value_deposit * 1.5
+                if counted == 3:
+                    break
 
-                        balance.value = balance_value - value
-                        balance.save()
+            value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+            permited_withdraw = admin_models.configsApplication.objects.filter(name='permited_withdraw').first()
+            value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
+            if value >= value_permited_withdraw:
+                balance = admin_models.balance.objects.filter(user=request.user).first()
+                profile = admin_models.profile.objects.filter(user=request.user).first()
+                balance_value = float(balance.value) if profile.is_influencer is False else balance.value_affiliate
+                if balance_value >= value:
+                    if value <= meta_value:
+                        if balance.permited_withdraw:
+                            value_withdraw = value - (value * 0.1)
+                            new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
 
-                        status = 200
-                        status_boolean = True
-                        message = 'Saque realizado com sucesso!'
-                        data = {
-                            'value': format_currency_brazilian(balance.value)
-                        }
+                            if profile.is_influencer is False:
+                                balance.value = balance_value - value
+                            else:
+                                balance.value_affiliate = balance_value - value
+                            balance.save()
+
+                            status = 200
+                            status_boolean = True
+                            message = 'Saque realizado com sucesso!'
+                            data = {
+                                'value': format_currency_brazilian(balance.value)
+                            }
+                        else:
+                            status = 400
+                            status_boolean = False
+                            message = 'Você não está autorizado para realizar saque!'
+                            data = {}
                     else:
                         status = 400
                         status_boolean = False
-                        message = 'Valor mínimo para saque é de R$ {}'.format(format_currency_brazilian(value_permited_withdraw))
+                        message = 'Você não atingiu a meta de R${}! Falta muito pouco R${}'.format(format_currency_brazilian(meta_value), format_currency_brazilian(meta_value - value))
                         data = {}
                 else:
                     status = 400
                     status_boolean = False
-                    message = 'Você não está autorizado para realizar saque!'
+                    message = 'Você não possui saldo suficiente para realizar o saque!'
                     data = {}
             else:
                 status = 400
                 status_boolean = False
-                message = 'Você não possui saldo suficiente para realizar o saque!'
+                message = 'Valor mínimo para saque é de R$ {}'.format(format_currency_brazilian(value_permited_withdraw))
                 data = {}
         else:
             status = 400
             status_boolean = False
-            message = 'Valor mínimo para saque é de R$ {}'.format(format_currency_brazilian(value_permited_withdraw))
+            message = 'Você não pode realizar saque, pois nunca realizou depósito!'
             data = {}
         
     return {
@@ -1271,10 +1363,10 @@ def webhook_deposit(data):
                 approved_deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
                 if approved_deposits.exists():
                     calculation = (deposit.value * (affiliated.revshare_percent / 100))
-                    balance_affiliated.value = balance_affiliated.value + calculation
+                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
                 else:
                     calculation = (deposit.value * (affiliated.cpa_percent / 100))
-                    balance_affiliated.value = balance_affiliated.value + calculation
+                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
                 balance_affiliated.save()
             balance.save()
         deposit.save()
@@ -1381,7 +1473,16 @@ def application_info():
         'support_link_affiliates': admin_models.configsApplication.objects.get(name='support_link_affiliates').value,
         'link_group': admin_models.configsApplication.objects.get(name='link_group').value,
         'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
+        'sms_funnel_status': True if admin_models.configsApplication.objects.get(name='sms_funnel_status').value == 'true' else False,
+        'smtp_host_recovery': admin_models.configsApplication.objects.get(name='smtp_host_recovery').value,
+        'smtp_port_recovery': admin_models.configsApplication.objects.get(name='smtp_port_recovery').value,
+        'smtp_email_recovery': admin_models.configsApplication.objects.get(name='smtp_email_recovery').value,
+        'smtp_password_recovery': admin_models.configsApplication.objects.get(name='smtp_password_recovery').value,
         'static_url': settings.STATIC_URL,
     }
+
+    if data['sms_funnel_status']:
+        data['pix_generated'] = admin_models.configsApplication.objects.get(name='pix_generated').value
+        data['new_register'] = admin_models.configsApplication.objects.get(name='new_register').value
 
     return data

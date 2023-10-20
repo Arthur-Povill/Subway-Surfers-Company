@@ -8083,7 +8083,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 xhr.setRequestHeader('Content-type', 'application/json');
                                 xhr.onload = function() {
                                     if(xhr.status === 200){
-                                        location.href = "/?win=false";
+                                        location.href = "/game/v2";
                                     }
                                 }
                                 var date_now_string = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -8103,15 +8103,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     ;
                     exports.applyScore = function(score) {
                         if (score >= (aposta * 1.35)) {
-                            volleyNum = 8;
-                        } else if (score >= (aposta * 1.15)) {
-                            volleyNum = 7;
-                        } else if (score >= (aposta * 1)) {
-                            volleyNum = 6;
-                        } else if (score >= (aposta * 0.5)) {
                             volleyNum = 5;
+                        }  else if (score >= (aposta * 0.5)) {
+                            volleyNum = 3;
                         } else {
-                            volleyNum = 4;
+                            volleyNum = 2;
                         }
                     }
                     ;
@@ -8166,7 +8162,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     xhr.setRequestHeader('Content-type', 'application/json');
                                     xhr.onload = function() {
                                         if(xhr.status === 200){
-                                            location.href = "/?win=true";
+                                            location.href = "/game/v2";
                                         }
                                     }
                                     var date_now_string = new Date().toISOString().slice(0, 19).replace('T', ' ');

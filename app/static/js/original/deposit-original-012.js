@@ -26,6 +26,8 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
                                 deposit_card_container.style.right = '100%';
                             }else{
                                 enabledPopupAlert(data.message);
+                                document.getElementById("pixgenerator").textContent = "Depositar via PIX";
+                                document.getElementById("pixgenerator").style.visibility = 'visible';
                             }
                         }
                     };

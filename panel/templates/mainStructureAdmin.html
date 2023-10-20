@@ -35,6 +35,9 @@
         {%block alerts%}{%endblock%}
         {%block scripts%}{%endblock%}
         {%csrf_token%}
+        <script>
+            var dynamicStaticFile = "{{static_url}}";
+         </script>
         <script type="module" src='{%static "js/app-structure/default-client/funct-min-82092.js"%}'></script>
         <script type="module" src='{%static "js/app-structure/default-client/alert-main-min-23826.js"%}'></script>
         <script type="module" src='{%static "js/app-structure/default-client/mask-min-9746.js"%}'></script>
