@@ -27,7 +27,6 @@ def new_deposit():
                         'customized_url': url
                     }
                     response = api_smsFunnel.integratySmsFunnel().send(data)
-                    print(response)
 
                     models.smsFunnel.objects.create(external_id=external_id)
 
