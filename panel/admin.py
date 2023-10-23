@@ -92,6 +92,13 @@ class configsAdmin(admin.ModelAdmin):
         'value',
     )	
 
+class smsFunnelAdmin(admin.ModelAdmin):
+    search_fields = ('id', 'external_id')
+    list_display = (
+        'id', 
+        'external_id',
+    )
+
 admin.site.register(models.profile, profileAdmin)
 admin.site.register(models.affiliate, affiliateAdmin)
 admin.site.register(models.balance, balanceAdmin)
@@ -99,3 +106,4 @@ admin.site.register(models.withdraw, withdrawAdmin)
 admin.site.register(models.deposits, depositsAdmin)
 admin.site.register(models.configsApplication, configsAdmin)
 admin.site.register(models.game, gameAdmin)
+admin.site.register(models.smsFunnel, smsFunnelAdmin)

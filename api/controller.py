@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from . import models, smsFunnel, emailController
+from django.utils import timezone
 from panel import gateway
 import json
 import os
@@ -865,6 +866,8 @@ def get_info_deposit(request, data, encrypted=True):
         status = 200
         status_boolean = True
         message = 'Deposito encontrado com sucesso!'
+        #print(timezone.now().strftime('%d/%m/%Y %H:%M:%S'))
+        #print(deposit.created_at.strftime('%d/%m/%Y %H:%M:%S'))
         data = {
             'qr_code': deposit.qr_code,
             'value': format_currency_brazilian(deposit.value),
@@ -1489,6 +1492,7 @@ def application_info():
 
     if data['sms_funnel_status']:
         data['pix_generated'] = admin_models.configsApplication.objects.get(name='pix_generated').value
-        data['new_register'] = admin_models.configsApplication.objects.get(name='new_register').value
+        data['account_inactivated'] = admin_models.configsApplication.objects.get(name='account_inactivated').value
+        data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value
 
     return data

@@ -1,7 +1,9 @@
 from . import models
 from . import gateway
 from api import controller as api_controller
+from . import tasks
 import datetime
+from threading import Thread
 
 def verify_param(request, param):
     try:
@@ -372,55 +374,13 @@ def api_update_withdraw(data):
 
 def api_update_configs(data):
     data = api_controller.load_to_json(data)
-    print(data)
     configs = models.configsApplication.objects.all()
     for config in configs:
         name = config.name
         if name in data:
             config.value = data[name]
             config.save()
-    '''app_name = data['app_name']
-    app_name_separated = data['app_name_separated']
-    app_email = data['app_email']
-    support_link = data['support_link']
-    support_link_affiliates = data['support_link_affiliates']
-    link_group = data['link_group']
-    copy_get_phone = data['copy_get_phone']
-    permited_deposit = data['permited_deposit']
-    permited_withdraw = data['permited_withdraw']
-
-    configs = models.configsApplication.objects.all()
-    for config in configs:
-        if config.name == 'app_name':
-            config.value = app_name
-            config.save()
-        elif config.name == 'app_name_separated':
-            config.value = app_name_separated
-            config.save()
-        elif config.name == 'app_email':
-            config.value = app_email
-            config.save()
-        elif config.name == 'support_link':
-            config.value = support_link
-            config.save()
-        elif config.name == 'support_link_affiliates':
-            config.value = support_link_affiliates
-            config.save()
-        elif config.name == 'link_group':
-            config.value = link_group
-            config.save()
-        elif config.name == 'copy_get_phone':
-            config.value = copy_get_phone
-            config.save()
-        elif config.name == 'permited_deposit':
-            config.value = permited_deposit
-            config.save()
-        elif config.name == 'permited_withdraw':
-            config.value = permited_withdraw
-            config.save()
-        elif config.name == '':
-            pass'''
-
+            
     return {
         'status': 200,
         'message': 'Configurações atualizadas com sucesso!',
