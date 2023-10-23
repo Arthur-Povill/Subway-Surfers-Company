@@ -1043,10 +1043,10 @@ def api_new_withdraw(request, data, encrypted=True):
             value_deposit = 0
             counted = 0
             for deposit in deposits:
-                value_deposit += deposit.value
-                meta_value = value_deposit * 1.5
+                value_deposit += float(deposit.value)
                 if counted == 3:
                     break
+            meta_value = value_deposit * 4
         else:
             if profile.is_influencer is True:
                 meta_value = 0
@@ -1063,21 +1063,21 @@ def api_new_withdraw(request, data, encrypted=True):
         value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
         if value >= value_permited_withdraw:
             balance = admin_models.balance.objects.filter(user=request.user).first()
-            balance_value = float(balance.value) if profile.is_influencer is False else balance.value_affiliate
+            balance_value = float(balance.value) if profile.is_influencer is False else float(balance.value_affiliate)
             if balance_value >= value:
-                if value >= meta_value:
+                if balance_value >= meta_value:
                     if balance.permited_withdraw:
                         if profile.is_influencer is False:
                             value_withdraw = value - (value * 0.05)
                         else:
                             value_withdraw = value - (value * 0.1)
-                        new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
+                        #new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
 
                         if profile.is_influencer is False:
                             balance.value = balance_value - value
                         else:
                             balance.value_affiliate = balance_value - value
-                        balance.save()
+                        #balance.save()
 
                         status = 200
                         status_boolean = True
@@ -1363,11 +1363,11 @@ def webhook_deposit(data):
             deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
             
             value = deposit.value
-            if amount >= 20 and amount < 50:
+            if value >= 20 and value < 50:
                 value += 20
-            elif amount  >= 50 and amount < 100:
+            elif value  >= 50 and value < 100:
                 value += 60
-            elif amount >= 100:
+            elif value >= 100:
                 value + 125
                 
             balance.value = balance.value + value
