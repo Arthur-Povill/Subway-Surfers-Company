@@ -18,4 +18,5 @@ urlpatterns = [
     path('application/start_first_time', views.start_configs, name='configs_admin')
 ]
 
-scheduler.start_jobs()
+
+#scheduler.start_jobs()
