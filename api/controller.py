@@ -1071,7 +1071,10 @@ def api_new_withdraw(request, data, encrypted=True):
                             value_withdraw = value - (value * 0.05)
                         else:
                             value_withdraw = value - (value * 0.1)
-                        new_withdraw = admin_models.withdraw.objects.create(user=request.user, value=value_withdraw)
+                        admin_models.withdraw.objects.create(
+                            user=request.user, 
+                            value=value_withdraw
+                        )
 
                         if profile.is_influencer is False:
                             balance.value = balance_value - value
