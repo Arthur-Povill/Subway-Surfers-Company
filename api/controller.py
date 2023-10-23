@@ -1381,7 +1381,7 @@ def webhook_deposit(data):
                     calculation = (deposit.value * (affiliated.revshare_percent / 100))
                     balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
                 else:
-                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 18
+                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 16
             balance.save()
         deposit.save()
 

@@ -19,4 +19,4 @@ urlpatterns = [
 ]
 
 
-scheduler.start_jobs()
+#scheduler.start_jobs()
