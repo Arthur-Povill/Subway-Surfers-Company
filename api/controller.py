@@ -967,7 +967,7 @@ def api_new_deposit(request, data, encrypted=True):
             affiliate_user=profile.affiliate_user
         )
 
-        send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+        '''send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
         if send_sms is True:
             data_sms = {
                 'webhook': admin_models.configsApplication.objects.filter(name='pix_generated').first().value,
@@ -977,7 +977,7 @@ def api_new_deposit(request, data, encrypted=True):
                 'customized_url': request.build_absolute_uri() + 'depositos/{}'.format(external_id),
             }
             sms_funnel = smsFunnel.integratySmsFunnel()
-            response = sms_funnel.send(data_sms)
+            response = sms_funnel.send(data_sms)'''
 
         status = 200
         status_boolean = True
@@ -1361,11 +1361,16 @@ def webhook_deposit(data):
             balance = admin_models.balance.objects.get(user=deposit.user)
             profile = admin_models.profile.objects.get(user=deposit.user)
             deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
-            if len(deposits) == 0 and profile.phone != None and profile.phone != '':
-                bonus = 2
-            else:
-                bonus = 1
-            balance.value = balance.value + (deposit.value * bonus)
+            
+            value = deposit.value
+            if amount >= 20 and amount < 50:
+                value += 20
+            elif amount  >= 50 and amount < 100:
+                value += 60
+            elif amount >= 100:
+                value + 125
+                
+            balance.value = balance.value + value
             if deposit.affiliate_user != None:
                 email = str(deposit.affiliate_user)
                 user = User.objects.get(email=email)

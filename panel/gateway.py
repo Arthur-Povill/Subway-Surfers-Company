@@ -104,7 +104,8 @@ class paggue:
         
 class primepag:
     def __init__(self):
-        self.base_url = 'https://api-stg.primepag.com.br/'
+        self.base_url = 'https://api-stg.primepag.com.br/' #URL BASE: homologação
+        self.base_url = 'https://api.primepag.com.br/' #URL BASE: homologação
         endpoint = 'auth/generate_token'
         url = self.base_url + endpoint
         client_key = models.configsApplication.objects.get(name='gateway_key')
