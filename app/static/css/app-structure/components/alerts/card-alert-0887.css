@@ -10,6 +10,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 2000;
+    font-family: 'Ubuntu', sans-serif !important;
 }
 
 .alert-main-container{
