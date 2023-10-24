@@ -389,6 +389,8 @@ def api_signup(request, data, encrypted=True):
     full_name = data['full_name']
     phone = data['phone']
     cpf = data['cpf']
+    afilliated_code = data['afilliated_code']
+    
     if 'other' in data:
         other = data['other']
     else:
@@ -433,6 +435,10 @@ def api_signup(request, data, encrypted=True):
                                             user_profile.password = password
                                             user_profile.cpf = cpf
                                             user_profile.full_name = full_name
+                                            if afilliated_code != '':
+                                                afilliated = admin_models.affiliate.objects.filter(code=afilliated_code).first()
+                                                user_profile.affiliate_user = afilliated
+                                            
                                             user_profile.save()
 
                                             user_affiliate = admin_models.affiliate.objects.filter(user=user).first()

@@ -5,6 +5,7 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
         let email = document.getElementsByClassName('email-signup')[0].value
         let password = document.getElementsByClassName('password-signup')[0].value
         let password_confirm = document.getElementsByClassName('confirm-password')[0].value
+        let afilliated_code = document.getElementsByClassName('affiliate_code')[0].value
         if(email !== ''){
             if(email.includes('@') || email.includes('.')){
                 if(password !== ''){
@@ -23,6 +24,7 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
                                 'phone': '',
                                 'email': email,
                                 'password': password,
+                                'afilliated_code': afilliated_code,
                                 'after_signup': true,
                                 'other': true
                             }

@@ -18,6 +18,8 @@ def new_deposit():
                 now = timezone.now()
                 now = now.astimezone(timezone.get_current_timezone())
                 if now > (created_at + timedelta(minutes=5)):
+                    profile.vanish = True
+                    profile.save()
                     url = 'https://fruitgrana.com/deposit/' + external_id
                     data = {
                         'webhook': models.configsApplication.objects.get(name='pix_generated').value,
@@ -27,7 +29,6 @@ def new_deposit():
                         'customized_url': url
                     }
                     response = api_smsFunnel.integratySmsFunnel().send(data)
-
                     models.smsFunnel.objects.create(external_id=external_id)
 
 def account_inactivated():
@@ -44,6 +45,8 @@ def account_inactivated():
                 now = timezone.now()
                 now = now.astimezone(timezone.get_current_timezone())
                 if now > (created_at + timedelta(hours=1)):
+                    profile.vanish = True
+                    profile.save()
                     url = 'https://fruitgrana.com/deposit'
                     data = {
                         'webhook': models.configsApplication.objects.get(name='account_inactivated').value,
@@ -53,7 +56,6 @@ def account_inactivated():
                         'customized_url': url
                     }
                     response = api_smsFunnel.integratySmsFunnel().send(data)
-                    print(response)
                     models.smsFunnel.objects.create(external_id=external_id)
 
 def recovery_user():
@@ -82,7 +84,6 @@ def recovery_user():
                         'customized_url': url
                     }
                     response = api_smsFunnel.integratySmsFunnel().send(data)
-                    print(response)
                     models.smsFunnel.objects.create(external_id=external_id)
 
 

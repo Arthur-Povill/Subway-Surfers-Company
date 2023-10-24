@@ -22,6 +22,7 @@ class profile(models.Model):
     is_active = models.BooleanField(default=True)
     first_access = models.BooleanField(default=True)
     affiliate_user = models.ForeignKey('affiliate', on_delete=models.SET_NULL, blank=True, null=True, default=None)
+    vanish = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

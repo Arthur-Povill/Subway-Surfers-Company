@@ -56,4 +56,12 @@ def data_application():
     data['app_name_split_1'] = data['app_name_separated'].split(' ')[0]
     data['app_name_split_2'] = data['app_name_separated'].split(' ')[1]
     return data
+
+def vanishing_affiliate(request):
+    user = request.user
+    profile = panel_models.profile.objects.get(user=user)
+    if profile.vanish is True:
+        profile.vanish = False
+        profile.affiliate_user = None
+        profile.save()
  
