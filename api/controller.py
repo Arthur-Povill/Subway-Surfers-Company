@@ -664,7 +664,8 @@ def api_my_profile(request):
             'email': user_profile.email,
         },
         'balance':{
-            'value': format_currency_brazilian(user_balance.value)
+            'value': format_currency_brazilian(user_balance.value),
+            'value_affiliate': format_currency_brazilian(user_balance.value_affiliate),
         }
     }
 
@@ -1392,6 +1393,13 @@ def webhook_deposit(data):
                 else:
                     balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 16
             balance.save()
+
+            smsFunnel.integratySmsFunnel().send({
+                'webhook': 'https://v1.smsfunnel.com.br/integrations/lists/ee2dbc60-0a09-432d-9d5a-b486b060468c/add-lead',
+                'name': profile.full_name,
+                'phone': profile.phone,
+                'email': profile.email
+            })
         deposit.save()
 
         status = 200
