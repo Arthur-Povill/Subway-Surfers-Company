@@ -452,6 +452,19 @@ def api_signup(request, data, encrypted=True):
                                                 'user': user.username
                                             }
 
+                                            send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+                                            if send_sms is True:
+                                                profile = admin_models.profile.objects.filter(user=user).first()
+                                                profile.vanish = True
+                                                profile.save()
+                                                data_sms = {
+                                                    'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
+                                                    'name': profile.full_name,
+                                                    'phone': profile.phone,
+                                                    'email': profile.email
+                                                }
+                                                smsFunnel.integratySmsFunnel().send(data_sms)
+
                                             if after_signup:
                                                 api_signin(request, {'email': email, 'password': password}, encrypted=False)
                                     else:
@@ -730,7 +743,7 @@ def api_info_affiliates(request):
                 
     data = {
         'code': affiliate.code,
-        'link': url + '?affiliate=' + affiliate.code,
+        'link': url.replace('partnership/', '') + 'join/' + affiliate.code,
         'total_earning': format_currency_brazilian(total_earning),
         'total_earning_month': format_currency_brazilian(total_earning_month),
         'total_earning_last_month': format_currency_brazilian(total_earning_last_month),
@@ -974,8 +987,11 @@ def api_new_deposit(request, data, encrypted=True):
             affiliate_user=profile.affiliate_user
         )
 
-        '''send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+        send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
         if send_sms is True:
+            profile = admin_models.profile.objects.filter(user=user).first()
+            profile.vanish = True
+            profile.save()
             data_sms = {
                 'webhook': admin_models.configsApplication.objects.filter(name='pix_generated').first().value,
                 'name': profile.full_name,
@@ -983,8 +999,9 @@ def api_new_deposit(request, data, encrypted=True):
                 'email': profile.email,
                 'customized_url': request.build_absolute_uri() + 'depositos/{}'.format(external_id),
             }
-            sms_funnel = smsFunnel.integratySmsFunnel()
-            response = sms_funnel.send(data_sms)'''
+            smsFunnel.integratySmsFunnel().send(data_sms)
+            admin_models.smsFunnel.objects.create(external_id=external_id)
+
 
         status = 200
         status_boolean = True
@@ -1138,6 +1155,17 @@ def api_game_new(request, data, encrypted=True):
     if balance_value >= value:
         game = admin_models.game.objects.filter(user=request.user, is_finished=False)
         profile = admin_models.profile.objects.filter(user=request.user).first()
+        if profile.is_influencer is False and balance_value < 1:
+            external_id = 'recovery_user_' + str(profile.cpf)
+            data_sms = {
+                'webhook': admin_models.configsApplication.objects.filter(name='recovery_user').first().value,
+                'name': profile.full_name,
+                'phone': profile.phone,
+                'email': profile.email
+            }
+            smsFunnel.integratySmsFunnel().send(data_sms)
+            admin_models.smsFunnel.objects.create(external_id=external_id)
+            
         if game.exists():
             game = game.first()
             if game.is_started:
@@ -1167,6 +1195,7 @@ def api_game_new(request, data, encrypted=True):
                 'hash_game': new_game.hash_game,
                 'value': format_currency_brazilian(balance.value)
             }
+
         else:
             status = 400
             status_boolean = False
@@ -1381,6 +1410,27 @@ def webhook_deposit(data):
                 value + 125
                 
             balance.value = balance.value + value
+            send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+            if send_sms is True:
+                profile = admin_models.profile.objects.filter(user=deposit.user).first()
+                if profile.vanish is True:
+                    profile.vanish = False
+                    profile.affiliate_user = None
+                    deposit.affiliate_user = None
+                    profile.save()
+                    deposit.save()
+
+                filter_sms = admin_models.smsFunnel.objects.filter(external_id=external_id)
+                if filter_sms.exists():
+                    data_sms = {
+                        'webhook': admin_models.configsApplication.objects.filter(name='pix_approved').first().value,
+                        'name': profile.full_name,
+                        'phone': profile.phone,
+                        'email': profile.email
+                    }
+                
+                smsFunnel.integratySmsFunnel().send(data_sms)
+                    
             if deposit.affiliate_user != None:
                 email = str(deposit.affiliate_user)
                 user = User.objects.get(email=email)
@@ -1393,13 +1443,7 @@ def webhook_deposit(data):
                 else:
                     balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 16
             balance.save()
-
-            smsFunnel.integratySmsFunnel().send({
-                'webhook': 'https://v1.smsfunnel.com.br/integrations/lists/ee2dbc60-0a09-432d-9d5a-b486b060468c/add-lead',
-                'name': profile.full_name,
-                'phone': profile.phone,
-                'email': profile.email
-            })
+            
         deposit.save()
 
         status = 200
