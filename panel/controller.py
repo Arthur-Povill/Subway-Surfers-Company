@@ -313,6 +313,147 @@ def update_user(data):
             }
         }
 
+def get_affiliates(data=None):
+    if data != None and data != '':
+        data = api_controller.load_to_json(data)
+        query = data['query'].lower()
+        if query == '':
+            profiles = models.profile.objects.filter(is_influencer=True)
+        else:
+            profiles = models.profile.objects.filter(is_influencer=True, user__username__icontains=query)
+    else:
+        profiles = models.profile.objects.all()
+
+    dict_users = []
+    for profile in profiles:
+        balance = models.balance.objects.get(user=profile.user)
+        item = {}
+        item['id'] = profile.user.id
+        item['full_name'] = profile.full_name
+        item['email'] = profile.user.email
+        item['balance'] = api_controller.format_currency_brazilian(balance.value)
+        dict_users.append(item)
+    
+    return {
+        'users': dict_users
+    }
+
+def get_info_affiliates_1(data):
+    data = api_controller.load_to_json(data)
+    id_user = data['id_user']
+    user = models.profile.objects.get(user__id=id_user)
+    balance = models.balance.objects.get(user__id=id_user)
+    affiliate = models.affiliate.objects.get(user__id=id_user)
+
+    dict_user = {
+        'profile': {
+            'id': user.user.id,
+            'full_name': user.full_name,
+            'email': user.user.email,
+            'cpf': user.cpf,
+            'phone': user.phone,
+            'activated': user.user.is_active,
+            'influencer': user.is_influencer,
+
+        },
+        'balance': {
+            'value': api_controller.format_currency_brazilian(balance.value),
+            'permited_withdraw': balance.permited_withdraw,
+        },
+        'affiliate': {
+            'code': affiliate.code,
+            'cpa_percent': int(affiliate.cpa_percent) if affiliate.cpa_percent % 2 == 0 else str(affiliate.cpa_percent).replace('.', ','),
+            'revshare_percent': int(affiliate.revshare_percent) if affiliate.revshare_percent % 2 == 0 else str(affiliate.revshare_percent).replace('.', ','),
+        }
+    }
+
+    return{
+        'metrics': dict_user
+    }
+
+def get_info_affiliates(request, data):
+    data = api_controller.load_to_json(data)
+    id_user = data['id_user']
+    url = request.build_absolute_uri()
+    user = models.profile.objects.get(user__id=id_user)
+    affiliate = models.affiliate.objects.get(user=user.user)
+    profiles = models.profile.objects.filter(affiliate_user=affiliate)
+    deposits = models.deposits.objects.filter(affiliate_user=affiliate, status='approved')
+
+    #Earnings
+    month_now = datetime.datetime.now().month
+    total_earning = 0
+    total_earning_month = 0
+    total_earning_last_month = 0
+
+    #For CPA
+    cpa_deposits = 0
+    cpa_total_earnings = 0
+    cpa_total_earnings_month = 0
+    cpa_percent = affiliate.cpa_percent / 100
+
+    #For Revenue Share
+    revshare_count = 0
+    revshare_total_earnings = 0
+    revshare_total_earnings_month = 0
+    revshare_percent = affiliate.revshare_percent / 100
+
+    list_users = []
+
+    for deposit in deposits:
+        if deposit.user not in list_users:
+            selected_percent = cpa_percent
+            cpa_deposits += 1
+            cpa_total_earnings += deposit.value * cpa_percent
+            if deposit.created_at.month == month_now:
+                cpa_total_earnings_month += deposit.value * cpa_percent
+            list_users.append(deposit.user)
+        else:
+            selected_percent = revshare_percent
+            revshare_total_earnings += deposit.value * revshare_percent
+            if deposit.created_at.month == month_now:
+                revshare_total_earnings_month += deposit.value * revshare_percent
+                revshare_count += 1
+
+        total_earning += deposit.value * selected_percent
+        if deposit.created_at.month == month_now:
+            total_earning_month += deposit.value * selected_percent
+        elif deposit.created_at.month == month_now - 1:
+            total_earning_last_month += deposit.value * selected_percent
+    
+    profile = models.profile.objects.get(user=user.user)
+    full_name = profile.full_name if profile.full_name != '' or profile.full_name != None else 'Usuário'
+    data = {
+        'full_name': full_name,
+        'code': affiliate.code,
+        'link': url + '?affiliate=' + affiliate.code,
+        'total_earning': api_controller.format_currency_brazilian(total_earning),
+        'total_earning_month': api_controller.format_currency_brazilian(total_earning_month),
+        'total_earning_last_month': api_controller.format_currency_brazilian(total_earning_last_month),
+        'cpa_percent': int(affiliate.cpa_percent),
+        'cpa_count': len(profiles),
+        'cpa_deposits': int(cpa_deposits),
+        'cpa_total_earnings': api_controller.format_currency_brazilian(cpa_total_earnings),
+        'cpa_total_earnings_month': api_controller.format_currency_brazilian(cpa_total_earnings_month),
+        'revshare_percent': int(affiliate.revshare_percent),
+        'revshare_count': int(revshare_count),
+        'revshare_total_earnings': api_controller.format_currency_brazilian(revshare_total_earnings),
+        'revshare_total_earnings_month': api_controller.format_currency_brazilian(revshare_total_earnings_month),
+    }
+
+    status = 200
+    status_boolean = True
+    message = 'Usuário encontrado com sucesso!'
+    data = data
+    
+    return{
+        'status': status,
+        'status_boolean': status_boolean,
+        'message': message,
+        'data': data
+    }
+
+
 def api_update_withdraw(data):
     data = api_controller.load_to_json(data)
     id_withdraw = data['id']

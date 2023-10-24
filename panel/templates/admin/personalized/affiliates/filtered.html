@@ -1,0 +1,19 @@
+{%for user in users%}
+    <div class="item-users table-row">
+        <div class="table-column table-column-result column-id">
+            <span class="id-user">{{user.id}}</span>
+            <div class="oculted-infos" style="display:none;">
+                
+            </div>
+        </div>
+        <div class="table-column table-column-result">
+            <span>{{user.full_name}}</span>
+        </div>
+        <div class="table-column table-column-result result-email">
+            <span>{{user.email}}</span>
+        </div>
+        <div class="table-column table-column-result no-mobile">
+            <span>R$ {{user.balance}}</span>
+        </div>
+    </div>
+{%endfor%}

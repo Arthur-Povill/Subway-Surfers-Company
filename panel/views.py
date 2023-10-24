@@ -25,11 +25,10 @@ def withdraws(request):
         return redirect('/')
     
 def affiliates(request):
-    return redirect('/panel')
-    '''if request.user.is_authenticated and request.user.is_superuser:
-        return render(request, 'admin/default-admin/withdraws.html')
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, 'admin/default-admin/affiliates.html')
     else:
-        return redirect('/')'''
+        return redirect('/')
     
 def configs(request):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -67,6 +66,24 @@ def get_info_user(request):
         data = request.body.decode('utf-8')
         response = controller.get_info_user(data)
         return render(request, 'admin/personalized/users/info.html', response)
+    else:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
+    
+def get_affiliates(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = request.body.decode('utf-8')
+        response = controller.get_affiliates(data)
+        return render(request, 'admin/personalized/affiliates/filtered.html', response)
+    else:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
+
+def get_info_affiliates(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = request.body.decode('utf-8')
+        response = controller.get_info_affiliates(request, data)
+        data = response['data']
+        print(data)
+        return render(request, 'admin/personalized/affiliates/info.html', data)
     else:
         return JsonResponse({'error': 'Not authorized'}, status=401)
 
