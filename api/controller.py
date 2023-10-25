@@ -217,12 +217,13 @@ def verify_infos(target, value):
                 message = 'Nome incompleto não possui nome e sobrenome!'
                 data = {}
         elif target == 'phone':
-            if len(value) >= 10 and len(value) <= 12:
+            desformated_value = value.repalce('(', '').replace(')', '').replace('-', '').replace(' ', '')
+            if len(desformated_value) >= 10 and len(desformated_value) <= 12:
                 verify_created = True
             else:
                 status = 400
                 status_boolean = False
-                message = 'Telefone não possui 11 caracteres!'
+                message = 'Insira um telefone válido!'
                 data = {}
         elif target == 'cpf':
             if len(value) >= 11:
@@ -1471,7 +1472,6 @@ def api_update_phone(request, data, encrypted=True):
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
                 profile = admin_models.profile.objects.filter(user=request.user).first()
-                profile.vanish = True
                 data_sms = {
                     'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
                     'name': profile.full_name,
