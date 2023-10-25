@@ -1465,12 +1465,17 @@ def api_update_phone(request, data, encrypted=True):
     else:
         data = load_to_json(data)
 
+    print(data)
     phone = data['phone']
+    name = data['name']
+    print(name, phone)
     profile = admin_models.profile.objects.filter(user=request.user).first()
     if profile.phone == None or profile.phone == '':
         verify_phone = verify_infos('phone', phone)
         if verify_phone['status_boolean']:
-            profile.phone = phone
+            profile.full_name = name
+            profile.phone = phone.replace(' ', '')
+            profile.save()
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
                 profile = admin_models.profile.objects.filter(user=request.user).first()
@@ -1480,13 +1485,15 @@ def api_update_phone(request, data, encrypted=True):
                     'phone': profile.phone,
                     'email': profile.email
                 }
-                smsFunnel.integratySmsFunnel().send(data_sms)
-            profile.save()
+                response = smsFunnel.integratySmsFunnel().send(data_sms)
+                print(response)
+
             status = 200
             status_boolean = True
             message = 'Telefone atualizado com sucesso!'
             data = {}
         else:
+            print('Error aqui: ', verify_phone['status'])
             status = verify_phone['status']
             status_boolean = verify_phone['status_boolean']
             message = verify_phone['message']

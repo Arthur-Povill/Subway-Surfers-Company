@@ -131,7 +131,7 @@
       </div>
       <section class="alert-main">
          {%include 'app-structure/components/alerts/card-alert-0887.html'%}
-     </section>
+      </section>
      {%if is_admin%}
       <div class="containers-btns-floating">
          <div class="btn-admin-container">
@@ -268,6 +268,12 @@
                      </div>
                      <div class="width-phone-input">
                         <div class="container-phone-input">
+                           <span>Seu Nome</span>
+                           <div class="box-input-phone">
+                              <input id="name" class="input-name" placeholder="Jeredy Fonseca">
+                           </div>
+                        </div>
+                        <div class="container-phone-input">
                            <span>Seu telefone</span>
                            <div class="box-input-phone">
                               <input id="phone" class="input-phone" placeholder="(99) 99999-9999">
@@ -299,7 +305,7 @@
             }
             .popup-phone{
                width: 30rem;
-               height: 30rem;
+               height: 35rem;
                background-color: #fff;
                border-radius: 1rem;
                box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
@@ -338,10 +344,11 @@
                flex-direction: column;
                justify-content: center;
                align-items: center;
-               margin-top: 1rem;
+               margin-top: 1.5rem;
             }
             .container-phone-input{
                user-select: none;
+               margin: .5rem 0;
             }
             .container-phone-input span{
                font-size: 1.15rem;
@@ -399,7 +406,7 @@
                }
             }
          </style>
-         <script type="module" src='{%static "js/app-structure/personalized/get-phone.js"%}'></script>
+         <script type="module" src='{%static "js/app-structure/personalized/get-phone-min-9823.js"%}'></script>
       {%endif%}
       <script>
          var dynamicStaticFile = "{{static_url}}";

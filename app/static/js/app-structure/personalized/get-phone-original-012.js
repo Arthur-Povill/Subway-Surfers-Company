@@ -3,6 +3,7 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
 
     document.getElementsByClassName('btn-confim-phone')[0].addEventListener('click', function() {
         var phone = document.getElementById('phone').value;
+        var name = document.getElementById('name').value;
         if(phone !== ''){
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/api/v1/my/profile/update/phone', true);
@@ -12,6 +13,7 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
             }
             xhr.setRequestHeader('Content-Type', 'application/json');
             let data = {
+                'name': name,
                 'phone': phone
             }
             let data_obfuscated = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
