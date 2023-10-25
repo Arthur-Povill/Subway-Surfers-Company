@@ -515,10 +515,11 @@ def api_signup(request, data, encrypted=True):
                         user_profile.password = password
                         user_profile.cpf = ''
                         user_profile.full_name = ''
-                        print(afilliated_code)
                         if afilliated_code != '':
-                            afilliated = admin_models.affiliate.objects.filter(code=afilliated_code).first()
-                            user_profile.affiliate_user = afilliated
+                            afilliated = admin_models.affiliate.objects.filter(code=afilliated_code)
+                            if afilliated.exists():
+                                afilliated = afilliated.first()
+                                user_profile.affiliate_user = afilliated
                         user_profile.save()
 
                         user_affiliate = admin_models.affiliate.objects.filter(user=user).first()
@@ -876,8 +877,6 @@ def get_info_deposit(request, data, encrypted=True):
         status = 200
         status_boolean = True
         message = 'Deposito encontrado com sucesso!'
-        #print(timezone.now().strftime('%d/%m/%Y %H:%M:%S'))
-        #print(deposit.created_at.strftime('%d/%m/%Y %H:%M:%S'))
         data = {
             'qr_code': deposit.qr_code,
             'value': format_currency_brazilian(deposit.value),
@@ -1465,10 +1464,8 @@ def api_update_phone(request, data, encrypted=True):
     else:
         data = load_to_json(data)
 
-    print(data)
     phone = data['phone']
     name = data['name']
-    print(name, phone)
     profile = admin_models.profile.objects.filter(user=request.user).first()
     if profile.phone == None or profile.phone == '':
         verify_phone = verify_infos('phone', phone)
@@ -1486,14 +1483,12 @@ def api_update_phone(request, data, encrypted=True):
                     'email': profile.email
                 }
                 response = smsFunnel.integratySmsFunnel().send(data_sms)
-                print(response)
 
             status = 200
             status_boolean = True
             message = 'Telefone atualizado com sucesso!'
             data = {}
         else:
-            print('Error aqui: ', verify_phone['status'])
             status = verify_phone['status']
             status_boolean = verify_phone['status_boolean']
             message = verify_phone['message']

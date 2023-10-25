@@ -58,10 +58,11 @@ function getCSRFToken() {
 
 function enabledPopupAlert(alertMessage, alertLink=''){
     if(alertLink !== '' && alertLink !== null && alertLink !== undefined){
+        var static_files = document.getElementById('dynamicStaticFile').value;
         if(alertLink === 'correct.png'){
-            document.getElementById('alert-main-error-img').setAttribute('src', 'https://thisfarias.com/fruitCash_223220/static/' + 'image/app-structure/alerts/' + alertLink);
+            document.getElementById('alert-main-error-img').setAttribute('src', static_files  + 'image/app-structure/alerts/' + alertLink);
         }else{
-            document.getElementById('alert-main-error-img').setAttribute('src', 'https://thisfarias.com/fruitCash_223220/static/' + 'image/app-structure/alerts/' + 'alert.png');
+            document.getElementById('alert-main-error-img').setAttribute('src', static_files  + 'image/sharkbot/alerts/' + 'error.png');
         }
     }else if(alertLink === null || alertLink === undefined){
         document.getElementById('alert-main-error-img').style.display = 'none';
