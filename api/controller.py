@@ -217,7 +217,7 @@ def verify_infos(target, value):
                 message = 'Nome incompleto não possui nome e sobrenome!'
                 data = {}
         elif target == 'phone':
-            if len(value) >= 11:
+            if len(value) >= 10 and len(value) <= 12:
                 verify_created = True
             else:
                 status = 400
