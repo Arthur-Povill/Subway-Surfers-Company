@@ -217,7 +217,7 @@ def verify_infos(target, value):
                 message = 'Nome incompleto não possui nome e sobrenome!'
                 data = {}
         elif target == 'phone':
-            desformated_value = value.repalce('(', '').replace(')', '').replace('-', '').replace(' ', '')
+            desformated_value = str(value).replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
             if len(desformated_value) >= 10 and len(desformated_value) <= 12:
                 verify_created = True
             else:
@@ -435,10 +435,8 @@ def api_signup(request, data, encrypted=True):
                                             user_profile.email = email
                                             user_profile.password = password
                                             user_profile.cpf = cpf
-                                            user_profile.full_name = full_name
-                                            if afilliated_code != '':
-                                                afilliated = admin_models.affiliate.objects.filter(code=afilliated_code).first()
-                                                user_profile.affiliate_user = afilliated
+                                            
+                                                
                                             
                                             user_profile.save()
 
@@ -517,6 +515,10 @@ def api_signup(request, data, encrypted=True):
                         user_profile.password = password
                         user_profile.cpf = ''
                         user_profile.full_name = ''
+                        print(afilliated_code)
+                        if afilliated_code != '':
+                            afilliated = admin_models.affiliate.objects.filter(code=afilliated_code).first()
+                            user_profile.affiliate_user = afilliated
                         user_profile.save()
 
                         user_affiliate = admin_models.affiliate.objects.filter(user=user).first()
