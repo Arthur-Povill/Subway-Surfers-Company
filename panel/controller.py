@@ -221,9 +221,12 @@ def get_users(data=None):
         item['influencer'] = profile.is_influencer
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
         item['permited_withdraw'] = balance.permited_withdraw
+        item['created_at'] = profile.created_at.strftime('%d/%m/%Y %H:%M:%S')
         deposits = models.deposits.objects.filter(user=profile.user, status='approved')
         item['deposited'] = True if len(deposits) > 0 else False
         dict_users.append(item)
+
+    dict_users = sorted(dict_users, key=lambda k: k['created_at'], reverse=True)
     
     return {
         'users': dict_users

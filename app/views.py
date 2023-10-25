@@ -106,6 +106,12 @@ def partnership(request):
     else:
         return redirect('/auth/register')
     
+def join(request, code):
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        return redirect('/auth/register?affiliate=' + code)
+    
 def referral(request):
     if request.user.is_authenticated:
         data = controller.data_application()

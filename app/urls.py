@@ -9,6 +9,7 @@ urlpatterns = [
     path('auth/logout', views.logout, name='logout'),
     path('cashier/withdraw', views.withdraw, name='withdraw'),
     path('partnership/', views.partnership, name='partnership'),
+    path('join/<str:code>', views.join, name='join'),
     path('referral/', views.referral, name='referral'),
     path('deposit/', views.deposit, name='deposit'),
     path('deposit/<str:id>', views.deposit_info, name='deposit'),

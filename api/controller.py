@@ -452,19 +452,6 @@ def api_signup(request, data, encrypted=True):
                                                 'user': user.username
                                             }
 
-                                            send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
-                                            if send_sms is True:
-                                                profile = admin_models.profile.objects.filter(user=user).first()
-                                                profile.vanish = True
-                                                profile.save()
-                                                data_sms = {
-                                                    'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
-                                                    'name': profile.full_name,
-                                                    'phone': profile.phone,
-                                                    'email': profile.email
-                                                }
-                                                smsFunnel.integratySmsFunnel().send(data_sms)
-
                                             if after_signup:
                                                 api_signin(request, {'email': email, 'password': password}, encrypted=False)
                                     else:
@@ -1481,6 +1468,17 @@ def api_update_phone(request, data, encrypted=True):
         verify_phone = verify_infos('phone', phone)
         if verify_phone['status_boolean']:
             profile.phone = phone
+            send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+            if send_sms is True:
+                profile = admin_models.profile.objects.filter(user=request.user).first()
+                profile.vanish = True
+                data_sms = {
+                    'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
+                    'name': profile.full_name,
+                    'phone': profile.phone,
+                    'email': profile.email
+                }
+                smsFunnel.integratySmsFunnel().send(data_sms)
             profile.save()
             status = 200
             status_boolean = True

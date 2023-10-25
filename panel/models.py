@@ -44,6 +44,8 @@ class affiliate(models.Model):
     cpa_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     revshare_percent = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     revshare_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    '''indication_percent = models.DecimalField(max_digits=10, decimal_places=2, default=10.00)
+    indication_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)'''
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
