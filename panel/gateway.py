@@ -8,8 +8,10 @@ def selected_gateway():
     gateway = models.configsApplication.objects.get(name='gateway_name')
     if gateway.value == 'paggue':
         return paggue()
-    if gateway.value == 'primepag':
+    elif gateway.value == 'primepag':
         return primepag()
+    elif gateway.value == 'ezzepay':
+        return ezzepay()
     else:
         return None
 
@@ -199,26 +201,25 @@ class primepag:
 
 class ezzepay:
     def __init__(self):
-        if settings.DEBUG:
-            environment = 'https://api.ezzebank.com' #production
-        else:
-            environment = '	https://api-sandbox.ezzebank.com' #sandbox
+        '''if settings.DEBUG:
+            environment = 'https://api-sandbox.ezzebank.com/v2/' #sandbox
+        else:'''
+        environment = 'https://api.ezzebank.com/v2/' #production
 
         self.base_url = environment
         endpoint = 'oauth/token'
         url = self.base_url + endpoint
         client_key = models.configsApplication.objects.get(name='gateway_key')
         client_secret = models.configsApplication.objects.get(name='gateway_secret')
-        client_key = 'eyJpZCI6IjY5ZmNhYWUyLTU3YzUtMTFlZS05YWUyLTQyMDEwYTk2MDAwYiIsIm5hbWUiOiJQQVVMTyBSSUNBUkRPIERVQVJURSBGRVJSRUlSQSAwODUyMDM4ODUyMyJ9'
-        client_secret = 'wydvoRHqzgX2b6YJk0CAVLucxDTBMShiaQ1EWZOr'
         string_auth = client_key.value + ':' + client_secret.value
         string_auth_encoded = string_auth.encode('ascii')
+        auth_string = base64.b64encode(string_auth_encoded).decode('ascii')
         headers = {
-            'Authorization': 'Basic {}'.format(string_auth_encoded),
+            'Authorization': 'Basic {}'.format(auth_string),
         }
 
         data = {
-            'form': 'grant_type="client_credentials"'
+            'grant_type': 'client_credentials'
         }
 
 
@@ -227,33 +228,45 @@ class ezzepay:
         self.response_login = response.json()
 
         self.s.headers.update({
-            'Authorization': 'Bearer {}'.format(self.response_login['access_token']),
-            'X-Company-ID': str(self.response_login['user']['companies'][0]['id'])
+            'Authorization': 'Bearer {}'.format(self.response_login['access_token'])
         })
 
     def post(self, data):
-        endpoint = 'billing_order'
+        endpoint = 'pix/qrcode'
         url = self.base_url + endpoint
+        external_id = data['cpf'] + ':' + data['external_id'][0:15]
         payload = {
-            "payer_name": data['full_name'],
-            "amount": int(data['value'] * 100),
-            "external_id": data['external_id'],
-            "description": data['description']
+            "amount": data['value'],
+            "external_id": external_id,
+            "description": data['description'],
+            'payer':{
+                'name': data['full_name'],
+                'document': data['cpf'],
+            }
         }
         response = self.s.post(url, json=payload)
         details_response = response.json()
+        formated_dict = {
+            'payment': details_response['emvqrcps'],
+            'external_id': details_response['external_id'],
+        }
 
-        return details_response
+        return formated_dict
     
     def send(self, data):
-        endpoint = 'cash-out'
+        endpoint = 'pix/payment'
         url = self.base_url + endpoint
+        cpf = data['pix_key'].replace('.', '').replace('-', '')
         payload = {
             'external_id': data['external_id'],
-            'amount': int(data['value'] * 100),
-            'type': 1,
-            'pix_key': data['pix_key'],
-            'description': data['description']
+            'amount': data['value'],
+            'description': data['description'],
+            'creditParty': {
+                "name": data['full_name'],
+                "keyType": 'CPF',
+                "key": cpf,
+                "taxId": cpf
+            }
         }
         response = self.s.post(url, json=payload)
         details_response = response.json()
@@ -270,7 +283,7 @@ class ezzepay:
     
     def compare(self, value):
         response = self.balance()
-        balance = int(response['available_value'])
+        balance = int(response['balance'])
         value = int(float(value) * 100)
         if balance >= value:
             return True
@@ -280,17 +293,19 @@ class ezzepay:
     def webhook(self, data):
         data =  api_controller.load_to_json(data)
 
+        data = data['requestBody']
         external_id = data['external_id']
         amount = data['amount']
-        status = int(data['status'])
-        if status == 0:
-            status = 'pending'
-        elif status == 1:
-            status = 'approved'
-        elif status == 2 or status == 5:
-            status = 'canceled'
+        if 'statusCode' in data:
+            status = int(data['statusCode']['statusId'])
+            if status == 2:
+                status = 'approved'
+            elif status == 9999 or status == 3:
+                status = 'canceled'
+            else:
+                status = 'in_progress'
         else:
-            status = 'in_progress'
+            status = 'pending'
 
         return {
             'external_id': external_id,

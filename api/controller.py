@@ -745,14 +745,16 @@ def api_info_affiliates(request):
         'total_earning_month': format_currency_brazilian(total_earning_month),
         'total_earning_last_month': format_currency_brazilian(total_earning_last_month),
         'cpa_percent': int(affiliate.cpa_percent),
-        'cpa_count': cpa_count,
+        #'cpa_count': cpa_count,
+        'cpa_count': format_currency_brazilian(affiliate.cpa_total),
         'cpa_deposits': int(cpa_deposits),
         'cpa_total_earnings': format_currency_brazilian(cpa_total_earnings),
         'cpa_total_earnings_month': format_currency_brazilian(cpa_total_earnings_month),
         'indication_percent': int(affiliate.indication_percent),
         'indication_count': format_currency_brazilian(affiliate.indication_total),
         'revshare_percent': int(affiliate.revshare_percent),
-        'revshare_count': int(revshare_count),
+        #'revshare_count': int(revshare_count),
+        'revshare_count': format_currency_brazilian(affiliate.revshare_total),
         'revshare_total_earnings': format_currency_brazilian(revshare_total_earnings),
         'revshare_total_earnings_month': format_currency_brazilian(revshare_total_earnings_month),
         'value': format_currency_brazilian(balance.value),
@@ -959,6 +961,7 @@ def api_new_deposit(request, data, encrypted=True):
         gateway_selected = gateway.selected_gateway()
         response = gateway_selected.post({
             'full_name': 'Jogo da Frutinha - {}'.format(player_name),
+            'cpf': cpf,
             'value': value,
             'external_id': external_id,
             'description': description
@@ -1402,9 +1405,9 @@ def webhook_deposit(data):
     status = data['status']
     amount = data['amount']
 
-    query = admin_models.deposits.objects.filter(external_id=external_id)
-    if query.exists():
-        deposit = query.first()
+    deposit_query = admin_models.deposits.objects.filter(external_id=external_id)
+    if deposit_query.exists():
+        deposit = deposit_query.first()
         deposit.status = status
         if status == 'approved':
             balance = admin_models.balance.objects.get(user=deposit.user)
@@ -1422,14 +1425,6 @@ def webhook_deposit(data):
             balance.value = balance.value + value
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
-                '''profile = admin_models.profile.objects.filter(user=deposit.user).first()
-                if profile.vanish is True:
-                    profile.vanish = False
-                    profile.affiliate_user = None
-                    deposit.affiliate_user = None
-                    profile.save()
-                    deposit.save()'''
-
                 filter_sms = admin_models.smsFunnel.objects.filter(external_id=external_id)
                 if filter_sms.exists():
                     data_sms = {
@@ -1442,23 +1437,34 @@ def webhook_deposit(data):
                 smsFunnel.integratySmsFunnel().send(data_sms)
                     
             if deposit.affiliate_user != None and profile.affiliate_user != None:
-                user = User.objects.get(email=deposit.affiliate_user)
-                affiliated = admin_models.affiliate.objects.get(user=user)
-                balance_affiliated = admin_models.balance.objects.get(user=affiliated.user)
-                approved_deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
-                if approved_deposits.count() > 1:
-                    calculation = (deposit.value * (affiliated.revshare_percent / 100))
-                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
+                user_main_affiliate = User.objects.get(email=deposit.affiliate_user)
+                affiliated_main = admin_models.affiliate.objects.get(user=user_main_affiliate)
+                balance_affiliated_main = admin_models.balance.objects.get(user=affiliated_main.user)
+                if deposits.count() > 1:
+                    calculation = (deposit.value * (affiliated_main.revshare_percent / 100))
+                    balance_affiliated_main.value_affiliate = balance_affiliated_main.value_affiliate + calculation
+                    affiliated_main.revshare_total += calculation
                 else:
-                    profile = admin_models.profile.objects.get(user=deposit.user)
                     cpa_value = 18 if profile.is_influencer is True else 16
-                    user_affiliate = User.objects.get(email=profile.affiliate_user)
-                    affiliate = admin_models.affiliate.objects.get(user=user_affiliate)
-                    calculation = (deposit.value * (affiliate.indication_percent / 100))
+                    calculation = (deposit.value * (affiliated_main.cpa_percent / 100))
                     if calculation > cpa_value:
                         calculation = cpa_value
-                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
-                balance_affiliated.save()
+                    balance_affiliated_main.value_affiliate = balance_affiliated_main.value_affiliate + calculation
+                    affiliated_main.cpa_total += calculation
+
+                    profile_affiliated_main = admin_models.profile.objects.get(user=affiliated_main.user)
+                    if profile_affiliated_main.affiliate_user != None:
+                        user_father = User.objects.get(email=profile_affiliated_main.affiliate_user)
+                        balance_affiliated_father= admin_models.balance.objects.get(user=user_father)
+                        affiliated_father = admin_models.affiliate.objects.get(user=user_father)
+                        calculation = (deposit.value * (affiliated_father.indication_percent / 100))
+                        balance_affiliated_father.value_affiliate = balance_affiliated_father.value_affiliate + calculation
+                        affiliated_father.indication_total += calculation
+                        balance_affiliated_father.save()
+                        affiliated_father.save()
+
+                affiliated_main.save()
+                balance_affiliated_main.save()
             balance.save()
             
         deposit.save()
