@@ -29,7 +29,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitgrana-production.up.railway.app',
     'www.fruitgrana.com',
-    'fruitgrana.com'
+    'fruitgrana.com',
+    #'9a91-186-236-87-65.ngrok-free.app'
 ]
 
 
@@ -38,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://fruitgrana-production.up.railway.app',
     'https://www.fruitgrana.com',
     'https://fruitgrana.com',
+    'https://9a91-186-236-87-65.ngrok-free.app'
 ]
 
 # Application definition

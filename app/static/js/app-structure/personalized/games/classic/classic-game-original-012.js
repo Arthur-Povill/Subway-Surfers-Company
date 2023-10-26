@@ -5946,7 +5946,8 @@ document.addEventListener('DOMContentLoaded', function() {
             var buzz = require("scripts/lib/buzz");
             function ClassBuzz(src) {
                 this.sound = new buzz.sound(src,{
-                    formats: ["ogg", "mp3"],
+                    //formats: ["ogg", "mp3"],
+                    formats: ["mp3"],
                     preload: true,
                     autoload: true,
                     loop: false
@@ -13895,7 +13896,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     var buzz = require("scripts/lib/buzz");
                     function ClassBuzz(src) {
                         this.sound = new buzz.sound(src,{
-                            formats: ["ogg", "mp3"],
+                            qqformats: ["ogg", "mp3"],
+                            formats: ["mp3"],
                             preload: true,
                             autoload: true,
                             loop: false

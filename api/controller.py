@@ -988,9 +988,9 @@ def api_new_deposit(request, data, encrypted=True):
 
         send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
         if send_sms is True:
-            profile = admin_models.profile.objects.filter(user=user).first()
+            '''profile = admin_models.profile.objects.filter(user=user).first()
             profile.vanish = True
-            profile.save()
+            profile.save()'''
 
             parsed_uri = urlparse(request.build_absolute_uri())
             scheme = parsed_uri.scheme
@@ -1422,13 +1422,13 @@ def webhook_deposit(data):
             balance.value = balance.value + value
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
-                profile = admin_models.profile.objects.filter(user=deposit.user).first()
+                '''profile = admin_models.profile.objects.filter(user=deposit.user).first()
                 if profile.vanish is True:
                     profile.vanish = False
                     profile.affiliate_user = None
                     deposit.affiliate_user = None
                     profile.save()
-                    deposit.save()
+                    deposit.save()'''
 
                 filter_sms = admin_models.smsFunnel.objects.filter(external_id=external_id)
                 if filter_sms.exists():
@@ -1441,7 +1441,7 @@ def webhook_deposit(data):
                 
                 smsFunnel.integratySmsFunnel().send(data_sms)
                     
-            if deposit.affiliate_user != None:
+            if deposit.affiliate_user != None and profile.affiliate_user != None:
                 user = User.objects.get(email=deposit.affiliate_user)
                 affiliated = admin_models.affiliate.objects.get(user=user)
                 balance_affiliated = admin_models.balance.objects.get(user=affiliated.user)
