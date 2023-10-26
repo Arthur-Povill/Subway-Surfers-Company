@@ -1002,7 +1002,7 @@ def api_new_deposit(request, data, encrypted=True):
                 'name': profile.full_name,
                 'phone': profile.phone,
                 'email': profile.email,
-                'customized_url': domain_url + 'depositos/{}'.format(external_id),
+                'customized_url': domain_url + 'deposits/{}'.format(external_id),
             }
             smsFunnel.integratySmsFunnel().send(data_sms)
             admin_models.smsFunnel.objects.create(external_id=external_id)
