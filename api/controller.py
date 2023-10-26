@@ -20,6 +20,7 @@ import secrets
 import qrcode
 import io
 from PIL import Image
+from urllib.parse import urlparse
 
 '''
     ----------- Defaults Vars, lists and Dict  ------------
@@ -698,6 +699,10 @@ def api_info_affiliates(request):
     total_earning_last_month = 0
 
     #For CPA
+    cpa_count = 0
+    for profile in profiles:
+        if admin_models.deposits.objects.filter(user=profile.user, status='approved').exists():
+            cpa_count += 1
     cpa_deposits = 0
     cpa_total_earnings = 0
     cpa_total_earnings_month = 0
@@ -731,7 +736,8 @@ def api_info_affiliates(request):
             total_earning_month += deposit.value * selected_percent
         elif deposit.created_at.month == month_now - 1:
             total_earning_last_month += deposit.value * selected_percent
-                
+
+    balance = admin_models.balance.objects.filter(user=request.user).first()         
     data = {
         'code': affiliate.code,
         'link': url.replace('partnership/', '') + 'join/' + affiliate.code,
@@ -739,14 +745,18 @@ def api_info_affiliates(request):
         'total_earning_month': format_currency_brazilian(total_earning_month),
         'total_earning_last_month': format_currency_brazilian(total_earning_last_month),
         'cpa_percent': int(affiliate.cpa_percent),
-        'cpa_count': len(profiles),
+        'cpa_count': cpa_count,
         'cpa_deposits': int(cpa_deposits),
         'cpa_total_earnings': format_currency_brazilian(cpa_total_earnings),
         'cpa_total_earnings_month': format_currency_brazilian(cpa_total_earnings_month),
+        'indication_percent': int(affiliate.indication_percent),
+        'indication_count': format_currency_brazilian(affiliate.indication_total),
         'revshare_percent': int(affiliate.revshare_percent),
         'revshare_count': int(revshare_count),
         'revshare_total_earnings': format_currency_brazilian(revshare_total_earnings),
         'revshare_total_earnings_month': format_currency_brazilian(revshare_total_earnings_month),
+        'value': format_currency_brazilian(balance.value),
+        'value_affiliate': format_currency_brazilian(balance.value_affiliate),
     }
 
     status = 200
@@ -981,12 +991,18 @@ def api_new_deposit(request, data, encrypted=True):
             profile = admin_models.profile.objects.filter(user=user).first()
             profile.vanish = True
             profile.save()
+
+            parsed_uri = urlparse(request.build_absolute_uri())
+            scheme = parsed_uri.scheme
+            domain = parsed_uri.netloc
+            domain_url = f"{scheme}://{domain}/"
+
             data_sms = {
                 'webhook': admin_models.configsApplication.objects.filter(name='pix_generated').first().value,
                 'name': profile.full_name,
                 'phone': profile.phone,
                 'email': profile.email,
-                'customized_url': request.build_absolute_uri() + 'depositos/{}'.format(external_id),
+                'customized_url': domain_url + 'depositos/{}'.format(external_id),
             }
             smsFunnel.integratySmsFunnel().send(data_sms)
             admin_models.smsFunnel.objects.create(external_id=external_id)
@@ -1146,11 +1162,16 @@ def api_game_new(request, data, encrypted=True):
         profile = admin_models.profile.objects.filter(user=request.user).first()
         if profile.is_influencer is False and balance_value < 1:
             external_id = 'recovery_user_' + str(profile.cpf)
+            parsed_uri = urlparse(request.build_absolute_uri())
+            scheme = parsed_uri.scheme
+            domain = parsed_uri.netloc
+            domain_url = f"{scheme}://{domain}/"
             data_sms = {
                 'webhook': admin_models.configsApplication.objects.filter(name='recovery_user').first().value,
                 'name': profile.full_name,
                 'phone': profile.phone,
-                'email': profile.email
+                'email': profile.email,
+                'customized_url': domain_url + 'deposit',
             }
             smsFunnel.integratySmsFunnel().send(data_sms)
             admin_models.smsFunnel.objects.create(external_id=external_id)
@@ -1421,8 +1442,7 @@ def webhook_deposit(data):
                 smsFunnel.integratySmsFunnel().send(data_sms)
                     
             if deposit.affiliate_user != None:
-                email = str(deposit.affiliate_user)
-                user = User.objects.get(email=email)
+                user = User.objects.get(email=deposit.affiliate_user)
                 affiliated = admin_models.affiliate.objects.get(user=user)
                 balance_affiliated = admin_models.balance.objects.get(user=affiliated.user)
                 approved_deposits = admin_models.deposits.objects.filter(user=deposit.user, status='approved')
@@ -1430,7 +1450,15 @@ def webhook_deposit(data):
                     calculation = (deposit.value * (affiliated.revshare_percent / 100))
                     balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
                 else:
-                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + 16
+                    profile = admin_models.profile.objects.get(user=deposit.user)
+                    cpa_value = 18 if profile.is_influencer is True else 16
+                    user_affiliate = User.objects.get(email=profile.affiliate_user)
+                    affiliate = admin_models.affiliate.objects.get(user=user_affiliate)
+                    calculation = (deposit.value * (affiliate.indication_percent / 100))
+                    if calculation > cpa_value:
+                        calculation = cpa_value
+                    balance_affiliated.value_affiliate = balance_affiliated.value_affiliate + calculation
+                balance_affiliated.save()
             balance.save()
             
         deposit.save()
@@ -1476,11 +1504,16 @@ def api_update_phone(request, data, encrypted=True):
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
                 profile = admin_models.profile.objects.filter(user=request.user).first()
+                parsed_uri = urlparse(request.build_absolute_uri())
+                scheme = parsed_uri.scheme
+                domain = parsed_uri.netloc
+                domain_url = f"{scheme}://{domain}/"
                 data_sms = {
                     'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
                     'name': profile.full_name,
                     'phone': profile.phone,
-                    'email': profile.email
+                    'email': profile.email,
+                    'customized_url': domain_url + 'deposit',
                 }
                 response = smsFunnel.integratySmsFunnel().send(data_sms)
 

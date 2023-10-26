@@ -40,12 +40,12 @@ class affiliate(models.Model):
     personalized_code = models.CharField(max_length=30, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     total_earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    cpa_percent = models.DecimalField(max_digits=10, decimal_places=2, default=10.00)
+    cpa_percent = models.DecimalField(max_digits=10, decimal_places=2, default=90.00)
     cpa_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     revshare_percent = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     revshare_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    '''indication_percent = models.DecimalField(max_digits=10, decimal_places=2, default=10.00)
-    indication_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)'''
+    indication_percent = models.DecimalField(max_digits=10, decimal_places=2, default=10.00) #new lines 
+    indication_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00) #new lines
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
