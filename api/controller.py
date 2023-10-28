@@ -391,7 +391,10 @@ def api_signup(request, data, encrypted=True):
     full_name = data['full_name']
     phone = data['phone']
     cpf = data['cpf']
-    afilliated_code = data['afilliated_code']
+    if 'afilliated_code' in data:
+        afilliated_code = data['afilliated_code']
+    else:
+        afilliated_code = ''
     
     if 'other' in data:
         other = data['other']
