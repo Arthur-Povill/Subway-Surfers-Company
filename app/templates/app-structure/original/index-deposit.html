@@ -75,10 +75,10 @@
                </div>
             </div>
             <div class="">
-               <a href="javascript:$('#depositAmount').val(15);$('label.val').addClass('ativo');" class="button nav w-button">R$15<br>R$0 BÔNUS</a>
-               <a href="javascript:$('#depositAmount').val(20);$('label.val').addClass('ativo');" class="button nav w-button">R$20<br>R$20 BÔNUS</a>
-               <a href="javascript:$('#depositAmount').val(50);$('label.val').addClass('ativo');" class="button nav w-button">R$50<br>R$60 BÔNUS</a>
-               <a href="javascript:$('#depositAmount').val(100);$('label.val').addClass('ativo');" class="button nav w-button">R$100<br>R$125 BÔNUS</a>
+               <a class="button nav w-button btn-value-deposit" data-type="15">R$15<br>R$0 BÔNUS</a>
+               <a class="button nav w-button btn-value-deposit" data-type="20">R$20<br>R$20 BÔNUS</a>
+               <a class="button nav w-button btn-value-deposit" data-type="50">R$50<br>R$60 BÔNUS</a>
+               <a class="button nav w-button btn-value-deposit" data-type="100">R$100<br>R$125 BÔNUS</a>
                <br><br>
                <br><br>
                <input id="pixgenerator"value="Depositar via PIX" class="primary-button w-button btn-confirm-deposit"><br><br>
@@ -129,6 +129,16 @@
    <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
    <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
    <!--[if lte IE 9]><script src="https://fruitcash.net//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+   <script>
+      btns = document.getElementsByClassName('btn-value-deposit');
+      for(var i = 0; i < btns.length; i++) {
+         btns[i].addEventListener('click', function() {
+            var value = this.getAttribute('data-type');
+            $('#depositAmount').val(parseFloat(value));
+            $('label.val').addClass('ativo');
+         });
+      }
+   </script>
    <script type="text/javascript">
       var hidden = false;
       
