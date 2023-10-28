@@ -441,9 +441,10 @@ def api_signup(request, data, encrypted=True):
                                             
                                             user_profile.save()
 
-                                            user_affiliate = admin_models.affiliate.objects.filter(user=user).first()
-                                            user_affiliate.code = generate_afilliate_code()
-                                            user_affiliate.save()
+                                            if afilliated_code != '' or afilliated_code != None:
+                                                user_affiliate = admin_models.affiliate.objects.filter(user=user).first()
+                                                user_affiliate.code = generate_afilliate_code()
+                                                user_affiliate.save()
 
                                             status = 200
                                             status_boolean = True
