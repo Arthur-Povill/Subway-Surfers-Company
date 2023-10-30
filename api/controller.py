@@ -1195,7 +1195,8 @@ def api_game_new(request, data, encrypted=True):
                     profile.save()
 
         games = admin_models.game.objects.filter(user=request.user, is_finished=False)
-        if profile.in_game is False and games.count == 0:
+        game_count = games.count()
+        if profile.in_game is False and game_count == 0:
             new_game = admin_models.game.objects.create(
                 user=request.user, 
                 bet=value,
@@ -1217,7 +1218,7 @@ def api_game_new(request, data, encrypted=True):
             }
 
         else:
-            profile.in_game = True
+            profile.in_game = False
             profile.save()
             status = 400
             status_boolean = False
@@ -1243,35 +1244,47 @@ def api_game_new(request, data, encrypted=True):
 def api_game_status(request):
     profile = admin_models.profile.objects.filter(user=request.user).first()
     if profile.in_game:
-        game = admin_models.game.objects.filter(user=request.user, is_finished=False)
-        game = game.first()
-        if game.is_started is False:
-            status = 200
-            status_boolean = True
-            message = 'Usuário está com o jogo ativo!'
-            data = {
-                'in_game': profile.in_game,
-                'game': {
-                    'hash_game': game.hash_game,
-                    'value': float(game.bet), 
+        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
+        if games.exists():
+            game = games.first()
+            if game.is_started is False:
+                status = 200
+                status_boolean = True
+                message = 'Usuário está com o jogo ativo!'
+                data = {
+                    'in_game': profile.in_game,
+                    'game': {
+                        'hash_game': game.hash_game,
+                        'value': float(game.bet), 
+                    }
                 }
-            }
-        else:
-            game.is_finished = True
-            game.save()
+            else:
+                game.is_finished = True
+                game.save()
 
+                profile.in_game = False
+                profile.save()
+
+                status = 200
+                status_boolean = True
+                message = 'Usuário está com o jogo ativo!'
+                data = {
+                    'in_game': profile.in_game,
+                    'game': {
+                        'hash_game': game.hash_game,
+                        'value': float(game.bet), 
+                    }
+                }
+        else:
+            for game in games:
+                print(game.id)
             profile.in_game = False
             profile.save()
-
-            status = 200
-            status_boolean = True
-            message = 'Usuário está com o jogo ativo!'
+            status = 400
+            status_boolean = False
+            message = 'Usuário está com o jogo ativo, mas não existe jogo!'
             data = {
                 'in_game': profile.in_game,
-                'game': {
-                    'hash_game': game.hash_game,
-                    'value': float(game.bet), 
-                }
             }
     else:
         status = 400
