@@ -1186,14 +1186,15 @@ def api_game_new(request, data, encrypted=True):
             smsFunnel.integratySmsFunnel().send(data_sms)
             admin_models.smsFunnel.objects.create(external_id=external_id)
             
-        if games.exists():
+        '''if games.exists():
             for game in games:
                 if game.is_started:
                     game.is_finished = True
-                    game.save()
+                    game.save()'''
 
-        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
+        #games = admin_models.game.objects.filter(user=request.user, is_finished=False)
         game_count = games.count()
+        print(game_count, profile.in_game, game_count == 0)
         if profile.in_game is False and game_count == 0:
             new_game = admin_models.game.objects.create(
                 user=request.user, 
@@ -1242,7 +1243,7 @@ def api_game_new(request, data, encrypted=True):
 def api_game_status(request):
     profile = admin_models.profile.objects.filter(user=request.user).first()
     if profile.in_game:
-        games = admin_models.game.objects.filter(user=request.user, is_finished=True)
+        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
         if games.exists():
             game = games.first()
             if game.is_started is False:
@@ -1262,9 +1263,9 @@ def api_game_status(request):
                 game.save()
                 profile.save()
 
-                status = 200
-                status_boolean = True
-                message = 'Usuário está com o jogo ativo!'
+                status = 400
+                status_boolean = False
+                message = 'Usuário está com o jogo inativo!'
                 data = {
                     'in_game': profile.in_game,
                     'game': {
@@ -1307,7 +1308,8 @@ def api_game_update(request, data, encrypted=True):
     else:
         data = load_to_json(data)
     
-
+    print(data)
+    print(profile.in_game)
     if profile.in_game:
         if data['hash_game'] == game.hash_game:
             status_game = data['status']
