@@ -40,10 +40,7 @@ function formatCurrencyBrazilian(number) {
     try {
         number = parseFloat(number);
     } catch (e) {
-        // Trate a exceção, se necessário
     }
-
-    // Formate o número com 2 casas decimais e separadores de milhar e decimal
     let formattedNumber = number.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
 
     return formattedNumber;
@@ -51,7 +48,6 @@ function formatCurrencyBrazilian(number) {
 
 function notification(){
     let list_event = ['deposit', 'withdraw', 'gain'];
-    //let event_notify = list_event[Math.floor(Math.random() * list_event.length)];
     let randomNumber = Math.random();
     let event_notify;
     if (randomNumber < 0.75) {
@@ -69,11 +65,11 @@ function notification(){
     let span = document.createElement('span');
     let html = '';
     if(event_notify == 'deposit'){
-        var value = Math.floor(Math.random() * (120 - 20 + 1)) + 20;
+        var value = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
         value = formatCurrencyBrazilian(value);
         html = '<span class="bolded">' + random_name + '</span> realizou um depósito de <span class="bolded">R$' + value + '<span>';
     }else if(event_notify == 'withdraw'){
-        var value = Math.floor(Math.random() * (500 - 200 + 1)) + 200;
+        var value = Math.floor(Math.random() * (175 - 50 + 1)) + 50;
         value = formatCurrencyBrazilian(value);
         html = '<span class="bolded">' + random_name + '</span> realizou um saque de <span class="bolded">R$' + value + '<span>';
     }else{
@@ -87,8 +83,8 @@ function notification(){
 }
 
 function callNotification(){
-    const minInterval = 2000;
-    const maxInterval = 5000;
+    const minInterval = 4000;
+    const maxInterval = 8000;
     const dynamicInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
     setInterval(notification, dynamicInterval);
 }

@@ -236,29 +236,6 @@
       <div class="follow-test">{{app_email}}</div>
    </div>
    {%block scripts-page%}
-      <script type="text/javascript">
-         var show = true;
-   
-         function showWins() {
-            if (show) {
-               $.post('https://fruitcash.com/game/showwins', {
-                     key: '3rfgg05ls1vl95Fl4E3'
-               }, function(data) {
-                     if (data.indexOf('unK50bCt2N') == -1) {
-                        $('#wins').html(data);
-                     }
-               });
-               show = false;
-            } else {
-               $('#wins').html('...<br>&nbsp;');
-               show = true;
-            }
-         }
-   
-         var lastRank = 'fuitcash';
-   
-         setInterval('showWins()', 3000);
-      </script>
       <script type="module" src='{%static "js/original/game-min-0939.js"%}'></script>
       <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
       <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
