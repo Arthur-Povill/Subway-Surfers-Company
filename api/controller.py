@@ -1307,9 +1307,7 @@ def api_game_update(request, data, encrypted=True):
         data = load_to_json(data)
     else:
         data = load_to_json(data)
-    
-    print(data)
-    print(profile.in_game)
+        
     if profile.in_game:
         if data['hash_game'] == game.hash_game:
             status_game = data['status']
