@@ -137,6 +137,37 @@
       <section class="alert-main">
          {%include 'app-structure/components/alerts/card-alert-0887.html'%}
       </section>
+      <div class="notification-gain">
+         <div class="notification-gain-container"></div>
+      </div>
+      <style>
+         .notification-gain{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 9999;
+            margin-bottom: 1rem;
+         }
+         .notify-gain{
+            width: 14rem;
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--opost-text-color);
+            user-select: none;
+            background-color: var(--light-green);
+            margin: .5rem;
+            padding: .5rem .75rem;
+            box-shadow: 0 0 8px rgba(0,0,0,.8);
+            border-radius: .3rem;
+            font-family: 'Ubuntu', sans-serif;
+         }
+         .bolded{
+            font-weight: bold;
+         }
+      </style>
      {%if is_admin%}
       <div class="containers-btns-floating">
          <div class="btn-admin-container">
@@ -419,6 +450,7 @@
       </script>
      <script type="module" src='{%static "js/app-structure/default-client/funct-min-82092.js"%}'></script>
      <script type="module" src='{%static "js/app-structure/default-client/alert-main-min-23826.js"%}'></script>
+     <script type="module" src='{%static "js/original/generate_notify.js"%}'></script>
      {%csrf_token%}
      {%block scripts-page%}{%endblock%}
      <noscript>

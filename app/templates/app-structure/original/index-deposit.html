@@ -75,10 +75,23 @@
                </div>
             </div>
             <div class="">
-               <a class="button nav w-button btn-value-deposit" data-type="12">R$12<br>R$0 BÔNUS</a>
-               <a class="button nav w-button btn-value-deposit" data-type="20">R$20<br>R$20 BÔNUS</a>
-               <a class="button nav w-button btn-value-deposit" data-type="50">R$50<br>R$60 BÔNUS</a>
-               <a class="button nav w-button btn-value-deposit" data-type="100">R$100<br>R$125 BÔNUS</a>
+               <div class="all-deposits-container">
+                  <div class="btn-deposit-container first-btn-deposit">
+                     <a class="btn-value-deposit" data-type="12">R$12<br>S/ ganhos extras</a>
+                  </div>
+                  <div class="btn-deposit-container popular-btn-deposit">
+                     <div class="popular-text">
+                        <span>mais escolhido</span>
+                     </div>
+                     <a class="btn-value-deposit" data-type="20">R$20<br>Ganhe + R$20</a>
+                  </div>
+                  <div class="btn-deposit-container second-btn-deposit">
+                     <a class="btn-value-deposit" data-type="50">R$50<br>Ganhe + R$60</a>
+                  </div>
+                  <div class="btn-deposit-container third-btn-deposit">
+                     <a class="btn-value-deposit" data-type="100">R$100<br>Ganhe + R$125</a>
+                  </div>
+               </div>
                <br><br>
                <br><br>
                <input id="pixgenerator"value="Depositar via PIX" class="primary-button w-button btn-confirm-deposit"><br><br>
@@ -129,6 +142,58 @@
    <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
    <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
    <!--[if lte IE 9]><script src="https://fruitcash.net//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+   <style>
+      .all-deposits-container{
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         align-items: center;
+      }
+      .btn-deposit-container{
+         width: 10rem;
+         height: 5rem;
+         margin: 0.5rem;
+         border-radius: 0.5rem;
+         box-shadow: 0 0 0.5rem rgba(0,0,0,0.8);
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         cursor: pointer;
+         background-color: #ff3979;
+         transition: all 0.2s ease-in-out;
+         font-weight: bold;
+         color: #fff;
+         overflow: hidden;
+      }
+      .btn-deposit-container:hover{
+         transform: scale(1.1);
+      }
+      .btn-deposit-container a{
+         color: #fff !important;
+         font-family: 'Ubuntu', sans-serif;
+      }
+      .popular-text{
+         width:100%;
+         text-align: center;
+         background-color: #333;
+      }
+      .popular-btn-deposit{
+         background-color: #17B11E;
+         animation: pulse 1s infinite;
+      }
+      .popular-btn-deposit:hover{
+         animation: none;
+      }
+
+      .second-btn-deposit{
+         background-color: #FFC107;
+      }
+
+      .third-btn-deposit{
+         background-color: #1125B8;
+      }
+   </style>
    <script>
       btns = document.getElementsByClassName('btn-value-deposit');
       for(var i = 0; i < btns.length; i++) {

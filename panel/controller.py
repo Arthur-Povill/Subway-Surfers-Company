@@ -203,6 +203,7 @@ def get_users(data=None):
     if data != None and data != '':
         data = api_controller.load_to_json(data)
         query = data['query'].lower()
+        print(query)
         if query == '':
             profiles = models.profile.objects.all()
         else:
@@ -211,7 +212,30 @@ def get_users(data=None):
         profiles = models.profile.objects.all()
 
     dict_users = []
-    for profile in profiles:
+    '''ranged = 50
+    for i in range(ranged):
+        try:
+            profile = profiles[i]
+            balance = models.balance.objects.get(user=profile.user)
+            item = {}
+            item['id'] = profile.user.id
+            item['full_name'] = profile.full_name
+            item['email'] = profile.user.email
+            item['activated'] = profile.user.is_active
+            item['influencer'] = profile.is_influencer
+            item['balance'] = api_controller.format_currency_brazilian(balance.value)
+            item['permited_withdraw'] = balance.permited_withdraw
+            item['created_at'] = profile.created_at.strftime('%d/%m/%Y %H:%M:%S')
+            deposits = models.deposits.objects.filter(user=profile.user, status='approved')
+            item['deposited'] = True if len(deposits) > 0 else False
+            dict_users.append(item)
+        except:
+            break'''
+    
+    #get last 50 users
+    ranged = 50
+    for i in range(len(profiles) - ranged, len(profiles)):
+        profile = profiles[i]
         balance = models.balance.objects.get(user=profile.user)
         item = {}
         item['id'] = profile.user.id
@@ -225,6 +249,7 @@ def get_users(data=None):
         deposits = models.deposits.objects.filter(user=profile.user, status='approved')
         item['deposited'] = True if len(deposits) > 0 else False
         dict_users.append(item)
+
 
     dict_users = sorted(dict_users, key=lambda k: k['created_at'], reverse=True)
     
@@ -335,6 +360,7 @@ def get_affiliates(data=None):
         item['full_name'] = profile.full_name
         item['email'] = profile.user.email
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
+        item['balance_affiliate'] = api_controller.format_currency_brazilian(balance.value_affiliate)
         dict_users.append(item)
     
     return {

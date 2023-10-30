@@ -542,22 +542,22 @@ def api_signup(request, data, encrypted=True):
                             api_signin(request, {'email': email, 'password': password}, encrypted=False)
 
                 else:
-                    status = verify_password['status']
-                    status_boolean = verify_password['status_boolean']
+                    status = 400
+                    status_boolean = False
                     message = verify_password['message']
                     data = verify_password['data']
             else:
-                status = verify_email['status']
-                status_boolean = verify_email['status_boolean']
+                status = 400
+                status_boolean = False
                 message = verify_email['message']
                 data = verify_email['data']
         else:
-            status = verify_email['status']
-            status_boolean = verify_email['status_boolean']
+            status = 400
+            status_boolean = False
             message = verify_email['message']
             data = verify_email['data']
 
-    
+    print(status, status_boolean, message, data)
     return {
         'status': status,
         'status_boolean': status_boolean,
@@ -1165,7 +1165,7 @@ def api_game_new(request, data, encrypted=True):
     balance = admin_models.balance.objects.filter(user=request.user).first()
     balance_value = float(balance.value)
     if balance_value >= value:
-        game = admin_models.game.objects.filter(user=request.user, is_finished=False)
+        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
         profile = admin_models.profile.objects.filter(user=request.user).first()
         if profile.is_influencer is False and balance_value < 1:
             external_id = 'recovery_user_' + str(profile.cpf)
@@ -1183,16 +1183,16 @@ def api_game_new(request, data, encrypted=True):
             smsFunnel.integratySmsFunnel().send(data_sms)
             admin_models.smsFunnel.objects.create(external_id=external_id)
             
-        if game.exists():
-            game = game.first()
-            if game.is_started:
-                game.is_finished = True
-                game.save()
+        if games.exists():
+            for game in games:
+                if game.is_started:
+                    game.is_finished = True
+                    profile.in_game = False
+                    game.save()
+                    profile.save()
 
-            profile.in_game = False
-            profile.save()
-
-        if profile.in_game is False:
+        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
+        if profile.in_game is False and games.count == 0:
             new_game = admin_models.game.objects.create(
                 user=request.user, 
                 bet=value,
@@ -1214,6 +1214,8 @@ def api_game_new(request, data, encrypted=True):
             }
 
         else:
+            profile.in_game = True
+            profile.save()
             status = 400
             status_boolean = False
             message = 'Você já possui um jogo ativo!'

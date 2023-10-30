@@ -20,7 +20,7 @@ class profileAdmin(admin.ModelAdmin):
     )
 
 class affiliateAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user', 'code')
+    search_fields = ('id', 'user__username', 'code')
     list_display = (
         'id', 
         'user', 
@@ -36,7 +36,7 @@ class affiliateAdmin(admin.ModelAdmin):
     )
 
 class balanceAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user')
+    search_fields = ('id', 'user__username')
     list_display = (
         'id', 
         'user', 
@@ -48,7 +48,7 @@ class balanceAdmin(admin.ModelAdmin):
     )
 
 class withdrawAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user')
+    search_fields = ('id', 'user__username')
     list_display = (
         'id', 
         'user', 
@@ -59,7 +59,7 @@ class withdrawAdmin(admin.ModelAdmin):
     )
 
 class depositsAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user')
+    search_fields = ('id', 'user__username')
     list_display = (
         'id', 
         'user', 
@@ -70,7 +70,7 @@ class depositsAdmin(admin.ModelAdmin):
     )
 
 class gameAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user')
+    search_fields = ('id', 'user__username')
     list_display = (
         'id', 
         'hash_game',
