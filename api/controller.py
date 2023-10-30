@@ -1190,9 +1190,7 @@ def api_game_new(request, data, encrypted=True):
             for game in games:
                 if game.is_started:
                     game.is_finished = True
-                    profile.in_game = False
                     game.save()
-                    profile.save()
 
         games = admin_models.game.objects.filter(user=request.user, is_finished=False)
         game_count = games.count()
@@ -1218,7 +1216,7 @@ def api_game_new(request, data, encrypted=True):
             }
 
         else:
-            profile.in_game = False
+            profile.in_game = True
             profile.save()
             status = 400
             status_boolean = False
@@ -1244,7 +1242,7 @@ def api_game_new(request, data, encrypted=True):
 def api_game_status(request):
     profile = admin_models.profile.objects.filter(user=request.user).first()
     if profile.in_game:
-        games = admin_models.game.objects.filter(user=request.user, is_finished=False)
+        games = admin_models.game.objects.filter(user=request.user, is_finished=True)
         if games.exists():
             game = games.first()
             if game.is_started is False:
@@ -1260,9 +1258,8 @@ def api_game_status(request):
                 }
             else:
                 game.is_finished = True
-                game.save()
-
                 profile.in_game = False
+                game.save()
                 profile.save()
 
                 status = 200
@@ -1276,8 +1273,6 @@ def api_game_status(request):
                     }
                 }
         else:
-            for game in games:
-                print(game.id)
             profile.in_game = False
             profile.save()
             status = 400
