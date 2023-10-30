@@ -386,6 +386,9 @@ def api_signup(request, data, encrypted=True):
     else:
         data = load_to_json(data)
 
+    ip = request.META.get('REMOTE_ADDR')
+    print(ip)
+
     email = data['email'].lower()
     password = data['password']
     full_name = data['full_name']
