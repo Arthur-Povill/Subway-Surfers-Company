@@ -61,7 +61,7 @@ function notification(){
     }
     let random_name = generateAleatoryName();
     let container = document.querySelector('.notification-gain-container');
-    if(container.childElementCount == 3){
+    if(container.childElementCount == 1){
         container.removeChild(container.firstElementChild);
     }
     let div = document.createElement('div');

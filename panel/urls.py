@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-#from . import scheduler
 
 urlpatterns = [
     path('', views.index, name='home_admin'),
@@ -19,6 +18,3 @@ urlpatterns = [
     path('api/configs/update', views.update_configs, name='configs_admin_update'),
     path('application/start_first_time', views.start_configs, name='configs_admin')
 ]
-
-
-#scheduler.start_jobs()
