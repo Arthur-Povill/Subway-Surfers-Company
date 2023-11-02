@@ -9,7 +9,9 @@ def api_signin(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
+        print(data)
         response = controller.api_signin(request, data)
+        print(response)
         return JsonResponse({"response": controller.obfuscate_message(response)})
     else:
         if request.method == 'GET' : 
@@ -20,9 +22,13 @@ def api_signin(request):
 def api_signup(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
-        data = request.body.decode('utf-8')
-        response = controller.api_signup(request, data)
-        return JsonResponse({"response": controller.obfuscate_message(response)})
+        try:
+            data = request.body.decode('utf-8')
+            response = controller.api_signup(request, data)
+            return JsonResponse({"response": controller.obfuscate_message(response)})
+        except Exception as e:
+            print('Api signin: ', e)
+            return redirect('/')
     else:
         if request.method == 'GET' : 
             return HttpResponse('Método não permitido!')

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
 from . import controller
 
 # Create your views here.
@@ -11,8 +10,6 @@ def index(request):
         return render(request, 'app-structure/original/index-not-logged.html', data)
     else:
         profile = controller.profile(request)
-        data_profile = controller.api_profile(request)
-        data['profile'] = data_profile
         if profile.first_access is False: 
             return redirect('/game')
         else:
@@ -25,6 +22,8 @@ def index(request):
                 controller.first_access(request)
                 return redirect('/')
             else:
+                data_profile = controller.api_profile(request)
+                data['profile'] = data_profile
                 return render(request, 'app-structure/original/index-welcome.html', data)
             
 def register(request):
@@ -195,4 +194,7 @@ def classic_game_v2(request):
 
 def classic_game_dev(request):
     return render(request, 'app-structure/personalized/classic-game-test.html')
+
+def handler_not_found(request, exception):
+    return redirect('/')
 

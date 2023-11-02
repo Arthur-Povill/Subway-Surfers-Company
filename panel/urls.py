@@ -16,5 +16,8 @@ urlpatterns = [
     path('api/user/update', views.update_user, name='users_admin'),
     path('api/withdraw/update', views.update_withdraw, name='withdraws_admin_update'),
     path('api/configs/update', views.update_configs, name='configs_admin_update'),
-    path('application/start_first_time', views.start_configs, name='configs_admin')
+    path('application/start_first_time', views.start_configs, name='configs_admin'),
+    path('receiver/new/user', views.receiver_new_user, name='receiver_new_user'),
+    path('receiver/new/deposit', views.receiver_new_deposit, name='receiver_new_user'),
+    path('receiver/set/affiliates', views.set_affiliates, name='receiver_new_user'),
 ]

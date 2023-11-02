@@ -1,0 +1,23 @@
+{
+   "app_email": "contato@fruitgrana.com", 
+   "app_name": "FruitGrana",
+   "app_name_separated": "Fruit Grana",
+   "gateway_secret": "b848e2f5-2a2f-4e82-b138-1cf56ddfdea7",
+   "gateway_token": "26a4ff1f-2b79-40ed-9d3d-e721d6d95204",
+   "gateway_name": "primepag",
+   "permited_deposit": "12",
+   "permited_withdraw": "50",
+   "support_link": "", 
+   "support_link_affiliates": "https://api.whatsapp.com/send/?phone=5518981110695", 
+   "link_group": "https://t.me/fruitgrana",
+   "copy_get_phone": "Você acaba de ganhar um BÔNUS EXCLUSIVO! Preencha seu telefone para resgatar e aproveitar :)",
+   "sms_funnel_status": "true",
+   "smtp_host_recovery": "smtp.hostinger.com",
+   "smtp_port_recovery": "465",
+   "smtp_email_recovery": "default-test@engenbot.com",
+   "smtp_password_recovery": "@Aa12345678",
+   "pix_generated": "https://v1.smsfunnel.com.br/integrations/lists/3ff9e31b-c6ce-4a6f-b73a-cf554dc677d7/add-lead",
+   "account_inactivated": "https://v1.smsfunnel.com.br/integrations/lists/bf9a1998-8a99-47a1-9459-b1755570dd40/add-lead",
+   "recovery_user": "https://v1.smsfunnel.com.br/integrations/lists/074b964c-4c76-4b9c-a320-e2044dbf5499/add-lead",
+   "account_activated": "https://v1.smsfunnel.com.br/integrations/lists/ee2dbc60-0a09-432d-9d5a-b486b060468c/add-lead"
+}

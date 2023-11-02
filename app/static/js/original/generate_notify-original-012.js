@@ -80,6 +80,14 @@ function notification(){
     span.innerHTML = html;
     div.appendChild(span);
     container.appendChild(div);
+    setTimeout(function () {
+        container.removeChild(container.firstElementChild);
+        setTimeout(function () {}, 5000);
+    }, 5000);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function callNotification(){

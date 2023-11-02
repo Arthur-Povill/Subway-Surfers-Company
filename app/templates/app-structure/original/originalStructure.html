@@ -12,35 +12,27 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
       <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." name="description">
-      <meta property="og:image" content="https://fruitcash.net/assets/images/logo.png">
+      <meta property="og:image" content="{%static 'image\app-structure\fruitCash\logo.png'%}">
       <meta content="{{app_name}} 🍓" property="og:title">
       <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." property="og:description">
       <meta name="twitter:site" content="@fruitcash">
-      <meta name="twitter:image" content="https://fruitcash.net/assets/images/logo.png">
+      <meta name="twitter:image" content="{%static 'image\app-structure\fruitCash\logo.png'%}">
       <meta content="{{app_name}} 🍓" property="twitter:title">
       <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." property="twitter:description">
       <meta property="og:type" content="website">
       <meta content="summary_large_image" name="twitter:card">
       <meta content="width=device-width, initial-scale=1" name="viewport">
       {%block css_files%}{%endblock%}
-      <link href="https://fruitcash.net/assets/css/page.css" rel="stylesheet" type="text/css">
-      <script src="https://fruitcash.net/assets/js/webfont.js" type="text/javascript"></script>
-      <script src="https://fruitcash.net/assets/js/script.js" type="text/javascript"></script>
+      <link href="{%static 'css\app-structure\fruitCash\page.css'%}" rel="stylesheet" type="text/css">
       <link rel='stylesheet' href='{%static "css/app-structure/components/alerts/card-alert-0887.css"%}'>
       <link rel='stylesheet' href='{%static "css/app-structure/clientConfig.css"%}'>
+      <link rel='stylesheet' href='{%static "css/app-structure/animations.css"%}'>
       <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
       <style>
          .primary-button{
             user-select: none;
          }
       </style>
-      <script type="text/javascript">
-         WebFont.load({
-             google: {
-                 families: ["Space Mono:regular,700"]
-             }
-         });
-      </script>
       <script type="text/javascript">
          ! function(o, c) {
              var n = c.documentElement,
@@ -49,10 +41,9 @@
                  .className += t + "touch")
          }(window, document);
       </script>
-      <link rel="apple-touch-icon" sizes="180x180" href="https://fruitcash.net/apple-touch-icon.png">
-      <link rel="icon" type="image/png" sizes="32x32" href="https://fruitcash.net/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="https://fruitcash.net/favicon-16x16.png">
-      <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
+      <link rel="apple-touch-icon" sizes="180x180" href="{%static 'image\app-structure\fruitCash\apple-touch-icon.png'%}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{%static 'image\app-structure\fruitCash\favicon-32x32.png'%}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{%static 'image\app-structure\fruitCash\favicon-16x16.png'%}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono:regular,700" media="all">
       <!-- Google Tag Manager -->
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -141,6 +132,10 @@
          <div class="notification-gain-container"></div>
       </div>
       <style>
+         .primary-button{
+            user-select: none !important;
+
+         }
          .notification-gain{
             position: fixed;
             bottom: 0;

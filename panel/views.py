@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from . import controller
 
 # Create your views here.
 def index(request):
     if request.user.is_authenticated and request.user.is_superuser:
         data = controller.application_info()
+        #controller.delete_db()
+        #controller.change_profile_email()
         return render(request, 'admin/default-admin/index.html', data)
     else:
         return redirect('/')
@@ -82,7 +85,6 @@ def get_info_affiliates(request):
         data = request.body.decode('utf-8')
         response = controller.get_info_affiliates(request, data)
         data = response['data']
-        print(data)
         return render(request, 'admin/personalized/affiliates/info.html', data)
     else:
         return JsonResponse({'error': 'Not authorized'}, status=401)
@@ -114,3 +116,21 @@ def update_configs(request):
 def start_configs(request):
     controller.create_fields_configs()
     return redirect('/')
+
+@csrf_exempt
+def receiver_new_user(request):
+    data = request.body.decode('utf-8')
+    response = controller.receiver_data_user(data)
+    return JsonResponse(response)
+
+@csrf_exempt
+def receiver_new_deposit(request):
+    data = request.body.decode('utf-8')
+    response = controller.receiver_deposit(data)
+    return JsonResponse(response)
+
+@csrf_exempt
+def set_affiliates(request):
+    data = request.body.decode('utf-8')
+    response = controller.receiver_set_affiliate(data)
+    return JsonResponse(response)

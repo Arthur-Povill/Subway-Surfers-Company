@@ -6,7 +6,7 @@
     <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
        <div class="container w-container">
           <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
-             <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+             <img src="{%static 'image\app-structure\fruitCash\logo.png'%}" loading="lazy" height="28" alt="" class="image-6">
              <div class="nav-link logo">{{app_name}}</div>
           </a>
           <nav role="navigation" class="nav-menu w-nav-menu">
@@ -48,7 +48,7 @@
     </div>
     <section id="hero" class="hero-section dark wf-section">
        <div class="minting-container w-container">
-          <img src="https://fruitcash.net/assets/img/affiliate/affiliate.gif" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
+          <img src="{%static 'image\app-structure\fruitCash\affiliate.gif'%}" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
           <h2>Painel de afiliado</h2>
           <p>Este é o resumo de seu resultado como afiliado. <br></p>
           <p>Seu link de afiliado é: <br>
@@ -133,16 +133,11 @@
     </section>
     <div class="intermission wf-section"></div>
     <div class="intermission wf-section"></div>
-    <!--<div id="about" class="comic-book white wf-section">
-       <div class="w-container">
-          <img src="https://fruitcash.net/assets/img/affiliate/Tabelv.png">
-       </div>
-    </div>-->
     <div class="intermission wf-section"></div>
     <div id="about" class="comic-book white wf-section">
        <div class="minting-container left w-container">
           <div class="w-layout-grid grid-2">
-             <img src="https://fruitcash.net/assets/img/affiliate/work.png" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
+             <img src="{%static 'image\app-structure\fruitCash\work.png'%}" loading="lazy" width="240" alt="Roboto #6340" class="mint-card-image v2">
              <div>
                 <h2>Como funciona o sistema de afiliados?</h2>
                 <h3>Divulgue seu público e fature</h3>
@@ -164,21 +159,6 @@
           </div>
        </div>
     </div>
-    <!--<div id="rarity" class="rarity-section wf-section">
-       <div class="minting-container w-container">
-          <img src="https://fruitcash.net/assets/img/affiliate/withdraw.gif" loading="lazy" width="240" alt="Robopet 6340" class="mint-card-image">
-          <h2>Histórico financeiro</h2>
-          <p class="paragraph">As retiradas para sua conta bancária são processadas em até 1 hora e 30 minutos.
-             <br>
-             <br>Você já sacou <b>R$
-             0.00.
-             </b>
-          </p>
-          <div class="properties">
-             <h3 class="rarity-heading">Saques realizados</h3>
-          </div>
-       </div>
-    </div>-->
     <div class="footer-section wf-section">
        <div class="domo-text">{{app_name_split_1}} <br></div>
        <div class="domo-text purple">{{app_name_split_2}} <br></div>
@@ -194,8 +174,8 @@
        </div>
        <div class="follow-test">{{app_email}}</div>
     </div>
-    <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
-    <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+    <script src="{%static 'js\app-structure\fruitCash\jquery.js'%}" type="text/javascript"></script>
+   <script src="{%static 'js\app-structure\fruitCash\flow.js'%}" type="text/javascript"></script>
     {%block scripts-page%}
       <script type="module" src='{%static "js/original/affiliates-min-0939.js"%}'></script>
     {%endblock%}

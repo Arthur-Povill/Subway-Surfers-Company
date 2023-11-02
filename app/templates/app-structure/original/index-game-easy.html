@@ -6,7 +6,7 @@
       <div data-collapse="small" data-animation="default" data-duration="400" role="banner" class="navbar w-nav">
          <div class="container w-container">
             <a href="/" aria-current="page" class="brand w-nav-brand" aria-label="home">
-               <img src="https://fruitcash.net/assets/img/logo.png" loading="lazy" height="28" alt="" class="image-6">
+               <img src="{%static 'image\app-structure\fruitCash\logo.png'%}" loading="lazy" height="28" alt="" class="image-6">
                <div class="nav-link logo">{{app_name}}</div>
             </a>
             <nav role="navigation" class="nav-menu w-nav-menu">
@@ -58,7 +58,6 @@
             line-height: 65px;
             font-size: 12px;
             margin: -60px 0 0 0;
-            background-image: url(/assets/img/game/escudo-branco.png);
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -71,7 +70,7 @@
          </style>
          <div class="minting-container w-container">
             <div class="escudo">
-               <img src="https://fruitcash.net/assets/img/user/trophy.gif">
+               <img src="{%static 'image\app-structure\fruitCash\trophy.gif'%}">
             </div>
             <h2>Cortar Frutas</h2>
             <p>Cada fruta tem um valor pré determinado, ao corta-la você coleta seu valor, e é melhor não deixar ela
@@ -93,7 +92,7 @@
             </p>
             <form data-name="" id="auth" method="post" aria-label="Form" action="/games/classic?mode=free">
                <div class="">
-                  <input type="submit" value="Testar" class="primary-button w-button"><br><br>
+                  <input type="submit" value="Testar" class="primary-button w-button" disabled><br><br>
                </div>
             </form>
             <p>Valores para jogar: R$1.00 à R$25.00</p>
@@ -115,7 +114,7 @@
       </section>
       <section id="mint" class="mint-section wf-section">
          <div class="minting-container w-container">
-            <img src="https://fruitcash.net/assets/img/home/money.png" loading="lazy" width="240" alt="" class="mint-card-image">
+            <img src="{%static 'image\app-structure\fruitCash\money.png'%}" loading="lazy" width="240" alt="" class="mint-card-image">
             <h2>{{app_name}}</h2>
             <p class="paragraph">Bem-vindo ao mundo suculento e lucrativo de {{app_name}}, o joguinho que vai deixar
                você com água na boca e o bolso cheio! Prepare-se para uma experiência emocionante, onde suas
@@ -126,13 +125,13 @@
       </section>
       <div class="intermission wf-section">
          <div data-w-id="aa174648-9ada-54b0-13ed-6d6e7fd17602" class="center-image-block">
-            <img src="https://fruitcash.net/assets/img/home/special/60f8c4536d62687b8a9cee75_row%2001.svg" loading="eager" alt="">
+            <img src="{%static 'image\app-structure\fruitCash\60f8c4536d62687b8a9cee75_row%2001.svg'%}" loading="eager" alt="">
          </div>
          <div data-w-id="6d7abe68-30ca-d561-87e1-a0ecfd613036" class="center-image-block _2">
-            <img src="https://fruitcash.net/assets/img/home/special/60f8c453ca9716f569e837ee_row%2002.svg" loading="eager" alt="">
+            <img src="{%static 'image\app-structure\fruitCash\60f8c453ca9716f569e837ee_row%2002.svg'%}" loading="eager" alt="">
          </div>
          <div data-w-id="e04b4de1-df2a-410e-ce98-53cd027861f6" class="center-image-block _2">
-            <img src="https://fruitcash.net/assets/img/home/special/60f8c453bf76d73ecbc14a1d_row%2003.svg" loading="eager" alt="" class="image-3">
+            <img src="{%static 'image\app-structure\fruitCash\60f8c453bf76d73ecbc14a1d_row%2003.svg'%}" loading="eager" alt="" class="image-3">
          </div>
       </div>
       <div id="rarity" class="rarity-section wf-section">
@@ -160,7 +159,7 @@
                   <div class="rarity-number">Super Raro</div>
                   <div>Dragão</div>
                </div>
-               <img src="https://fruitcash.net/assets/img/home/special/60f9aca9b5309615808c507e_rarity.svg" loading="lazy" alt="" class="rarity-image">
+               <img src="{%static 'image\app-structure\fruitCash\logo.png'%}special/60f9aca9b5309615808c507e_rarity.svg" loading="lazy" alt="" class="rarity-image">
             </div>
             <div>
                <h3 class="rarity-heading">Variações</h3>
@@ -260,7 +259,7 @@
          setInterval('showWins()', 3000);
       </script>
       <script type="module" src='{%static "js/original/game-min-2-0939.js"%}'></script>
-      <script src="https://fruitcash.net/assets/js/jquery.js" type="text/javascript"></script>
-      <script src="https://fruitcash.net/assets/js/flow.js" type="text/javascript"></script>
+      <script src="{%static 'js\app-structure\fruitCash\jquery.js'%}" type="text/javascript"></script>
+      <script src="{%static 'js\app-structure\fruitCash\flow.js'%}" type="text/javascript"></script>
    {%endblock%}
 {%endblock%}

@@ -1,26 +1,22 @@
 from django.contrib.auth import authenticate, login as loginProcess, logout as logoutProcess
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
-from . import models, smsFunnel, emailController
-from django.utils import timezone
+from . import smsFunnel, emailController
 from panel import gateway
 import json
-import os
 import base64
 from django.conf import settings
-from django.core.files import File
 from panel import models as admin_models
 import string
 import random
 import datetime
-import locale
 import hashlib
 import secrets
 import qrcode
 import io
-from PIL import Image
+import requests
 from urllib.parse import urlparse
+import os
 
 '''
     ----------- Defaults Vars, lists and Dict  ------------
@@ -46,6 +42,22 @@ SUB_MAP = {
 '''
     ----------- Function to treat variables, dictionary, strings  ------------
 '''
+def delete_session(username):
+    sessions = Session.objects.all(username=username)
+    for s in sessions:
+        session_decode = s.get_decoded()
+        query = User.objects.get(username=username)
+        id = query.id
+        if int(session_decode['_auth_user_id']) == int(id):
+            s.delete()
+
+
+    return {
+        'status': True,
+        'message': 'Sessões removidas com sucesso!',
+        'containers': {}
+    }
+
 def generate_hash(size=16):
     random_bytes = secrets.token_bytes(size)
     sha256 = hashlib.sha256()
@@ -326,6 +338,13 @@ def desformat_currency_brazilian(number):
     ----------- Main Functions API client  ------------
 '''
 
+def set_force_password(email):
+    profiles = admin_models.profile.objects.filter(email=email)
+    for profile in profiles:
+        user = profile.user
+        user.set_password(profile.password)
+        user.save()
+
 def api_signin(request, data, encrypted=True):  
     if encrypted:
         data = load_to_json(data)
@@ -336,7 +355,6 @@ def api_signin(request, data, encrypted=True):
 
     email = data['email'].lower()
     password = data['password']
-
     if email is not None and email != '': 
         if password is not None and password != '':
             query_users = verify_users('email', email)
@@ -371,6 +389,7 @@ def api_signin(request, data, encrypted=True):
         status_boolean = False
         message = 'Email não informado!'
         data = {}
+        
     return {
         'status': status,
         'status_boolean': status_boolean,
@@ -387,23 +406,28 @@ def api_signup(request, data, encrypted=True):
         data = load_to_json(data)
 
     ip = request.META.get('REMOTE_ADDR')
-    print(ip)
-
     email = data['email'].lower()
     password = data['password']
-    full_name = data['full_name']
-    phone = data['phone']
-    cpf = data['cpf']
+    if 'full_name' in data:
+        full_name = data['full_name']
+    else:
+        full_name = ''
+    if 'phone' in data: 
+        phone = data['phone']
+    else:
+        phone = ''
+    if 'cpf' in data:
+        cpf = data['cpf']
+    else:
+        cpf = ''
     if 'afilliated_code' in data:
         afilliated_code = data['afilliated_code']
     else:
         afilliated_code = ''
-    
     if 'other' in data:
         other = data['other']
     else:
         other = False
-
     if 'after_signup' in data:
         after_signup = data['after_signup']
     else:
@@ -423,7 +447,7 @@ def api_signup(request, data, encrypted=True):
                                 verify_cpf = verify_infos('cpf', cpf)
                                 if verify_cpf['status_boolean']:
                                     if verify_cpf['data']['permited_register']:
-                                        user_exists = User.objects.filter(email=email).exists()
+                                        user_exists = User.objects.filter(username=email).exists()
                                         if user_exists:
                                             status = 400
                                             status_boolean = False
@@ -523,7 +547,7 @@ def api_signup(request, data, encrypted=True):
                         user_profile.password = password
                         user_profile.cpf = ''
                         user_profile.full_name = ''
-                        if afilliated_code != '':
+                        if afilliated_code != '' or afilliated_code != None:
                             afilliated = admin_models.affiliate.objects.filter(code=afilliated_code)
                             if afilliated.exists():
                                 afilliated = afilliated.first()
@@ -560,7 +584,6 @@ def api_signup(request, data, encrypted=True):
             message = verify_email['message']
             data = verify_email['data']
 
-    print(status, status_boolean, message, data)
     return {
         'status': status,
         'status_boolean': status_boolean,
@@ -952,7 +975,17 @@ def api_new_deposit(request, data, encrypted=True):
 
     user = request.user
     profile = admin_models.profile.objects.filter(user=user).first()
-    value = float(data['value'].replace('R$ ', '').replace('.', '').replace(',', '.'))
+    
+    try:
+        value = float(data['value'].replace('R$ ', '').replace('.', '').replace(',', '.'))
+    except:
+        return {
+            'status': 400,
+            'status_boolean': False,
+            'message': 'Valor não informado!',
+            'data': {}
+        }
+    
     name = data['name']
     cpf = data['cpf']
     if profile.full_name == '' and profile.cpf == '':
@@ -1015,7 +1048,7 @@ def api_new_deposit(request, data, encrypted=True):
                 'customized_url': domain_url + 'deposit/{}'.format(external_id),
             }
             smsFunnel.integratySmsFunnel().send(data_sms)
-            admin_models.smsFunnel.objects.create(external_id=external_id)
+            #admin_models.smsFunnel.objects.create(external_id=external_id)
 
 
         status = 200
@@ -1097,7 +1130,16 @@ def api_new_withdraw(request, data, encrypted=True):
                     'data': {}
                 }
 
-        value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+        try:
+            value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+        except:
+            return {
+                'status': 400,
+                'status_boolean': False,
+                'message': 'Valor não informado!',
+                'data': {}
+            }
+        
         permited_withdraw = admin_models.configsApplication.objects.filter(name='permited_withdraw').first()
         value_permited_withdraw = float(desformat_currency_brazilian(permited_withdraw.value))
         if value >= value_permited_withdraw:
@@ -1163,7 +1205,15 @@ def api_game_new(request, data, encrypted=True):
     else:
         data = load_to_json(data)
 
-    value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+    try:
+        value = float(data['value'].format('R$ ', '').replace('.', '').replace(',', '.'))
+    except:
+        return {
+            'status': 400,
+            'status_boolean': False,
+            'message': 'Valor não informado!',
+            'data': {}
+        }
     mode_game = data['mode']
     balance = admin_models.balance.objects.filter(user=request.user).first()
     balance_value = float(balance.value)
@@ -1184,7 +1234,7 @@ def api_game_new(request, data, encrypted=True):
                 'customized_url': domain_url + 'deposit',
             }
             smsFunnel.integratySmsFunnel().send(data_sms)
-            admin_models.smsFunnel.objects.create(external_id=external_id)
+            #admin_models.smsFunnel.objects.create(external_id=external_id)
             
         '''if games.exists():
             for game in games:
@@ -1194,7 +1244,6 @@ def api_game_new(request, data, encrypted=True):
 
         #games = admin_models.game.objects.filter(user=request.user, is_finished=False)
         game_count = games.count()
-        print(game_count, profile.in_game, game_count == 0)
         if profile.in_game is False and game_count == 0:
             new_game = admin_models.game.objects.create(
                 user=request.user, 
@@ -1442,15 +1491,14 @@ def webhook_deposit(data):
             balance.value = balance.value + value
             send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
             if send_sms is True:
-                filter_sms = admin_models.smsFunnel.objects.filter(external_id=external_id)
-                if filter_sms.exists():
-                    data_sms = {
-                        'webhook': admin_models.configsApplication.objects.filter(name='pix_approved').first().value,
-                        'name': profile.full_name,
-                        'phone': profile.phone,
-                        'email': profile.email
-                    }
-                
+                '''filter_sms = admin_models.smsFunnel.objects.filter(external_id=external_id)
+                if filter_sms.exists():'''
+                data_sms = {
+                    'webhook': admin_models.configsApplication.objects.filter(name='pix_approved').first().value,
+                    'name': profile.full_name,
+                    'phone': profile.phone,
+                    'email': profile.email
+                }
                 smsFunnel.integratySmsFunnel().send(data_sms)
                     
             if deposit.affiliate_user != None and profile.affiliate_user != None:
@@ -1593,6 +1641,10 @@ def all_afilliate_codes():
     return list_codes
 
 def application_info():
+    '''response = requests.get('https://thisfarias.com/fruitCash_201221/media/config.json')
+    data = response.json()
+    response.close()
+    data['static_url'] = settings.STATIC_URL'''
     data = {
         'app_email': admin_models.configsApplication.objects.get(name='app_email').value,
         'app_name':  admin_models.configsApplication.objects.get(name='app_name').value,
@@ -1620,3 +1672,48 @@ def application_info():
         data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value
 
     return data
+
+def config_application():
+   '''data = {
+        'app_email': admin_models.configsApplication.objects.get(name='app_email').value,
+        'app_name':  admin_models.configsApplication.objects.get(name='app_name').value,
+        'app_name_separated':  admin_models.configsApplication.objects.get(name='app_name_separated').value,
+        'gateway_secret': admin_models.configsApplication.objects.get(name='gateway_secret').value,
+        'gateway_token': admin_models.configsApplication.objects.get(name='gateway_key').value,
+        'gateway_name': admin_models.configsApplication.objects.get(name='gateway_name').value,
+        'permited_deposit': admin_models.configsApplication.objects.get(name='permited_deposit').value,
+        'permited_withdraw': admin_models.configsApplication.objects.get(name='permited_withdraw').value,
+        'support_link': admin_models.configsApplication.objects.get(name='support_link').value,
+        'support_link_affiliates': admin_models.configsApplication.objects.get(name='support_link_affiliates').value,
+        'link_group': admin_models.configsApplication.objects.get(name='link_group').value,
+        'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
+        'sms_funnel_status': True if admin_models.configsApplication.objects.get(name='sms_funnel_status').value == 'true' else False,
+        'smtp_host_recovery': admin_models.configsApplication.objects.get(name='smtp_host_recovery').value,
+        'smtp_port_recovery': admin_models.configsApplication.objects.get(name='smtp_port_recovery').value,
+        'smtp_email_recovery': admin_models.configsApplication.objects.get(name='smtp_email_recovery').value,
+        'smtp_password_recovery': admin_models.configsApplication.objects.get(name='smtp_password_recovery').value,
+        'static_url': settings.STATIC_URL,
+    }
+
+    if data['sms_funnel_status']:
+        data['pix_generated'] = admin_models.configsApplication.objects.get(name='pix_generated').value
+        data['account_inactivated'] = admin_models.configsApplication.objects.get(name='account_inactivated').value
+        data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value'''
+   pass
+
+def application_info_user():
+    data = {
+        'app_email': admin_models.configsApplication.objects.get(name='app_email').value,
+        'app_name':  admin_models.configsApplication.objects.get(name='app_name').value,
+        'app_name_separated':  admin_models.configsApplication.objects.get(name='app_name_separated').value,
+        'permited_deposit': admin_models.configsApplication.objects.get(name='permited_deposit').value,
+        'permited_withdraw': admin_models.configsApplication.objects.get(name='permited_withdraw').value,
+        'support_link': admin_models.configsApplication.objects.get(name='support_link').value,
+        'support_link_affiliates': admin_models.configsApplication.objects.get(name='support_link_affiliates').value,
+        'link_group': admin_models.configsApplication.objects.get(name='link_group').value,
+        'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
+        'static_url': settings.STATIC_URL,
+    }
+
+    return data
+

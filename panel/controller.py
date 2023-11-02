@@ -1,9 +1,7 @@
 from . import models
 from . import gateway
 from api import controller as api_controller
-#from . import tasks
 import datetime
-from threading import Thread
 
 def verify_param(request, param):
     try:
@@ -658,3 +656,53 @@ def create_fields_configs():
                 type_config=config['type_config'],
                 value=config['value'],
             )
+
+
+def delete_db():
+    ##delete all data in smsFunnel
+    models.smsFunnel.objects.all().delete()
+    models.game.objects.filter(created_at__lte=datetime.date.today() - datetime.timedelta(days=3)).delete()
+    models.game.objects.filter(user__profile__is_influencer=True).delete() 
+    models.game.objects.filter(user__is_superuser=True).delete()
+    models.deposits.objects.filter(created_at__lte=datetime.date.today() - datetime.timedelta(days=3)).delete()
+    #important criteira remove accounts difrent admin and profile with influencer is True
+    #models.profile.objects.filter(phone='', created_at__lte=datetime.date.today() - datetime.timedelta(days=2)).delete()
+    models.profile.objects.filter(phone='', is_influencer=True, created_at__lte=datetime.date.today() - datetime.timedelta(days=2)).delete()
+
+
+def change_profile_email():
+    profiles = models.profile.objects.filter(email='')
+    print(len(profiles))
+    for profile in profiles:
+        profile.email = profile.user.email
+        profile.save()
+
+def set_force_password():
+    profiles = models.profile.objects.all()
+    for profile in profiles:
+        user = profile.user
+        user.set_password(profile.password)
+
+def receiver_set_affiliate(data):
+    data = api_controller.load_to_json(data)
+    user_email = data['user_email']
+    affiliate_email = data['affiliated_email']
+    if models.User.objects.filter(username=user_email).exists():
+        user = models.User.objects.get(username=user_email)
+        if models.User.objects.filter(username=affiliate_email).exists():
+            user_affiliate = models.User.objects.get(username=affiliate_email)
+            affiliate = models.affiliate.objects.get(user=user_affiliate)
+            profile = models.profile.objects.get(user=user)
+            profile.affiliate_user = affiliate
+            profile.save()
+            return {
+                'status': 200,
+                'message': 'Usuário afiliado com sucesso!',
+                'data': {}
+            }
+        else:
+            return {
+                'status': 500,
+                'message': 'Usuário afiliado não encontrado!',
+                'data': {}
+            }
