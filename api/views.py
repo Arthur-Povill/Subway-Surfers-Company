@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from . import controller
 
 # Create your views here.
+@csrf_exempt
 def api_signin(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
@@ -18,7 +19,8 @@ def api_signin(request):
             return HttpResponse('Método não permitido!')
         else:
             return JsonResponse(response_method)
-        
+
+@csrf_exempt
 def api_signup(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
@@ -147,6 +149,7 @@ def api_new_deposit(request):
     else:
         return JsonResponse(response_method)
 
+@csrf_exempt
 def api_game_new(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
