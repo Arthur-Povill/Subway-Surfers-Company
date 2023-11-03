@@ -37,8 +37,6 @@ SUB_MAP = {
     "B": "X", "X": "B", 
 }
 
-
-
 '''
     ----------- Function to treat variables, dictionary, strings  ------------
 '''
@@ -361,7 +359,6 @@ def api_signin(request, data, encrypted=True):
             if query_users['status_boolean']:
                 user = authenticate(username=email, password=password)
                 if user is not None:
-                    api_verify_session(user, close=False)
                     loginProcess(request, user)
                     status = 200
                     status_boolean = True

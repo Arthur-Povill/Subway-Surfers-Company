@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 from . import controller
 
 # Create your views here.
+@vary_on_headers('Cookie')
 def index(request):
     data = controller.data_application()
     if request.user.is_authenticated is False:
@@ -25,7 +28,8 @@ def index(request):
                 data_profile = controller.api_profile(request)
                 data['profile'] = data_profile
                 return render(request, 'app-structure/original/index-welcome.html', data)
-            
+
+     
 def register(request):
     if request.user.is_authenticated is False:
         affiliate_code = controller.verify_param(request, 'affiliate')
@@ -34,16 +38,18 @@ def register(request):
         return render(request, 'app-structure/original/index-register.html', data)
     else:
         return redirect('/')
-    
+
+@cache_page(60) 
 def login(request):
     if request.user.is_authenticated is False:
-        affiliate_code = controller.verify_param(request, 'affiliate')
+        #affiliate_code = controller.verify_param(request, 'affiliate')
         data = controller.data_application()
-        data['affiliate_code'] = affiliate_code
+        #data['affiliate_code'] = affiliate_code
         return render(request, 'app-structure/original/index-login.html', data)
     else:
         return redirect('/')
 
+@cache_page(60)
 def recovery(request):
     if request.user.is_authenticated is False:
         data = controller.data_application()
@@ -51,6 +57,7 @@ def recovery(request):
     else:
         return redirect('/')   
 
+@cache_page(60)
 def logout(request):
     if request.user.is_authenticated:
         controller.logout(request)
@@ -58,6 +65,7 @@ def logout(request):
     else:
         return redirect('/')
 
+@vary_on_headers('Cookie')
 def withdraw(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -66,7 +74,8 @@ def withdraw(request):
         return render(request, 'app-structure/original/index-withdraw.html', data)
     else:
         return redirect('/auth/register')
-    
+
+@vary_on_headers('Cookie')
 def deposit(request):
     if request.user.is_authenticated:
         controller.vanishing_affiliate(request)
@@ -77,6 +86,7 @@ def deposit(request):
     else:
         return redirect('/auth/register')
     
+@vary_on_headers('Cookie')
 def deposit_info(request, id):
     if request.user.is_authenticated:
         controller.vanishing_affiliate(request)
@@ -93,7 +103,8 @@ def deposit_info(request, id):
             return redirect('/')
     else:
         return redirect('/auth/register')
-    
+
+@vary_on_headers('Cookie')
 def partnership(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -105,12 +116,14 @@ def partnership(request):
     else:
         return redirect('/auth/register')
     
+@vary_on_headers('Cookie')  
 def join(request, code):
     if request.user.is_authenticated:
         return redirect('/')
     else:
         return redirect('/auth/register?affiliate=' + code)
-    
+
+@vary_on_headers('Cookie')
 def referral(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -122,6 +135,7 @@ def referral(request):
     else:
         return redirect('/auth/register')
     
+@vary_on_headers('Cookie') 
 def game(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -131,7 +145,8 @@ def game(request):
         return render(request, 'app-structure/original/index-game.html', data)
     else:
         return redirect('/auth/register')
-    
+
+@vary_on_headers('Cookie')
 def game_v2(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -145,6 +160,7 @@ def game_v2(request):
     else:
         return redirect('/auth/register')
 
+@cache_page(60)
 def terms(request):
     data = controller.data_application()
     if request.user.is_authenticated:
@@ -155,6 +171,7 @@ def terms(request):
     else:
         return render(request, 'app-structure/original/index-terms-no-logged.html', data)
 
+@vary_on_headers('Cookie')
 def classic_game(request):
     if request.user.is_authenticated:
         mode = controller.verify_param(request, 'mode')
@@ -171,7 +188,8 @@ def classic_game(request):
             return render(request, 'app-structure/personalized/classic-game.html', data)
     else:
         return redirect('/')
-    
+
+@vary_on_headers('Cookie')  
 def classic_game_v2(request):
     if request.user.is_authenticated:
         mode = controller.verify_param(request, 'mode')
@@ -192,9 +210,11 @@ def classic_game_v2(request):
     else:
         return redirect('/')
 
+@vary_on_headers('Cookie')
 def classic_game_dev(request):
     return render(request, 'app-structure/personalized/classic-game-test.html')
 
+@cache_page(60)
 def handler_not_found(request, exception):
     return redirect('/')
 

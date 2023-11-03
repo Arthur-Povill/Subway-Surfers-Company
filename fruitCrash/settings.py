@@ -21,6 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-cgl6hnbjl!-v7q9*-4m9at=oy5$jdafkr8bklzc9iwf6h04nfg'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = [
@@ -101,11 +108,11 @@ WSGI_APPLICATION = 'fruitCrash.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'fruitgrana',
-       'USER': 'postgress',
-       'PASSWORD': 'mjBmqy4kGoHASanGYwHv',
-       'HOST': '102.165.25.108',
-       'PORT': '',
+       'NAME': 'railway',
+       'USER': 'postgres',
+       'PASSWORD': '3A2BcF1GG*2F3F2C*aGGbCD1f1-bgEcf',
+       'HOST': 'viaduct.proxy.rlwy.net',
+       'PORT': '31943',
    }
 }
 

@@ -10,9 +10,7 @@ def api_signin(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
-        print(data)
         response = controller.api_signin(request, data)
-        print(response)
         return JsonResponse({"response": controller.obfuscate_message(response)})
     else:
         if request.method == 'GET' : 
