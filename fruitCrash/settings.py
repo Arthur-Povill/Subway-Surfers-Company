@@ -32,20 +32,13 @@ CACHES = {
 DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'www.fruitgrana.com',
-    'fruitgrana.com',
-    '102.165.25.112',
-    'fruitgrana-production.up.railway.app'
+    'fruitgranagabriel-production.up.railway.app'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://www.fruitgrana.com',
-    'https://fruitgrana.com',
-    'https://102.165.25.112',
-    'http://102.165.25.112',
-    'https://fruitgrana-production.up.railway.app/'
+    'https://fruitgranagabriel-production.up.railway.app/'
 ]
 
 # Application definition
