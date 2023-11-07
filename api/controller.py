@@ -1639,29 +1639,7 @@ def all_afilliate_codes():
     return list_codes
 
 def application_info():
-    '''response = requests.get('https://thisfarias.com/fruitCash_201221/media/config.json')
-    data = response.json()
-    response.close()
-    data['static_url'] = settings.STATIC_URL
-
-    return data'''
-    #/root/app/fruitGrana/api/config.json
-    try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        base_path = str(base_path).replace('/api', '')
-        path = os.path.join(base_path, 'media/json/config.json')
-        with open(path, 'r') as f:
-            data = json.load(f)
-            f.close()
-    except Exception as e:
-        data = {}
-        print(e)
-
-    data['static_url'] = settings.STATIC_URL
-    return data
-
-def config_application():
-   '''data = {
+    data = {
         'app_email': admin_models.configsApplication.objects.get(name='app_email').value,
         'app_name':  admin_models.configsApplication.objects.get(name='app_name').value,
         'app_name_separated':  admin_models.configsApplication.objects.get(name='app_name_separated').value,
@@ -1685,8 +1663,36 @@ def config_application():
     if data['sms_funnel_status']:
         data['pix_generated'] = admin_models.configsApplication.objects.get(name='pix_generated').value
         data['account_inactivated'] = admin_models.configsApplication.objects.get(name='account_inactivated').value
-        data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value'''
-   pass
+        data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value
+
+    return data
+
+def config_application():
+    data = {
+        'app_email': admin_models.configsApplication.objects.get(name='app_email').value,
+        'app_name':  admin_models.configsApplication.objects.get(name='app_name').value,
+        'app_name_separated':  admin_models.configsApplication.objects.get(name='app_name_separated').value,
+        'gateway_secret': admin_models.configsApplication.objects.get(name='gateway_secret').value,
+        'gateway_token': admin_models.configsApplication.objects.get(name='gateway_key').value,
+        'gateway_name': admin_models.configsApplication.objects.get(name='gateway_name').value,
+        'permited_deposit': admin_models.configsApplication.objects.get(name='permited_deposit').value,
+        'permited_withdraw': admin_models.configsApplication.objects.get(name='permited_withdraw').value,
+        'support_link': admin_models.configsApplication.objects.get(name='support_link').value,
+        'support_link_affiliates': admin_models.configsApplication.objects.get(name='support_link_affiliates').value,
+        'link_group': admin_models.configsApplication.objects.get(name='link_group').value,
+        'copy_get_phone': admin_models.configsApplication.objects.get(name='copy_get_phone').value,
+        'sms_funnel_status': True if admin_models.configsApplication.objects.get(name='sms_funnel_status').value == 'true' else False,
+        'smtp_host_recovery': admin_models.configsApplication.objects.get(name='smtp_host_recovery').value,
+        'smtp_port_recovery': admin_models.configsApplication.objects.get(name='smtp_port_recovery').value,
+        'smtp_email_recovery': admin_models.configsApplication.objects.get(name='smtp_email_recovery').value,
+        'smtp_password_recovery': admin_models.configsApplication.objects.get(name='smtp_password_recovery').value,
+        'static_url': settings.STATIC_URL,
+    }
+
+    if data['sms_funnel_status']:
+        data['pix_generated'] = admin_models.configsApplication.objects.get(name='pix_generated').value
+        data['account_inactivated'] = admin_models.configsApplication.objects.get(name='account_inactivated').value
+        data['recovery_user'] = admin_models.configsApplication.objects.get(name='recovery_user').value
 
 def application_info_user():
     data = {
