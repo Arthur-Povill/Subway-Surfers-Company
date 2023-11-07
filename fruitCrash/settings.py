@@ -32,7 +32,7 @@ CACHES = {
 DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitgranagabriel-production.up.railway.app',
+    'fruitcashjos-production.up.railway.app',
     'fruit-app.com',
     'www.fruit-app.com'
 ]
@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitgranagabriel-production.up.railway.app',
+    'https://fruitcashjos-production.up.railway.app',
     'https://fruit-app.com',
     'https://www.fruit-app.com',
 ]
@@ -107,9 +107,9 @@ DATABASES = {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'railway',
        'USER': 'postgres',
-       'PASSWORD': '3A2BcF1GG*2F3F2C*aGGbCD1f1-bgEcf',
-       'HOST': 'viaduct.proxy.rlwy.net',
-       'PORT': '31943',
+       'PASSWORD': 'EEdDeCE5A65GAbEea5eGCcbbEB2d2bBc',
+       'HOST': 'monorail.proxy.rlwy.net',
+       'PORT': '42171',
    }
 }
 
