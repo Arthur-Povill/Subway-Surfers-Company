@@ -33,16 +33,16 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitcashjos-production.up.railway.app',
-    'fruit-app.com',
-    'www.fruit-app.com'
+    'slashfruta.com',
+    'www.slashfruta.com'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://fruitcashjos-production.up.railway.app',
-    'https://fruit-app.com',
-    'https://www.fruit-app.com',
+    'https://slashfruta.com',
+    'https://www.slashfruta.com',
 ]
 
 # Application definition
