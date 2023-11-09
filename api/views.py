@@ -203,8 +203,11 @@ def api_webhook_deposit(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
-        response = controller.webhook_deposit(data)
-        return JsonResponse({"response": controller.obfuscate_message(response)})
+        if 'test' not in data:
+            response = controller.webhook_deposit(data)
+            return JsonResponse({"response": controller.obfuscate_message(response)})
+        else:
+            return JsonResponse({'status': 200})
     else:
         return redirect('/')
     
