@@ -226,7 +226,7 @@ class ezzepay:
         self.s = requests.Session()
         response = self.s.post(url, headers=headers, data=data)
         self.response_login = response.json()
-
+        print(self.response_login)
         self.s.headers.update({
             'Authorization': 'Bearer {}'.format(self.response_login['access_token'])
         })
