@@ -354,13 +354,13 @@ class suitpay:
                 'percentageSplit': 20
             }
         }
+        print(payload)
         response = self.s.post(url, json=payload)
         details_response = response.json()
         formated_dict = {
             'payment': details_response['paymentCode'],
             'external_id': details_response['idTransaction'],
         }
-        print(formated_dict)
 
         return formated_dict
     
@@ -385,7 +385,7 @@ class suitpay:
         data =  api_controller.load_to_json(data)
         external_id = data['idTransaction']
         type_transaction = data['typeTransaction']
-        if type_transaction == '':
+        if type_transaction != '':
             status_transaction = data['statusTransaction']
             if status_transaction == 'PAID_OUT' or status_transaction == 'PAYMENT_ACCEPT':
                 status = 'approved'

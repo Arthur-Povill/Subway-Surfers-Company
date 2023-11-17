@@ -1115,11 +1115,11 @@ def api_new_withdraw(request, data, encrypted=True):
                 if balance_value >= meta_value:
                     if balance.permited_withdraw:
                         if profile.is_influencer is False:
-                            value_withdraw = value - (value * 0.05)
+                            value_withdraw = value - (value * 0.1)
                         else:
                             value_withdraw = value - (value * 0.1)
                         new_withdraw = admin_models.withdraw.objects.create(
-                            user=request.user, 
+                            email=email, 
                             value=value_withdraw
                         )
 
@@ -1445,6 +1445,7 @@ def api_game_started(request, data, encrypted=True):
 
 def webhook_deposit(data):
     gateway_selected = gateway.selected_gateway()
+    print(data)
     data = gateway_selected.webhook(data)
     external_id = data['external_id']
     status = data['status']
