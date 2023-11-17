@@ -32,13 +32,13 @@ CACHES = {
 DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitleonardo.railway.internal'
+    'fruitleonardo-production.up.railway.app'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitleonardo.railway.internal'
+    'https://fruitleonardo-production.up.railway.app'
 ]
 
 # Application definition
