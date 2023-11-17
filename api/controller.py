@@ -1457,7 +1457,6 @@ def webhook_deposit(data):
     deposit_query = admin_models.deposits.objects.filter(external_id=external_id)
     if deposit_query.exists():
         deposit = deposit_query.first()
-        print(deposit.email)
         deposit.status = status
         if status == 'approved':
             email = deposit.email
