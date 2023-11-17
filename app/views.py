@@ -78,7 +78,7 @@ def withdraw(request):
 @vary_on_headers('Cookie')
 def deposit(request):
     if request.user.is_authenticated:
-        controller.vanishing_affiliate(request)
+        #controller.vanishing_affiliate(request)
         data = controller.data_application()
         data['profile'] = controller.api_profile(request)
         data['is_admin'] = request.user.is_superuser
@@ -89,7 +89,7 @@ def deposit(request):
 @vary_on_headers('Cookie')
 def deposit_info(request, id):
     if request.user.is_authenticated:
-        controller.vanishing_affiliate(request)
+        #controller.vanishing_affiliate(request)
         data = controller.data_application()
         response = controller.get_info_deposit(request, id)
         if response['status_boolean']:

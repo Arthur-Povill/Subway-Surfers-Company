@@ -328,7 +328,6 @@ def format_currency_brazilian(number):
     except:
         pass
 
-    print(number)
     a = '{:,.2f}'.format(number)
     b = a.replace(',','v')
     c = b.replace('.',',')
@@ -731,21 +730,21 @@ def api_info_affiliates(request):
     data = {
         'code': affiliate.code,
         'link': url.replace('partnership/', '') + 'join/' + affiliate.code,
-        'total_earning': format_currency_brazilian(affiliate.total_earning),
-        'total_eaning_day': format_currency_brazilian(affiliate.total_earning_day),
-        'total_earning_month': format_currency_brazilian(affiliate.total_earning_month),
-        'total_earning_last_month': format_currency_brazilian(affiliate.total_earning_last_month),
+        'total_earning': format_currency_brazilian(affiliate.total_earnings),
+        'total_eaning_day': format_currency_brazilian(affiliate.total_earnings_day),
+        'total_earning_month': format_currency_brazilian(affiliate.total_earnings_month),
+        'total_earning_last_month': format_currency_brazilian(affiliate.total_earnings_last_month),
         'cpa_count': affiliate.cpa_count,
         'cpa_percent': int(affiliate.cpa_percent),
-        'cpa_total': format_currency_brazilian(affiliate.cpa_total_earnings),
+        'cpa_total': format_currency_brazilian(affiliate.cpa_total),
         'cpa_day': format_currency_brazilian(affiliate.cpa_day),
         'cpa_month': format_currency_brazilian(affiliate.cpa_month),
-        'cpa_last_month': format_currency_brazilian(affiliate.cpa_total_earnings_last_month),
+        'cpa_last_month': format_currency_brazilian(affiliate.cpa_last_month),
         'revshare_percent': int(affiliate.revshare_percent),
-        'revshare_total': format_currency_brazilian(affiliate.revshare_total_earnings),
-        'revshare_day': format_currency_brazilian(affiliate.revshare_total_earnings_month),
-        'revshare_month': format_currency_brazilian(affiliate.revshare_total_earnings_month),
-        'revshare_last_month': format_currency_brazilian(affiliate.revshare_total_earnings_month),
+        'revshare_total': format_currency_brazilian(affiliate.revshare_total),
+        'revshare_day': format_currency_brazilian(affiliate.revshare_day),
+        'revshare_month': format_currency_brazilian(affiliate.revshare_month),
+        'revshare_last_month': format_currency_brazilian(affiliate.revshare_last_month),
         'indication_percent': int(affiliate.indication_percent),
         'indication_count': format_currency_brazilian(affiliate.indication_total),
         'indication_total': format_currency_brazilian(affiliate.indication_total),
