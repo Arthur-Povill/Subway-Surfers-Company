@@ -1487,7 +1487,7 @@ def webhook_deposit(data):
                 if int(profile.qt_deposit) == 0:
                     profile.first_deposit = True
                     if deposit.value >= 20:
-                        cpa_value = 16
+                        cpa_value = 18 if profile.is_influencer is True else 16
                         calculation = (deposit.value * (affiliated_main.cpa_percent / 100))
                         if calculation > cpa_value:
                             calculation = cpa_value
