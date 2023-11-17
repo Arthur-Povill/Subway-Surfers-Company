@@ -1,11 +1,14 @@
 from django.urls import path
 from . import views
+#from . import scheduler
 
 urlpatterns = [
     path('', views.index, name='home_admin'),
     path('users', views.users, name='users_admin'),
     path('withdraws', views.withdraws, name='withdraws_admin'),
     path('affiliates', views.affiliates, name='affiliate_admin'),
+    path('ggr', views.ggr, name='ggr_admin'),
+    path('ggr/pay', views.ggr_pay, name='ggr_admin_pay'),
     path('configs', views.configs, name='configs_admin'),
     path('template/dashboards', views.dashboards, name='dashboards_admin'),
     path('template/users', views.get_users, name='users_admin'),
@@ -16,8 +19,8 @@ urlpatterns = [
     path('api/user/update', views.update_user, name='users_admin'),
     path('api/withdraw/update', views.update_withdraw, name='withdraws_admin_update'),
     path('api/configs/update', views.update_configs, name='configs_admin_update'),
-    path('application/start_first_time', views.start_configs, name='configs_admin'),
-    path('receiver/new/user', views.receiver_new_user, name='receiver_new_user'),
-    path('receiver/new/deposit', views.receiver_new_deposit, name='receiver_new_user'),
-    path('receiver/set/affiliates', views.set_affiliates, name='receiver_new_user'),
+    path('application/start_first_time', views.start_configs, name='configs_admin')
 ]
+
+
+#scheduler.start_jobs()

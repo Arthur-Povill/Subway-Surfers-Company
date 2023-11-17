@@ -14,16 +14,16 @@ class profileAdmin(admin.ModelAdmin):
         'is_influencer', 
         'is_active', 
         'first_access',
-        'affiliate_user',
+        'affiliate_email',
         'created_at', 
         'updated_at'
     )
 
 class affiliateAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user__username', 'code')
+    search_fields = ('id', 'email', 'code')
     list_display = (
         'id', 
-        'user', 
+        'email',
         'code', 
         'is_active', 
         'total_earnings', 
@@ -36,22 +36,21 @@ class affiliateAdmin(admin.ModelAdmin):
     )
 
 class balanceAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'email')
     list_display = (
         'id', 
-        'user', 
+        'email', 
         'value', 
-        'permited_withdraw', 
-        'only_fake', 
+        'permited_withdraw',
         'created_at', 
         'updated_at'
     )
 
 class withdrawAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'email')
     list_display = (
         'id', 
-        'user', 
+        'email', 
         'value', 
         'status', 
         'created_at', 
@@ -59,10 +58,11 @@ class withdrawAdmin(admin.ModelAdmin):
     )
 
 class depositsAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'email', 'external_id')
     list_display = (
         'id', 
-        'user', 
+        'external_id',
+        'email', 
         'value', 
         'status', 
         'created_at', 
@@ -70,11 +70,11 @@ class depositsAdmin(admin.ModelAdmin):
     )
 
 class gameAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'user__username')
+    search_fields = ('id', 'email')
     list_display = (
         'id', 
         'hash_game',
-        'user', 
+        'email', 
         'bet',
         'payout',
         'is_win', 
@@ -92,11 +92,23 @@ class configsAdmin(admin.ModelAdmin):
         'value',
     )	
 
-class smsFunnelAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'external_id')
+class ggrAdmin(admin.ModelAdmin):
+    search_fields = ('id', 'email')
     list_display = (
         'id', 
-        'external_id',
+        'name',
+        'value',
+        'created_at', 
+        'updated_at'
+    )
+
+class ggr_historyAdmin(admin.ModelAdmin):
+    search_fields = ('id', 'cpf')
+    list_display = (
+        'id', 
+        'cpf',
+        'value',
+        'created_at', 
     )
 
 admin.site.register(models.profile, profileAdmin)
@@ -106,4 +118,5 @@ admin.site.register(models.withdraw, withdrawAdmin)
 admin.site.register(models.deposits, depositsAdmin)
 admin.site.register(models.configsApplication, configsAdmin)
 admin.site.register(models.game, gameAdmin)
-admin.site.register(models.smsFunnel, smsFunnelAdmin)
+admin.site.register(models.ggr, ggrAdmin)
+admin.site.register(models.ggr_history, ggr_historyAdmin)

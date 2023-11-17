@@ -1,0 +1,186 @@
+
+<div class="card-dashboard" id="dash-gains">
+    <div class="card-dashboard-container type-column">
+        <div class="card-dashboard-header">
+            <h1>Estatísticas de GGR</h1>
+        </div>
+        <div class="card-dashboard-content">
+            <div class="card-dashboard-subtitle">
+                <h2>Informações Gerais</h2>
+            </div>
+            <div class="card-dashboard-content-container type-column">
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Sua % de GGR
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span><span class="total-month-bet-gain">{{ggr.percent}}</span>%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-dashboard-content-container type-row">
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Crédito Atuais
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-user-gain">{{ggr.credit}}</span></span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row half-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            Débito Atual
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-house-gain">{{ggr.debit}}</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-dashboard-content-container type-column">
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-2">
+                        <span>
+                            GGR Pago total
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span>R$ <span class="total-month-bet-gain">{{ggr.paid_out}}</span></span>
+                    </div>
+                </div>
+                <div class="card-dashboard-item type-row full-div type-column">
+                    <div class="card-dashboard-item-metric alternate-1">
+                        <span>
+                            Status
+                        </span>
+                    </div>
+                    <div class="card-dashboard-item-metric-result">
+                        <span><span class="total-full-bet-gain">{{ggr.status}}</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-dashboard-full half-top-column">
+    <div class="card-dashboard margin-more card-dashboard-half separete-dashboards" id="dash-registers">
+        <div class="card-dashboard-container type-column">
+            <div class="card-dashboard-header">
+                <h1>Pagar Fatura</h1>
+            </div>
+            <div class="card-dashboard-content">
+                <div class="card-dashboard-subtitle">
+                    <h2>Pague sua fatura agora</h2>
+                </div>
+                <div class="card-dashboard-content-container type-row">
+                    <div class="card-dashboard-item type-row type-column">
+                        <div class="payggr-card">
+                            <div style="display: flex; flex-direction: column;">
+                                <input id="value-ggr" style="border-bottom: 2px solid; padding: 5px 4px;" value="25"> 
+                                <input id="cpf-ggr" data-cpf="style" type="text" placeholder="Digite seu CPF" style="padding: 5px 4px;">
+                            </div> 
+                            <div class="btn btn-success" style="padding: 2px 40px;">Pagar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-dashboard margin-more card-dashboard-half separete-dashboards" id="dash-deposits">
+        <div class="card-dashboard-container type-column">
+            <div class="card-dashboard-header">
+                <h1>Histórico</h1>
+            </div>
+            <div class="card-dashboard-content">
+                <div class="card-dashboard-subtitle">
+                    <h2>Detalhes sobre seus pagamentos</h2>
+                </div>
+                {%for history in grr_history%}
+                    <div class="card-dashboard-content-container type-row">
+                        <div class="card-dashboard-item type-row half-div type-column">
+                            <div class="card-dashboard-item-metric alternate-1">
+                                <span>
+                                    {{history.cpf}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-dashboard-item type-row half-div type-column">
+                            <div class="card-dashboard-item-metric alternate-2">
+                                <span>
+                                    {{history.value}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .payggr-card {
+        display: flex;
+        max-width: 400px;
+        flex-direction: row;
+    }
+    .payggr-card input{
+        border: none;
+        outline: none;
+        font-size: 1.25rem;
+        font-weight: bold;
+        font-family: 'Ubuntu', sans-serif;
+        margin: 0 10px;
+        color: #333;
+        box-shadow: 0 0 8px rgba(0,0,0,.8);
+    }
+    .btn-success {
+        color: #fff;
+        background-color: #43d39e;
+        border-color: #43d39e;
+        box-shadow: 0 0 8px rgba(0,0,0,.8);
+        border-radius: .3rem;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 2.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .btn-success:hover {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+    }
+</style>
+<script>
+    document.getElementsByClassName('btn-success')[0].addEventListener('click', function(){
+        var cpf = document.querySelector('#cpf-ggr');
+        var value = document.querySelector('#value-ggr');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/panel/ggr/pay');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if(response.status === 200){
+                    windows.location.href = '/panel/ggr';
+                }
+            }
+            else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        data = {
+            'cpf': cpf.value,
+            'value': value.value
+        }
+        xhr.send(JSON.stringify(data));
+    });
+</script>

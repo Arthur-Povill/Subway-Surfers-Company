@@ -3,6 +3,7 @@ from . import models
 from api import controller as api_controller
 from django.conf import settings
 import base64
+import datetime
 
 def selected_gateway():
     gateway = models.configsApplication.objects.get(name='gateway_name')
@@ -12,6 +13,8 @@ def selected_gateway():
         return primepag()
     elif gateway.value == 'ezzepay':
         return ezzepay()
+    elif gateway.value == 'suitpay':
+        return suitpay()
     else:
         return None
 
@@ -201,9 +204,6 @@ class primepag:
 
 class ezzepay:
     def __init__(self):
-        '''if settings.DEBUG:
-            environment = 'https://api-sandbox.ezzebank.com/v2/' #sandbox
-        else:'''
         environment = 'https://api.ezzebank.com/v2/' #production
 
         self.base_url = environment
@@ -226,7 +226,7 @@ class ezzepay:
         self.s = requests.Session()
         response = self.s.post(url, headers=headers, data=data)
         self.response_login = response.json()
-        print(self.response_login)
+
         self.s.headers.update({
             'Authorization': 'Bearer {}'.format(self.response_login['access_token'])
         })
@@ -312,4 +312,90 @@ class ezzepay:
             'amount': amount,
             'status': status,
         }
+
+class suitpay:
+    def __init__(self):
+        environment = 'https://ws.suitpay.app/api/v1/gateway/' #production
+
+        self.base_url = environment
+        client_key = models.configsApplication.objects.get(name='gateway_key')
+        client_secret = models.configsApplication.objects.get(name='gateway_secret')
+        headers = {
+            'ci': client_key.value,
+            'cs': client_secret.value
+        }
+        self.s = requests.Session()
+        self.s.headers.update(headers)
+
+    def post(self, data):
+        endpoint = 'request-qrcode'
+        url = self.base_url + endpoint
+        external_id = data['cpf'] + ':' + data['external_id'][0:15]
+        value = data['value']
+        name = data['full_name']
+        email = data['email']
+        cpf = data['cpf']
+        next_day = datetime.datetime.now() + datetime.timedelta(days=1)
+        payload = {
+            "requestNumber": external_id,
+            "dueDate": next_day.strftime('%Y-%m-%d'),
+            "amount": value,
+            "shippingAmount": 0.0,
+            "discountAmount": 0.0,
+            "usernameCheckout": "Jogo da Mário",
+            "callbackUrl": data['domain_url'] + 'api/v1/webhook/deposit/confirm',
+            "client": {
+                "name": name,
+                "document": cpf, 
+                "email": email,
+            }
+        }
+        response = self.s.post(url, json=payload)
+        details_response = response.json()
+        formated_dict = {
+            'payment': details_response['paymentCode'],
+            'external_id': external_id,
+        }
+
+        return formated_dict
+    
+    def send(self, data):
+        endpoint = 'pix-payment'
+        url = self.base_url + endpoint
+        cpf = data['pix_key'].replace('.', '').replace('-', '')
+        payload = {
+            'key': cpf,
+            'typeKey': 'document',
+            'value': data['value']
+        }
+        response = self.s.post(url, json=payload)
+        details_response = response.json()
+
+        return details_response
+    
+    def compare(self, value):
+        return True
+    
+    def webhook(self, data):
+        data =  api_controller.load_to_json(data)
+        external_id = data['idTransaction']
+        type_transaction = data['typeTransaction']
+        if type_transaction == '':
+            status_transaction = data['statusTransaction']
+            if status_transaction == 'PAID_OUT' or status_transaction == 'PAYMENT_ACCEPT':
+                status = 'approved'
+            elif status_transaction == 'WAITING_FOR_APPROVAL':
+                status = 'in_progress'
+            else:
+                status = 'canceled'
+        else:
+            external_id = '1'
+            status = 'canceled'
+
+
+        return {
+            'external_id': external_id,
+            'status': status,
+        }
+
 

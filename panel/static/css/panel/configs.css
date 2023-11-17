@@ -61,7 +61,7 @@
     font-weight: bold;
     color: var(--opost-text-color);
     margin: .5rem 0;
-    background-color: var(--light-green);
+    background-color: var(--light-blue-default);
     padding: 0.5rem 0;
     border-radius: .5rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
@@ -186,7 +186,7 @@
 }
 
 .btn-confirm-update:hover{
-    background-color: var(--light-green);
+    background-color: var(--light-blue-default);
 }
 
 .container-close-card-config{
@@ -213,7 +213,7 @@
 }
 
 .close-card-config:hover{
-    color: var(--light-green);
+    color: var(--light-blue-default);
     animation: pulse 1.5s infinite;
 }
 

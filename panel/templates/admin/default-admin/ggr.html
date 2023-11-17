@@ -1,0 +1,39 @@
+{%extends 'mainStructureAdmin.html'%} 
+{%load static%} 
+
+{%block title%}Jogo da Frutinha{%endblock%} 
+
+{%block static%}
+    <link rel='stylesheet' href='{%static "css/app-structure/navbars/navbar-00656-logged.css"%}'>
+    <link rel='stylesheet' href='{%static "css/panel/index-admin.css"%}'>
+    {%block in_static%}
+        <link rel='stylesheet' href='{%static "css/panel/dashboards.css"%}'>
+    {%endblock%}
+{%endblock%} 
+
+{%block fonts%} 
+
+{%endblock%} 
+
+{%block navbar%}
+    {%include 'admin/navbars/navbar-006656-logged.html'%}
+{%endblock%}
+
+{%block content%}
+    <div class="dummy-fill-main"></div>
+    <div class="main-container">
+        {%block main-container%}
+            {%include "admin/personalized/ggr-table.html"%}
+        {%endblock%}
+    </div>
+    {%block out-main-container%}{%endblock%}
+{%endblock%} 
+
+{%block scripts%}
+    <script type="module" src='{%static "js/admin/navbar-logged-admin-09124.js"%}'></script>
+    <script type="module" src='{%static "js/admin/index-logged-admin-09124.js"%}'></script>
+    <script type="module" src='{%static "js/app-structure/default-client/after-auth-min-09982.js"%}'></script>
+    {%block in_script%}
+    
+    {%endblock%}
+{%endblock%}

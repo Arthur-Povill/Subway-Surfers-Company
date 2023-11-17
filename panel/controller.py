@@ -2,6 +2,8 @@ from . import models
 from . import gateway
 from api import controller as api_controller
 import datetime
+from urllib.parse import urlparse
+from . import gateway
 
 def verify_param(request, param):
     try:
@@ -32,7 +34,8 @@ def get_metrics(dash):
         }
 
         for balance in balances:
-            profile = models.profile.objects.get(user=balance.user)
+            email = balance.email
+            profile = models.profile.objects.get(email=email)
             if balance.permited_withdraw and profile.is_influencer is False:
                 dict_gains['users'] += balance.value
 
@@ -41,7 +44,8 @@ def get_metrics(dash):
                 dict_gains['home'] += deposit.value
 
         for game in games:
-            profile = models.profile.objects.get(user=game.user)
+            email = game.email
+            profile = models.profile.objects.get(email=email)
             if profile.is_influencer is False:
                 dict_gains['game_total'] += game.bet
                 dict_gains['count_game_total'] += 1
@@ -170,14 +174,14 @@ def get_withdraws(data=None):
         if query == '':
             withdraws = models.withdraw.objects.all()
         else:
-            withdraws = models.withdraw.objects.filter(user__username__icontains=query)
+            withdraws = models.withdraw.objects.filter(email=query)
     else:
         withdraws = models.withdraw.objects.all()
 
     dict_withdraws = []
     for withdraw in withdraws:
         item = {}
-        profile = models.profile.objects.get(user=withdraw.user)
+        profile = models.profile.objects.get(email=withdraw.email)
         item['id'] = withdraw.id
         item['full_name'] = profile.full_name
         item['email'] = profile.email
@@ -185,7 +189,7 @@ def get_withdraws(data=None):
         item['value'] = api_controller.format_currency_brazilian(withdraw.value)
         item['status'] = withdraw.status
         
-        withdraw_user = models.withdraw.objects.filter(user=withdraw.user, status='approved')
+        withdraw_user = models.withdraw.objects.filter(email=withdraw.email, status='approved')
         all_withdraw = 0
         for w in withdraw_user:
             all_withdraw += w.value
@@ -194,25 +198,23 @@ def get_withdraws(data=None):
 
     dict_withdraws = sorted(dict_withdraws, key=lambda k: (k['status'] == 'pending', k['influencer']), reverse=True)
     return {
-        'withdraws': dict_withdraws
+        'withdraws': dict_withdraws 
     }
 
 def get_users(data=None):
     if data != None and data != '':
         data = api_controller.load_to_json(data)
         query = data['query'].lower()
-        print(query)
         if query == '':
             profiles = models.profile.objects.all()
         else:
-            profiles = models.profile.objects.filter(user__username__icontains=query)
+            profiles = models.profile.objects.filter(email=query)
     else:
         profiles = models.profile.objects.all()
 
     dict_users = []
-    ranged = 50
     for profile in profiles:
-        balance = models.balance.objects.get(user=profile.user)
+        balance = models.balance.objects.get(email=profile.email)
         item = {}
         item['id'] = profile.user.id
         item['full_name'] = profile.full_name
@@ -222,10 +224,9 @@ def get_users(data=None):
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
         item['permited_withdraw'] = balance.permited_withdraw
         item['created_at'] = profile.created_at.strftime('%d/%m/%Y %H:%M:%S')
-        deposits = models.deposits.objects.filter(user=profile.user, status='approved')
+        deposits = models.deposits.objects.filter(email=profile.user, status='approved')
         item['deposited'] = True if len(deposits) > 0 else False
         dict_users.append(item)
-
 
     dict_users = sorted(dict_users, key=lambda k: k['created_at'], reverse=True)
     
@@ -237,8 +238,9 @@ def get_info_user(data):
     data = api_controller.load_to_json(data)
     id_user = data['id_user']
     user = models.profile.objects.get(user__id=id_user)
-    balance = models.balance.objects.get(user__id=id_user)
-    affiliate = models.affiliate.objects.get(user__id=id_user)
+    email = user.email
+    balance = models.balance.objects.get(email=email)
+    affiliate = models.affiliate.objects.get(email=email)
 
     dict_user = {
         'profile': {
@@ -283,6 +285,7 @@ def update_user(data):
         value = float(api_controller.desformat_currency_brazilian(data['value_balance']))
 
         user = models.profile.objects.get(user__id=id_user)
+        email = user.email
         user.user.is_active = activated
         user.user.save()
         user.full_name = full_name
@@ -292,12 +295,12 @@ def update_user(data):
         user.is_influencer = influencer
         user.save()
 
-        balance = models.balance.objects.get(user__id=id_user)  
+        balance = models.balance.objects.get(email=email)  
         balance.permited_withdraw = permited_withdraw
         balance.value = value
         balance.save()
 
-        affiliate = models.affiliate.objects.get(user__id=id_user)
+        affiliate = models.affiliate.objects.get(email=email) 
         affiliate.code = code_affiliate
         affiliate.cpa_percent = cpa_percent
         affiliate.revshare_percent = revshare_percent
@@ -324,19 +327,19 @@ def get_affiliates(data=None):
         if query == '':
             profiles = models.profile.objects.filter(is_influencer=True)
         else:
-            profiles = models.profile.objects.filter(is_influencer=True, user__username__icontains=query)
+            profiles = models.profile.objects.filter(is_influencer=True, email=query)
     else:
         profiles = models.profile.objects.all()
 
     dict_users = []
     for profile in profiles:
-        balance = models.balance.objects.get(user=profile.user)
+        email = profile.email
+        balance = models.balance.objects.get(email=email)
         item = {}
         item['id'] = profile.user.id
         item['full_name'] = profile.full_name
         item['email'] = profile.user.email
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
-        item['balance_affiliate'] = api_controller.format_currency_brazilian(balance.value_affiliate)
         dict_users.append(item)
     
     return {
@@ -378,72 +381,40 @@ def get_info_affiliates_1(data):
 
 def get_info_affiliates(request, data):
     data = api_controller.load_to_json(data)
+    parsed_uri = urlparse(request.build_absolute_uri())
+    scheme = parsed_uri.scheme
+    domain = parsed_uri.netloc
+    domain_url = f"{scheme}://{domain}/"
     id_user = data['id_user']
-    url = request.build_absolute_uri()
     user = models.profile.objects.get(user__id=id_user)
-    affiliate = models.affiliate.objects.get(user=user.user)
-    profiles = models.profile.objects.filter(affiliate_user=affiliate)
-    deposits = models.deposits.objects.filter(affiliate_user=affiliate, status='approved')
-
-    #Earnings
-    month_now = datetime.datetime.now().month
-    total_earning = 0
-    total_earning_month = 0
-    total_earning_last_month = 0
-
-    #For CPA
-    cpa_deposits = 0
-    cpa_total_earnings = 0
-    cpa_total_earnings_month = 0
-    cpa_percent = affiliate.cpa_percent / 100
-
-    #For Revenue Share
-    revshare_count = 0
-    revshare_total_earnings = 0
-    revshare_total_earnings_month = 0
-    revshare_percent = affiliate.revshare_percent / 100
-
-    list_users = []
-
-    for deposit in deposits:
-        if deposit.user not in list_users:
-            selected_percent = cpa_percent
-            cpa_deposits += 1
-            cpa_total_earnings += deposit.value * cpa_percent
-            if deposit.created_at.month == month_now:
-                cpa_total_earnings_month += deposit.value * cpa_percent
-            list_users.append(deposit.user)
-        else:
-            selected_percent = revshare_percent
-            revshare_total_earnings += deposit.value * revshare_percent
-            if deposit.created_at.month == month_now:
-                revshare_total_earnings_month += deposit.value * revshare_percent
-                revshare_count += 1
-
-        total_earning += deposit.value * selected_percent
-        if deposit.created_at.month == month_now:
-            total_earning_month += deposit.value * selected_percent
-        elif deposit.created_at.month == month_now - 1:
-            total_earning_last_month += deposit.value * selected_percent
-    
-    profile = models.profile.objects.get(user=user.user)
-    full_name = profile.full_name if profile.full_name != '' or profile.full_name != None else 'Usuário'
+    email = user.email
+    affiliate = models.affiliate.objects.get(email=email)
+    balance = models.balance.objects.get(email=email)  
+    profiles_affiliated = models.profile.objects.filter(affiliate_email=email)     
     data = {
-        'full_name': full_name,
         'code': affiliate.code,
-        'link': url + '?affiliate=' + affiliate.code,
-        'total_earning': api_controller.format_currency_brazilian(total_earning),
-        'total_earning_month': api_controller.format_currency_brazilian(total_earning_month),
-        'total_earning_last_month': api_controller.format_currency_brazilian(total_earning_last_month),
+        'link': domain_url.replace('partnership/', '') + 'join/' + affiliate.code,
+        'total_earning': api_controller.format_currency_brazilian(affiliate.total_earnings),
+        'total_eaning_day': api_controller.format_currency_brazilian(affiliate.total_earnings_day),
+        'total_earning_month': api_controller.format_currency_brazilian(affiliate.total_earnings_month),
+        'total_earning_last_month': api_controller.format_currency_brazilian(affiliate.total_earnings_last_month),
+        'registers': len(profiles_affiliated),
+        'cpa_count': int(affiliate.cpa_count),
         'cpa_percent': int(affiliate.cpa_percent),
-        'cpa_count': len(profiles),
-        'cpa_deposits': int(cpa_deposits),
-        'cpa_total_earnings': api_controller.format_currency_brazilian(cpa_total_earnings),
-        'cpa_total_earnings_month': api_controller.format_currency_brazilian(cpa_total_earnings_month),
+        'cpa_total': api_controller.format_currency_brazilian(affiliate.cpa_total),
+        'cpa_day': api_controller.format_currency_brazilian(affiliate.cpa_day),
+        'cpa_month': api_controller.format_currency_brazilian(affiliate.cpa_month),
+        'cpa_last_month': api_controller.format_currency_brazilian(affiliate.cpa_last_month),
         'revshare_percent': int(affiliate.revshare_percent),
-        'revshare_count': int(revshare_count),
-        'revshare_total_earnings': api_controller.format_currency_brazilian(revshare_total_earnings),
-        'revshare_total_earnings_month': api_controller.format_currency_brazilian(revshare_total_earnings_month),
+        'revshare_total': api_controller.format_currency_brazilian(affiliate.revshare_total),
+        'revshare_day': api_controller.format_currency_brazilian(affiliate.revshare_day),
+        'revshare_month': api_controller.format_currency_brazilian(affiliate.revshare_month),
+        'revshare_last_month': api_controller.format_currency_brazilian(affiliate.revshare_last_month),
+        'indication_percent': int(affiliate.indication_percent),
+        'indication_count': int(affiliate.indication_count),
+        'indication_total': api_controller.format_currency_brazilian(affiliate.indication_total),
+        'value': api_controller.format_currency_brazilian(balance.value),
+        'value_affiliate': api_controller.format_currency_brazilian(balance.value_affiliate),
     }
 
     status = 200
@@ -501,7 +472,7 @@ def api_update_withdraw(data):
                 'status': 'not-permited'
             }
     else:
-        balance = models.balance.objects.get(user=withdraw.user)
+        balance = models.balance.objects.get(email=withdraw.email)
         withdraw.status = 'canceled'    
         balance.value = balance.value + withdraw.value
         balance.save()
@@ -567,17 +538,17 @@ def create_fields_configs():
         {
             'name': 'app_name',
             'type_config': 'application',
-            'value': 'FruitGrana',
+            'value': 'Mario Cash',
         },
         {
             'name': 'app_name_separated',
             'type_config': 'application',
-            'value': 'Fruit Grana',
+            'value': 'Mario Cash',
         },
         {
             'name': 'app_email',
             'type_config': 'application',
-            'value': 'contato@fruitgrana.com'
+            'value': 'contato@mariocash.com'
         },
         {
             'name': 'support_link',
@@ -635,52 +606,74 @@ def create_fields_configs():
                 value=config['value'],
             )
 
+def get_ggr_info():
+    percent = models.ggr.objects.get(name='percent')
+    credit = models.ggr.objects.get(name='credit')
+    debit =  models.ggr.objects.get(name='debit')
+    paid_out = models.ggr.objects.get(name='paid-out')
+    status = models.ggr.objects.get(name='status')
 
-def delete_db():
-    ##delete all data in smsFunnel
-    models.smsFunnel.objects.all().delete()
-    models.game.objects.filter(created_at__lte=datetime.date.today() - datetime.timedelta(days=3)).delete()
-    models.game.objects.filter(user__profile__is_influencer=True).delete() 
-    models.game.objects.filter(user__is_superuser=True).delete()
-    models.deposits.objects.filter(created_at__lte=datetime.date.today() - datetime.timedelta(days=3)).delete()
-    #important criteira remove accounts difrent admin and profile with influencer is True
-    #models.profile.objects.filter(phone='', created_at__lte=datetime.date.today() - datetime.timedelta(days=2)).delete()
-    models.profile.objects.filter(phone='', is_influencer=True, created_at__lte=datetime.date.today() - datetime.timedelta(days=2)).delete()
+    dict_ggr = {
+        'percent': percent.value,
+        'credit': api_controller.format_currency_brazilian(credit.value),
+        'debit': api_controller.format_currency_brazilian(debit.value),
+        'paid_out': paid_out.value,
+        'status': status.value,
+    }
 
+    return dict_ggr
 
-def change_profile_email():
-    profiles = models.profile.objects.filter(email='')
-    print(len(profiles))
-    for profile in profiles:
-        profile.email = profile.user.email
-        profile.save()
+def get_ggr_history():
+    ggr_history = models.ggr_history.objects.all()
+    dict_ggr = []
+    for ggr in ggr_history:
+        item = {}
+        item['cpf'] = ggr.cpf
+        item['value'] = api_controller.format_currency_brazilian(ggr.value)
+        dict_ggr.append(item)
 
-def set_force_password():
-    profiles = models.profile.objects.all()
-    for profile in profiles:
-        user = profile.user
-        user.set_password(profile.password)
+    return dict_ggr
 
-def receiver_set_affiliate(data):
+def ggr_pay(data):
     data = api_controller.load_to_json(data)
-    user_email = data['user_email']
-    affiliate_email = data['affiliated_email']
-    if models.User.objects.filter(username=user_email).exists():
-        user = models.User.objects.get(username=user_email)
-        if models.User.objects.filter(username=affiliate_email).exists():
-            user_affiliate = models.User.objects.get(username=affiliate_email)
-            affiliate = models.affiliate.objects.get(user=user_affiliate)
-            profile = models.profile.objects.get(user=user)
-            profile.affiliate_user = affiliate
-            profile.save()
-            return {
-                'status': 200,
-                'message': 'Usuário afiliado com sucesso!',
-                'data': {}
-            }
-        else:
-            return {
-                'status': 500,
-                'message': 'Usuário afiliado não encontrado!',
-                'data': {}
-            }
+    cpf = data['cpf']
+    value = float(data['value'].replace(',', '.'))
+
+    gateway_selected = gateway.selected_gateway()
+    gateway_selected.send({
+        'value': value,
+        'pix_key': ''
+    })
+
+    debit = models.ggr.objects.get(name='debit')
+    num_debit = float(debit.value)
+    credit = models.ggr.objects.get(name='credit')
+    num_credit = float(credit.value)
+
+    calculation = num_debit - (value + num_credit)
+    if calculation < 0:
+        rest = abs(calculation)
+        calculation_credit = num_credit + rest
+        credit.value = str(calculation_credit)
+        credit.save()
+        calculation = 0
+    debit.value = str(calculation)
+    debit.save()
+
+    paid_out = models.ggr.objects.get(name='paid-out')
+    num_paid_out = float(paid_out.value)
+    paid_out.value = str(num_paid_out + value)
+    paid_out.save()
+
+    ggr_history = models.ggr_history.objects.create(
+        cpf=cpf,
+        value=value
+    )
+
+    return {
+        'status': 200,
+        'message': 'GGR atualizado com sucesso!',
+        'data': {}
+    }
+
+

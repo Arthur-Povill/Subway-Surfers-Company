@@ -47,6 +47,10 @@ document.getElementsByClassName('btn-easy-game')[0].addEventListener('click', fu
     window.location.href = '/game/v2';
 });
 
+document.getElementsByClassName('btn-ggr')[0].addEventListener('click', function() {
+    window.location.href = '/panel/ggr';
+});
+
 document.getElementsByClassName('btn-configuration')[0].addEventListener('click', function() {
     window.location.href = '/panel/configs';
 });

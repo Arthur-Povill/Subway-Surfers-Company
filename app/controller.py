@@ -5,12 +5,17 @@ from api import controller as api_controller
 import locale
 
 def profile(request):
-    user_profile = panel_models.profile.objects.get(user=request.user.id)
+    user = request.user
+    email = user.email
+    user_profile = panel_models.profile.objects.get(email=email)
+
     return user_profile
 
 def first_access(request):
     api_controller.first_access(request)
-    user_profile = panel_models.profile.objects.get(user=request.user.id)
+    user = request.user
+    email = user.email
+    user_profile = panel_models.profile.objects.get(email=email)
 
     return user_profile
 
@@ -52,14 +57,16 @@ def get_info_deposit(request, id):
     return response
 
 def data_application():
-    data = api_controller.application_info_user()
+    data = api_controller.application_info()
+    print(data)
     data['app_name_split_1'] = data['app_name_separated'].split(' ')[0]
     data['app_name_split_2'] = data['app_name_separated'].split(' ')[1]
     return data
 
 def vanishing_affiliate(request):
     user = request.user
-    profile = panel_models.profile.objects.get(user=user)
+    email = user.email
+    user_profile = panel_models.profile.objects.get(email=email)
     if profile.vanish is True:
         profile.vanish = False
         profile.affiliate_user = None

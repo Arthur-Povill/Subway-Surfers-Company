@@ -29,20 +29,14 @@ CACHES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitcashjos-production.up.railway.app',
-    'slashfruta.com',
-    'www.slashfruta.com'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://127.0.0.1',
-    'https://fruitcashjos-production.up.railway.app',
-    'https://slashfruta.com',
-    'https://www.slashfruta.com',
+    'https://127.0.0.1'
 ]
 
 # Application definition
@@ -107,9 +101,9 @@ DATABASES = {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'railway',
        'USER': 'postgres',
-       'PASSWORD': 'EEdDeCE5A65GAbEea5eGCcbbEB2d2bBc',
-       'HOST': 'monorail.proxy.rlwy.net',
-       'PORT': '42171',
+       'PASSWORD': '-5b241aab1FBECC2e3B-Be-fF1f*AgcE',
+       'HOST': 'viaduct.proxy.rlwy.net',
+       'PORT': '12957',
    }
 }
 

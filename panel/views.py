@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from . import controller
 
 # Create your views here.
 def index(request):
     if request.user.is_authenticated and request.user.is_superuser:
         data = controller.application_info()
-        #controller.delete_db()
-        #controller.change_profile_email()
         return render(request, 'admin/default-admin/index.html', data)
     else:
         return redirect('/')
@@ -32,6 +29,23 @@ def affiliates(request):
         return render(request, 'admin/default-admin/affiliates.html')
     else:
         return redirect('/')
+    
+def ggr(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = controller.application_info()
+        data['ggr'] = controller.get_ggr_info()
+        data['ggr_history'] = controller.get_ggr_history()
+        return render(request, 'admin/default-admin/ggr.html', data)
+    else:
+        return redirect('/')
+    
+def ggr_pay(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = request.body.decode('utf-8')
+        response = controller.pay_ggr(data)
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
     
 def configs(request):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -116,21 +130,3 @@ def update_configs(request):
 def start_configs(request):
     controller.create_fields_configs()
     return redirect('/')
-
-@csrf_exempt
-def receiver_new_user(request):
-    data = request.body.decode('utf-8')
-    response = controller.receiver_data_user(data)
-    return JsonResponse(response)
-
-@csrf_exempt
-def receiver_new_deposit(request):
-    data = request.body.decode('utf-8')
-    response = controller.receiver_deposit(data)
-    return JsonResponse(response)
-
-@csrf_exempt
-def set_affiliates(request):
-    data = request.body.decode('utf-8')
-    response = controller.receiver_set_affiliate(data)
-    return JsonResponse(response)
