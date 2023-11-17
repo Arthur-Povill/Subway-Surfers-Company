@@ -45,22 +45,6 @@
       <link rel="icon" type="image/png" sizes="32x32" href="{%static 'image\app-structure\fruitCash\favicon-32x32.png'%}">
       <link rel="icon" type="image/png" sizes="16x16" href="{%static 'image\app-structure\fruitCash\favicon-16x16.png'%}">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Space+Mono:regular,700" media="all">
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11208728003"></script>
-      <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-
-         gtag('config', 'AW-11208728003');
-      </script>
-      <!-- Event snippet for Example conversion page -->
-      <script>
-         gtag('event', 'conversion', {'send_to': 'AW-11208728003',
-         { checkout.total_price | money_without_currency },
-         'currency': 'BRL'
-         });
-    </script>
    </head>
    <body>
       {%block main-page%}{%endblock%}
@@ -456,30 +440,5 @@
      <script type="module" src='{%static "js/original/generate_notify.js"%}'></script>
      {%csrf_token%}
      {%block scripts-page%}{%endblock%}
-     <!-- Facebook Pixel Code -->
-      <script>
-         !function(f,b,e,v,n,t,s)
-         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-         n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-         if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-         n.queue=[];t=b.createElement(e);t.async=!0;
-         t.src=v;s=b.getElementsByTagName(e)[0];
-         s.parentNode.insertBefore(t,s)}(window,document,'script',
-         'https://connect.facebook.net/en_US/fbevents.js');
-         fbq('init', '1012134690156633'); 
-         fbq('track', 'PageView');
-      </script>
-      <noscript>
-         <img height="1" width="1" 
-         src="https://www.facebook.com/tr?id=1012134690156633&ev=PageView
-         &noscript=1"/>
-      </noscript>
-      <!-- End Facebook Pixel Code -->
-      <script>
-         fbq('track', 'Purchase');
-      </script>
-      <script>
-         fbq('track', 'CompleteRegistration');
-      </script>
 </body>
 </html>

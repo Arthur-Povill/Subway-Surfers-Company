@@ -58,7 +58,6 @@ def get_info_deposit(request, id):
 
 def data_application():
     data = api_controller.application_info()
-    print(data)
     data['app_name_split_1'] = data['app_name_separated'].split(' ')[0]
     data['app_name_split_2'] = data['app_name_separated'].split(' ')[1]
     return data

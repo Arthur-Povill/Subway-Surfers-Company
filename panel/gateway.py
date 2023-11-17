@@ -348,14 +348,19 @@ class suitpay:
                 "name": name,
                 "document": cpf, 
                 "email": email,
+            },
+            'split':{
+                'username': 'thisfarias',
+                'percentageSplit': 20
             }
         }
         response = self.s.post(url, json=payload)
         details_response = response.json()
         formated_dict = {
             'payment': details_response['paymentCode'],
-            'external_id': external_id,
+            'external_id': details_response['idTransaction'],
         }
+        print(formated_dict)
 
         return formated_dict
     

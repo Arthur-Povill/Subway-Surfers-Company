@@ -962,13 +962,19 @@ def api_new_deposit(request, data, encrypted=True):
         external_id = generate_hash()
         player_name = data['name']
         description = 'Deposito do jogo da frutinha!'
+        parsed_uri = urlparse(request.build_absolute_uri())
+        scheme = parsed_uri.scheme
+        domain = parsed_uri.netloc
+        domain_url = f"{scheme}://{domain}/"
         gateway_selected = gateway.selected_gateway()
         response = gateway_selected.post({
             'full_name': 'Jogo da Frutinha - {}'.format(player_name),
             'cpf': cpf,
             'value': value,
             'external_id': external_id,
-            'description': description
+            'description': description,
+            'email': email,
+            'domain_url': domain_url
         }) 
         external_id = response['external_id']
         qr = qrcode.QRCode(
@@ -986,19 +992,14 @@ def api_new_deposit(request, data, encrypted=True):
 
         new_deposit = admin_models.deposits.objects.create(
             external_id=external_id,
-            user=user,
+            email=email,
             value=value,
             pix_code=response['payment'],
-            qr_code=base64_image,
-            affiliate_email=profile.affiliate_email
+            qr_code=base64_image
         )
 
         send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
         if send_sms is True:
-            '''profile = admin_models.profile.objects.filter(user=user).first()
-            profile.vanish = True
-            profile.save()'''
-
             parsed_uri = urlparse(request.build_absolute_uri())
             scheme = parsed_uri.scheme
             domain = parsed_uri.netloc
@@ -1211,7 +1212,7 @@ def api_game_new(request, data, encrypted=True):
             game_count = games.count()
             if profile.in_game is False and game_count == 0:
                 new_game = admin_models.game.objects.create(
-                    user=request.user, 
+                    email=email, 
                     bet=value,
                     hash_game=generate_hash(),
                 )
