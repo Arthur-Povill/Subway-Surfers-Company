@@ -29,14 +29,16 @@ CACHES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'fruitleonardo.railway.internal'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://127.0.0.1'
+    'https://127.0.0.1',
+    'https://fruitleonardo.railway.internal'
 ]
 
 # Application definition
