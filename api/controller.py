@@ -104,7 +104,7 @@ def load_to_json(data):
     return data
 
 def verify_request_method(method, authorized_method):
-    if method in authorized_method:
+    if str(method).upper() in authorized_method:
         status = 200
         status_boolean = True
         message = 'Método autorizado!'
