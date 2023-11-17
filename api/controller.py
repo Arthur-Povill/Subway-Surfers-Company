@@ -104,7 +104,7 @@ def load_to_json(data):
     return data
 
 def verify_request_method(method, authorized_method):
-    if str(method).upper() in authorized_method:
+    if method in authorized_method:
         status = 200
         status_boolean = True
         message = 'Método autorizado!'
@@ -964,6 +964,8 @@ def api_new_deposit(request, data, encrypted=True):
         description = 'Deposito do jogo da frutinha!'
         parsed_uri = urlparse(request.build_absolute_uri())
         scheme = parsed_uri.scheme
+        scheme = parsed_uri.scheme
+        scheme = 'https' if scheme == 'http' else scheme
         domain = parsed_uri.netloc
         domain_url = f"{scheme}://{domain}/"
         gateway_selected = gateway.selected_gateway()
