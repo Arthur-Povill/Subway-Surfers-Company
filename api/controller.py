@@ -1038,7 +1038,7 @@ def api_new_deposit(request, data, encrypted=True):
         'data': data
     }
 
-def api_new_withdraw(request, data, encrypted=True):
+def api_new_withdraw(request, data, encrypted=True):    
     user = request.user
     email = user.email
     withdraws = admin_models.withdraw.objects.filter(email=email)
@@ -1445,15 +1445,19 @@ def api_game_started(request, data, encrypted=True):
 
 def webhook_deposit(data):
     gateway_selected = gateway.selected_gateway()
-    print(data)
     data = gateway_selected.webhook(data)
+    print(data)
     external_id = data['external_id']
     status = data['status']
-    amount = data['amount']
+    try:
+        amount = data['amount']
+    except:
+        amount = 0
 
     deposit_query = admin_models.deposits.objects.filter(external_id=external_id)
     if deposit_query.exists():
         deposit = deposit_query.first()
+        print(deposit.email)
         deposit.status = status
         if status == 'approved':
             email = deposit.email
@@ -1479,7 +1483,7 @@ def webhook_deposit(data):
                 }
                 smsFunnel.integratySmsFunnel().send(data_sms)
                     
-            if profile.affiliate_email != None:
+            if profile.affiliate_email != None and profile.affiliate_email != '':
                 email_affiliated = profile.affiliate_email
                 profile_affiliated_main = admin_models.profile.objects.get(email=email_affiliated)
                 affiliated_main = admin_models.affiliate.objects.get(email=email_affiliated)
@@ -1520,7 +1524,7 @@ def webhook_deposit(data):
                             affiliated_main.cpa_month = calculation
 
                         #Add gains by indication
-                        if profile_affiliated_main.affiliate_email != None:
+                        if profile_affiliated_main.affiliate_email != None and profile_affiliated_main.affiliate_email != '':
                             email_father = profile_affiliated_main.affiliate_email
                             balance_affiliated_father= admin_models.balance.objects.get(email=email_father)
                             affiliated_father = admin_models.affiliate.objects.get(email=email_father)
