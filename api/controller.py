@@ -1448,7 +1448,6 @@ def api_game_started(request, data, encrypted=True):
 def webhook_deposit(data):
     gateway_selected = gateway.selected_gateway()
     data = gateway_selected.webhook(data)
-    print(data)
     external_id = data['external_id']
     status = data['status']
     try:

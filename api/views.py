@@ -196,7 +196,6 @@ def api_game_started(request):
 
 @csrf_exempt
 def api_webhook_deposit(request):
-    print('Requisição do Webhook: ', request.method)
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
