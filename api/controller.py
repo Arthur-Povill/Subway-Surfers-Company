@@ -1487,7 +1487,6 @@ def webhook_deposit(data):
                         affiliated_main.total_earnings += calculation
                         affiliated_main.total_earnings_month += calculation
                         affiliated_main.total_earnings_day += calculation
-                        affiliated_main.total_earnings_month += calculation
                         affiliated_main.cpa_count += 1
                         affiliated_main.cpa_total += calculation
                         affiliated_main.cpa_day += calculation
