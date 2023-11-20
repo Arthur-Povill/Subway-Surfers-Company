@@ -1454,113 +1454,67 @@ def webhook_deposit(data):
         amount = data['amount']
     except:
         amount = 0
-
+    
     deposit_query = admin_models.deposits.objects.filter(external_id=external_id)
     if deposit_query.exists():
         deposit = deposit_query.first()
+        email = deposit.email
         deposit.status = status
         if status == 'approved':
-            email = deposit.email
             balance = admin_models.balance.objects.get(email=email)
             profile = admin_models.profile.objects.get(email=email)
+            deposits = admin_models.deposits.objects.filter(email=email, status='approved')
             
             value = deposit.value
-            if value >= 20 and value < 50:
-                value += 20
-            elif value  >= 50 and value < 100:
-                value += 60
-            elif value >= 100:
-                value + 125
-                
-            balance.value = balance.value + value
-            send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
-            if send_sms is True:
-                data_sms = {
-                    'webhook': admin_models.configsApplication.objects.filter(name='pix_approved').first().value,
-                    'name': profile.full_name,
-                    'phone': profile.phone,
-                    'email': profile.email
-                }
-                smsFunnel.integratySmsFunnel().send(data_sms)
+            value_ggr = value
+            if profile.qt_deposit == 0:
+                profile.first_deposit = True
+            profile.qt_deposit += 1
+            balance.value += value * 2
                     
             if profile.affiliate_email != None and profile.affiliate_email != '':
-                email_affiliated = profile.affiliate_email
-                profile_affiliated_main = admin_models.profile.objects.get(email=email_affiliated)
-                affiliated_main = admin_models.affiliate.objects.get(email=email_affiliated)
-                balance_affiliated_main = admin_models.balance.objects.get(email=email_affiliated)
-
-                if int(profile.qt_deposit) == 0:
-                    profile.first_deposit = True
+                user_main_affiliate = User.objects.get(email=profile.affiliate_email)
+                affiliated_main = admin_models.affiliate.objects.get(email=profile.affiliate_email)
+                balance_affiliated_main = admin_models.balance.objects.get(email=profile.affiliate_email)
+                if deposits.count() == 0:
                     if deposit.value >= 20:
-                        cpa_value = 18 if profile.is_influencer is True else 16
-                        calculation = (deposit.value * (affiliated_main.cpa_percent / 100))
-                        if calculation > cpa_value:
-                            calculation = cpa_value
-
-                        #Add gains in affiliates
-                        if profile_father.is_influencer is True:
-                            balance_affiliated_father.value_affiliate += calculation
+                        cpa_value = 16
+                        calculation = cpa_value
+                        if profile.is_influencer is True:
+                            balance_affiliated_main.value_affiliate += calculation
                         else:
-                            balance_affiliated_father.value += calculation
+                            balance_affiliated_main.value += calculation
                         affiliated_main.total_earnings += calculation
-                        affiliated_main.cpa_total += calculation
+                        affiliated_main.total_earnings_month += calculation
+                        affiliated_main.total_earnings_day += calculation
+                        affiliated_main.total_earnings_month += calculation
                         affiliated_main.cpa_count += 1
-                        
-                        today = datetime.datetime.now()
-                        if affiliated_main.last_update != today:
-                            affiliated_main.total_earning_day = calculation
-                            affiliated_main.cpa_day = calculation
-                        else:
-                            affiliated_main.total_earning_day += calculation
-                            affiliated_main.cpa_day += calculation
+                        affiliated_main.cpa_total += calculation
+                        affiliated_main.cpa_day += calculation
+                        affiliated_main.cpa_month += calculation
+                        value_ggr -= calculation
 
-                        if today.month == affiliated_main.last_update.month:
-                            affiliated_main.total_earning_month += calculation
-                            affiliated_main.cpa_month += calculation
-                        else:
-                            affiliated_main.total_earnings_last_month = affiliated_main.total_earning_month
-                            affiliated_main.cpa_last_month = affiliated_main.cpa_month
-                            affiliated_main.total_earning_month = calculation
-                            affiliated_main.cpa_month = calculation
-
-                        #Add gains by indication
+                        profile_affiliated_main = admin_models.profile.objects.get(email=profile.affiliate_email)
                         if profile_affiliated_main.affiliate_email != None and profile_affiliated_main.affiliate_email != '':
-                            email_father = profile_affiliated_main.affiliate_email
-                            balance_affiliated_father= admin_models.balance.objects.get(email=email_father)
-                            affiliated_father = admin_models.affiliate.objects.get(email=email_father)
-                            profile_father = admin_models.profile.objects.get(email=email_father)
-
+                            user_father = User.objects.get(email=profile_affiliated_main.affiliate_email)
+                            balance_affiliated_father= admin_models.balance.objects.get(email=profile_affiliated_main.affiliate_email)
+                            profile_affiliated_father = admin_models.affiliate.objects.get(email=profile_affiliated_main.affiliate_email)
+                            affiliated_father = admin_models.affiliate.objects.get(email=profile_affiliated_main.affiliate_email)
                             calculation = (deposit.value * (affiliated_father.indication_percent / 100))
-                            balance_affiliated_father.value_affiliate = balance_affiliated_father.value_affiliate + calculation
-
-                            if profile_father.is_influencer is True:
-                                balance_affiliated_father.value_affiliate += calculation
+                            if profile_affiliated_father.is_influencer is True:
+                                balance_affiliated_father.value_affiliate = balance_affiliated_father.value_affiliate + calculation
                             else:
-                                balance_affiliated_father.value += calculation
-                            affiliated_father.total_earnings += calculation
+                                balance_affiliated_father.value = balance_affiliated_father.value + calculation
                             affiliated_father.indication_total += calculation
-                            affiliated_father.indication_count += 1
-                            
-                            today = datetime.datetime.now()
-                            if affiliated_main.last_update != today:
-                                affiliated_main.total_earning_day = calculation
-                            else:
-                                affiliated_main.total_earning_day += calculation
-
-                            if today.month == affiliated_main.last_update.month:
-                                affiliated_main.total_earning_month += calculation
-                            else:
-                                affiliated_main.total_earnings_last_month = affiliated_main.total_earning_month
-                                affiliated_main.total_earning_month = calculation
-                            
+                            value_ggr -= calculation
                             balance_affiliated_father.save()
                             affiliated_father.save()
 
-                profile.qt_deposit += 1
-                profile.save()
+                        balance.value_ggr = value_ggr
                 affiliated_main.save()
                 balance_affiliated_main.save()
             balance.save()
+            profile.save()
             
         deposit.save()
 
@@ -1577,13 +1531,12 @@ def webhook_deposit(data):
         status_boolean = False
         message = 'Deposito não encontrado!'
         data = {}
-
     return{
         'status': status,
         'status_boolean': status_boolean,
         'message': message,
         'data': data
-    }    
+    }      
 
 def api_update_phone(request, data, encrypted=True):
     if encrypted:
