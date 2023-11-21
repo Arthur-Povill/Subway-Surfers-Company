@@ -1474,13 +1474,14 @@ def webhook_deposit(data):
                     
             if profile.affiliate_email != None and profile.affiliate_email != '':
                 user_main_affiliate = User.objects.get(email=profile.affiliate_email)
+                profile_main_affiliate = admin_models.profile.objects.get(email=profile.affiliate_email)
                 affiliated_main = admin_models.affiliate.objects.get(email=profile.affiliate_email)
                 balance_affiliated_main = admin_models.balance.objects.get(email=profile.affiliate_email)
                 if deposits.count() == 0:
                     if deposit.value >= 20:
                         cpa_value = 16
                         calculation = cpa_value
-                        if profile.is_influencer is True:
+                        if profile_main_affiliate.is_influencer is True:
                             balance_affiliated_main.value_affiliate += calculation
                         else:
                             balance_affiliated_main.value += calculation
