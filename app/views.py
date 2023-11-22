@@ -184,12 +184,12 @@ def classic_game(request):
             if profile.first_access is True:
                 controller.first_access(request)
                 data = controller.data_application()
-                return render(request, 'app-structure/personalized/classic-game.html', data)
+                return render(request, 'app-structure/game/classic-game-get.html', data)
             else:
                 return redirect('/')
         else:
             data = controller.data_application()
-            return render(request, 'app-structure/personalized/classic-game.html', data)
+            return render(request, 'app-structure/game/classic-game-get.html', data)
     else:
         return redirect('/')
 
@@ -203,12 +203,12 @@ def classic_game_v2(request):
                 if profile.first_access is True:
                     controller.first_access(request)
                     data = controller.data_application()
-                    return render(request, 'app-structure/personalized/classic-game-easy.html', data)
+                    return render(request, 'app-structure/game/classic-game-get.html', data)
                 else:
                     return redirect('/')
             else:
                 data = controller.data_application()
-                return render(request, 'app-structure/personalized/classic-game-easy.html', data)
+                return render(request, 'app-structure/game/classic-game-get.html', data)
         else:
             return redirect('/')
     else:
@@ -218,7 +218,7 @@ def classic_game_v2(request):
 def classic_game_dev(request):
     data = controller.data_application()
     print(data)
-    return render(request, 'app-structure/game/classic-game.html', data)
+    return render(request, 'app-structure/game/classic-game-get.html', data)
 
 @cache_page(60)
 def handler_not_found(request, exception):
