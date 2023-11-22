@@ -29,23 +29,20 @@ CACHES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'fruitleonardo-production.up.railway.app',
-    'fruitleonardo-production.up.railway.app',
-    'fruitking.online',
-    'www.fruitking.online'
+    'subwaysurfer1-production.up.railway.app',
+    'subwaypay.online',
+    'www.subwaypay.online'
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://fruitleonardo-production.up.railway.app',
-    'https://https://fruitleonardo-production.up.railway.app',
-    'https://fruitleonardo-production.up.railway.app',
-    'https://fruitking.online',
-    'https://www.fruitking.online'
+    'https://subwaysurfer1-production.up.railway.app',
+    'http://subwaypay.online/',
+    'http://www.subwaypay.online'
 ]
 
 # Application definition
