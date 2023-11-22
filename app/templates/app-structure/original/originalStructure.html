@@ -4,21 +4,21 @@
       <style>.wf-force-outline-none[tabindex="-1"]:focus{outline:none;}</style>
       <meta charset="pt-br">
       <title>
-         {{app_name}} 🍓 |
-         Jogo da Frutinha    
+         {{app_name}}  🌊 |
+         Jogo do Surfista    
       </title>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." name="description">
+      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo do surfista vai fazer você faturar muito." name="description">
       <meta property="og:image" content="{%static 'image\app-structure\fruitCash\logo.png'%}">
-      <meta content="{{app_name}} 🍓" property="og:title">
-      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." property="og:description">
+      <meta content="{{app_name}} 🌊" property="og:title">
+      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo do surfista vai fazer você faturar muito." property="og:description">
       <meta name="twitter:site" content="@fruitcash">
       <meta name="twitter:image" content="{%static 'image\app-structure\fruitCash\logo.png'%}">
-      <meta content="{{app_name}} 🍓" property="twitter:title">
-      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo da frutinha vai fazer você faturar muito." property="twitter:description">
+      <meta content="{{app_name}} 🌊" property="twitter:title">
+      <meta content="Já imaginou ganhar R$1.000 com apenas R$1 único real? O jogo do surfista vai fazer você faturar muito." property="twitter:description">
       <meta property="og:type" content="website">
       <meta content="summary_large_image" name="twitter:card">
       <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -277,159 +277,6 @@
             fill: var(--opost-text-color);
          }
       </style>
-      {%endif%}
-      {%if profile.user.phone == ''%}
-         <!--<div class="container-popup-phone">
-            <div class="popup-phone">
-               <div class="popup-phone-top">
-                  <span>Bônus Liberado</span>
-               </div>
-               <div class="popup-phone-bottom">
-                  <div class="popup-phone-bottom-container">
-                     <div class="text-popup">
-                        <p>{{copy_get_phone}}</p>
-                     </div>
-                     <div class="width-phone-input">
-                        <div class="container-phone-input">
-                           <span>Seu Nome</span>
-                           <div class="box-input-phone">
-                              <input id="name" class="input-name" placeholder="Jeredy Fonseca">
-                           </div>
-                        </div>
-                        <div class="container-phone-input">
-                           <span>Seu telefone</span>
-                           <div class="box-input-phone">
-                              <input id="phone" class="input-phone" placeholder="(99) 99999-9999">
-                           </div>
-                        </div>
-                     </div>
-                     <div class="container-btn-confirm-phone">
-                        <div class="btn-confim-phone">
-                           <span>Confirmar Telefone</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <style>
-            .container-popup-phone{
-               position: absolute;
-               width:100%;
-               height: 100vh;
-               top: 0;
-               left:0;
-               background-color: rgba(0, 0, 0, 0.85);
-               z-index: 1999;
-               display: flex;
-               flex-direction: column;
-               justify-content: center;
-               align-items: center;
-            }
-            .popup-phone{
-               width: 30rem;
-               height: 35rem;
-               background-color: #fff;
-               border-radius: 1rem;
-               box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
-               overflow: hidden;
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-            }
-            .popup-phone-top{
-               width: 100%;
-               background-color: var(--secondary-background-color);
-               border-radius: 1rem 1rem 0 0;
-               display: flex;
-               justify-content: center;
-               align-items: center;
-               font-size:2.1rem;
-               font-weight: bold;
-               color: var(--opost-text-color);
-               user-select: none;
-               padding: 2rem 0;
-            }
-            .popup-phone-bottom{
-               width: 95%;
-               overflow: auto;
-               padding-bottom: 2rem;;
-            }
-            .text-popup{
-               margin-top: 1rem;
-               text-align: center;
-               font-size: 1.15rem;
-               letter-spacing: .05;
-            }
-            .width-phone-input{
-               width: 100%;
-               display: flex;
-               flex-direction: column;
-               justify-content: center;
-               align-items: center;
-               margin-top: 1.5rem;
-            }
-            .container-phone-input{
-               user-select: none;
-               margin: .5rem 0;
-            }
-            .container-phone-input span{
-               font-size: 1.15rem;
-               font-weight: 600;
-               letter-spacing: .05;
-               user-select: none;
-            }
-            .box-input-phone{
-               margin-top: .25rem;
-               width: 18rem;
-               height: fit-content;
-               display: flex;
-               flex-direction: row;
-               align-items: center;
-               border-radius: .75rem;
-               background-color: var(--primary-background-color);
-               box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.6);
-               margin-top: 1rem;
-               padding: .75rem .35rem;
-            }
-            .box-input-phone input{
-               outline: none;
-               border: none;
-               background-color: transparent;
-               margin-left: .5rem;
-               height: 100%;
-               width: 100%;
-            }
-            .container-btn-confirm-phone{
-               width: 100%;
-               display: flex;
-               justify-content: center;
-               align-items: center;
-               margin-top: 1.75rem;
-            }
-            .btn-confim-phone{
-               background-color: var(--light-green);
-               border-radius: .75rem;
-               padding: .5rem .75rem;
-               box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.85);
-               user-select: none;
-               font-weight: bold;
-               color: var(--opost-text-color);
-               cursor: pointer;
-               transition: 1s;
-            }
-            .btn-confim-phone:hover{
-               transform: scale(1.1);
-               background-color: var(--light-green);
-            }
-            @media only screen and (max-width:500px) {
-               .popup-phone{
-                  width: 95%;
-                  height: 90%;
-               }
-            }
-         </style>
-         <script type="module" src='{%static "js/app-structure/personalized/get-phone-min-9823.js"%}'></script>-->
       {%endif%}
       <input value="{{static_url}}" id="dynamicStaticFile" type="hidden" style="display:none;">
       <script>

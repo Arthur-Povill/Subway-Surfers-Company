@@ -201,21 +201,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             ;
             exports.applyScore = function(score) {
-                if (score >= (aposta * 1.8)) {
-                    volleyNum = 4;
-                } else if (score >= (aposta * 1.5)) {
-                    volleyNum = 2;
-                } else if (score >= (aposta * 1.0)) {
-                    volleyNum = 3;
-                } else if (score >= (aposta * 0.7)) {
-                    volleyNum = 2;
-                } else if (score >= (aposta * 0.5)) {
+                if (score >= (aposta * 1.95)) {
                     volleyNum = 3;
                 } else {
                     volleyNum = 2;
                 }
             }
             ;
+            /*exports.applyScore = function(score) {
+                if (score >= (aposta * 1.35)) {
+                    volleyNum = 8;
+                } else if (score >= (aposta * 1.15)) {
+                    volleyNum = 7;
+                } else if (score >= (aposta * 1)) {
+                    volleyNum = 6;
+                } else if (score >= (aposta * 0.5)) {
+                    volleyNum = 5;
+                } else {
+                    volleyNum = 4;
+                }
+            }*;
             exports.sliceAt = function(fruit, angle) {
                 var index;
                 if (state("game-state").isnot("playing"))
@@ -5946,7 +5951,8 @@ document.addEventListener('DOMContentLoaded', function() {
             var buzz = require("scripts/lib/buzz");
             function ClassBuzz(src) {
                 this.sound = new buzz.sound(src,{
-                    formats: ["ogg", "mp3"],
+                    //formats: ["ogg", "mp3"],
+                    formats: ["mp3"],
                     preload: true,
                     autoload: true,
                     loop: false
@@ -8114,7 +8120,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             volleyNum = 4;
                         }
                     }
-                    ;
                     exports.sliceAt = function(fruit, angle) {
                         var index;
                         if (state("game-state").isnot("playing"))
@@ -13895,7 +13900,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     var buzz = require("scripts/lib/buzz");
                     function ClassBuzz(src) {
                         this.sound = new buzz.sound(src,{
-                            formats: ["ogg", "mp3"],
+                            qqformats: ["ogg", "mp3"],
+                            formats: ["mp3"],
                             preload: true,
                             autoload: true,
                             loop: false

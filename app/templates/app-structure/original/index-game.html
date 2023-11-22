@@ -67,24 +67,39 @@
             width: 50px;
             margin: -10px 6px 0 0;
             }
+            .container-bet-game{
+               display: flex !important;
+               flex-direction: row !important;
+               justify-content: center !important;
+               align-items: center !important;
+   
+            }
+            .bet-game{
+               margin: 0 !important;
+               padding: 0 !important;
+               background-color: transparent !important;
+               border: none !important;
+               outline: none !important;
+            }
          </style>
          <div class="minting-container w-container">
             <div class="escudo">
                <img src="{%static 'image\app-structure\fruitCash\trophy.gif'%}">
             </div>
-            <h2>Cortar Frutas</h2>
-            <p>Cada fruta tem um valor pré determinado, ao corta-la você coleta seu valor, e é melhor não deixar ela
-               cair, #ficadica!
+            <h2>INICIAR CORRIDA</h2>
+            <p>
+               Pronto para iniciar mais uma corrida? Escolha o valor da sua aposta e clique em "Correr" para começar.
             </p>
             <form data-name="" id="auth" method="post" aria-label="Form">
                <div class="properties">
                   <h4 class="rarity-heading">Valor de entrada</h4>
-                  <div class="rarity-row roboto-type2">
+                  <div class="rarity-row roboto-type2 container-bet-game">
+                     <span style="user-select:none;">R$ </span>
                      <input type="number" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input bet-game" max="25" min="1" step="1" name="aposta" id="aposta" required="" value="5" data-gtm-form-interact-field-id="0">
                   </div>
                </div>
                <div class="">
-                  <input value="Cortar" class="primary-button w-button btn-confirm-bet"><br><br>
+                  <input value="Correr" class="primary-button w-button btn-confirm-bet"><br><br>
                </div>
             </form>
             <p>Você tem
@@ -116,9 +131,8 @@
          <div class="minting-container w-container">
             <img src="{%static 'image\app-structure\fruitCash\money.png'%}" loading="lazy" width="240" alt="" class="mint-card-image">
             <h2>{{app_name}}</h2>
-            <p class="paragraph">Bem-vindo ao mundo suculento e lucrativo de {{app_name}}, o joguinho que vai deixar
-               você com água na boca e o bolso cheio! Prepare-se para uma experiência emocionante, onde suas
-               habilidades de corte serão testadas e sua conta bancária pode crescer a cada fatia. 
+            <p class="paragraph">
+               Bem-vindo ao mundo emocionante de {{app_name}}! Prepare-se para uma aventura eletrizante nos trilhos, onde cada curva guarda a promessa de fortuna. Desvie dos obstáculos, colete moedas reluzentes e desbloqueie novos percursos enquanto corre em busca da riqueza. Sua jornada pela cidade começa agora – acelere, desfrute e acumule sua fortuna nos trilhos de {{app_name}}!.
             </p>
             <a href="/deposit/" class="primary-button w-button" disabled>DEPOSITE E GANHE 100% BÔNUS</a>
          </div>
@@ -134,93 +148,9 @@
             <img src="{%static 'image\app-structure\fruitCash\60f8c453bf76d73ecbc14a1d_row%2003.svg'%}" loading="eager" alt="" class="image-3">
          </div>
       </div>
-      <div id="rarity" class="rarity-section wf-section">
-         <div class="rarity-chart">
-            <h2 id="w-node-_77b18826-5ece-603f-84c7-b533054134f2-64dffed7" class="heading-2">Raridade</h2>
-            <p id="w-node-_22f3c687-d779-5bd8-0162-218a2829e33a-64dffed7">Cada fruta possui um valor diferente que
-               você
-               pode ganhar ao cortá-la, confira nossa tabela.
-            </p>
-            <div class="div-block">
-               <h3 class="rarity-heading">Tipos</h3>
-               <div class="rarity-row">
-                  <div class="rarity-number">Mais comum</div>
-                  <div>Maçã</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">Menos Comum</div>
-                  <div>Laranja</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">Raro</div>
-                  <div>Kiwi</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">Super Raro</div>
-                  <div>Dragão</div>
-               </div>
-               <img src="{%static 'image\app-structure\fruitCash\logo.png'%}special/60f9aca9b5309615808c507e_rarity.svg" loading="lazy" alt="" class="rarity-image">
-            </div>
-            <div>
-               <h3 class="rarity-heading">Variações</h3>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.05</div>
-                  <div>Maçã</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$0.10</div>
-                  <div>Maracuja</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.15</div>
-                  <div>Melância</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$0.20</div>
-                  <div>Manga</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.25</div>
-                  <div>Abacate</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$0.30</div>
-                  <div>Mamão</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.35</div>
-                  <div>Banana</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$0.40</div>
-                  <div>Limão</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.45</div>
-                  <div>Romã</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$0.50</div>
-                  <div>Morango</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$0.75</div>
-                  <div>Laranja</div>
-               </div>
-               <div class="rarity-row">
-                  <div class="rarity-number">R$1.00</div>
-                  <div>Kiwi</div>
-               </div>
-               <div class="rarity-row blue">
-                  <div class="rarity-number">R$1.00</div>
-                  <div>Dragão</div>
-               </div>
-            </div>
-         </div>
-      </div>
    </div>
    <div class="footer-section wf-section">
-      <div class="domo-text">{{app_name_split_1}} <br></div>
+      <div class="domo-text"><br>{{app_name_split_1}} <br></div>
        <div class="domo-text purple">{{app_name_split_2}} <br></div>
       <div class="follow-test">© Copyright GTWC Limited, with registered
          offices at

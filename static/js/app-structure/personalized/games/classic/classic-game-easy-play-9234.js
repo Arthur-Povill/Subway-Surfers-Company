@@ -201,15 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             ;
             exports.applyScore = function(score) {
-                if (score >= (aposta * 1.8)) {
-                    volleyNum = 4;
-                } else if (score >= (aposta * 1.5)) {
-                    volleyNum = 2;
-                } else if (score >= (aposta * 1.0)) {
-                    volleyNum = 3;
-                } else if (score >= (aposta * 0.7)) {
-                    volleyNum = 2;
-                } else if (score >= (aposta * 0.5)) {
+                if (score >= (aposta * 1.95)) {
                     volleyNum = 3;
                 } else {
                     volleyNum = 2;
@@ -8102,9 +8094,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     ;
                     exports.applyScore = function(score) {
-                        if (score >= (aposta * 1.35)) {
-                            volleyNum = 5;
-                        }  else if (score >= (aposta * 0.5)) {
+                        if (score >= (aposta * 1.95)) {
                             volleyNum = 3;
                         } else {
                             volleyNum = 2;

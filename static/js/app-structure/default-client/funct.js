@@ -58,7 +58,12 @@ function getCSRFToken() {
 
 function enabledPopupAlert(alertMessage, alertLink=''){
     if(alertLink !== '' && alertLink !== null && alertLink !== undefined){
-        document.getElementById('alert-main-error-img').setAttribute('src', dynamicStaticFile + 'image/app-structure/alerts/' + alertLink);
+        var static_files = document.getElementById('dynamicStaticFile').value;
+        if(alertLink === 'correct.png'){
+            document.getElementById('alert-main-error-img').setAttribute('src', static_files  + 'image/app-structure/alerts/' + alertLink);
+        }else{
+            document.getElementById('alert-main-error-img').setAttribute('src', static_files  + 'image/sharkbot/alerts/' + 'error.png');
+        }
     }else if(alertLink === null || alertLink === undefined){
         document.getElementById('alert-main-error-img').style.display = 'none';
     }

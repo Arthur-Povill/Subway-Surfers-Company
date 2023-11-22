@@ -46,12 +46,12 @@ class affiliate(models.Model):
     total_earnings_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total_earnings_last_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cpa_count = models.IntegerField(default=0)
-    cpa_percent = models.DecimalField(max_digits=10, decimal_places=2, default=40.00)
+    cpa_percent = models.DecimalField(max_digits=10, decimal_places=2, default=16.00)
     cpa_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cpa_day = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cpa_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     cpa_last_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    revshare_percent = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    revshare_percent = models.DecimalField(max_digits=10, decimal_places=2, default=30.00)
     revshare_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     revshare_day = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     revshare_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -74,6 +74,8 @@ class balance(models.Model):
     email = models.CharField(max_length=255, default='')
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     value_affiliate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    value_original = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    value_ggr = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     last_deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     last_deposit_bigger = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     permited_withdraw = models.BooleanField(default=True)
@@ -107,7 +109,7 @@ class withdraw(models.Model):
         managed = True
     
     def __str__(self):
-        return self.user.username
+        return self.email
     
 class deposits(models.Model):
     id = models.AutoField(primary_key=True)
@@ -176,16 +178,25 @@ class ggr(models.Model):
     
 class ggr_history(models.Model):
     id = models.AutoField(primary_key=True)
+    external_id = models.CharField(max_length=255, default=None)
     cpf = models.CharField(max_length=255, default='')
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('in_progress', 'In Progress'),
+        ('canceled', 'Canceled')
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'ggr_history'
         managed = True
     
     def __str__(self):
-        return self.email
+        return self.external_id
 
 #when User is created also created profile
 @receiver(post_save, sender=User)

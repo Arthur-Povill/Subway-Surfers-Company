@@ -518,12 +518,12 @@ def create_fields_configs():
         {
             'name': 'permited_deposit',
             'type_config': 'deposit',
-            'value': '25,00',
+            'value': '20,00',
         },
         {
             'name': 'gateway_name',
             'type_config': 'gateway',
-            'value': 'paggue',
+            'value': 'suitpay',
         },
         {
             'name': 'gateway_key',
@@ -538,17 +538,17 @@ def create_fields_configs():
         {
             'name': 'app_name',
             'type_config': 'application',
-            'value': 'Mario Cash',
+            'value': 'SubwayCash',
         },
         {
             'name': 'app_name_separated',
             'type_config': 'application',
-            'value': 'Mario Cash',
+            'value': 'Subway Cash',
         },
         {
             'name': 'app_email',
             'type_config': 'application',
-            'value': 'contato@mariocash.com'
+            'value': 'contato@subwaycash.com'
         },
         {
             'name': 'support_link',

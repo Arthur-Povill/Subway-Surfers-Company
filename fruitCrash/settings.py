@@ -29,7 +29,7 @@ CACHES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'fruitleonardo-production.up.railway.app',
@@ -110,9 +110,9 @@ DATABASES = {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'railway',
        'USER': 'postgres',
-       'PASSWORD': '-5b241aab1FBECC2e3B-Be-fF1f*AgcE',
-       'HOST': 'viaduct.proxy.rlwy.net',
-       'PORT': '12957',
+       'PASSWORD': 'gBcDGfDEeabGF5FG2cEdDb-g6c1aDaFf',
+       'HOST': 'monorail.proxy.rlwy.net',
+       'PORT': '36835',
    }
 }
 
@@ -150,7 +150,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-folder_client = 'fruitCash_201225'
+folder_client = 'SubwaySurfers/sbstg_83586'
 BASE_URL = 'https://thisfarias.com/' + folder_client
 if DEBUG is True:
     STATIC_URL = '/static/'
