@@ -41,7 +41,7 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://subwaysurfer1-production.up.railway.app',
-    'http://subwaypay.online/',
+    'http://subwaypay.online',
     'http://www.subwaypay.online'
 ]
 

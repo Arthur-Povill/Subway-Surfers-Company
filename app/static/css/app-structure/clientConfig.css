@@ -17,6 +17,9 @@ html{
     --backgroud-second-session: #8BFD6A;
     --green: #3898EC;
     --light-green: #63AAE8;
+    --blue: #3898EC;
+    --light-blue: #63AAE8;
+    --light-blue-default: #63AAE8;
 
     /*  declaration default font-family */
     font-family: 'Ubuntu', sans-serif;

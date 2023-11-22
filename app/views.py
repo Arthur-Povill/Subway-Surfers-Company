@@ -13,6 +13,9 @@ def index(request):
         return render(request, 'app-structure/original/index-not-logged.html', data)
     else:
         profile = controller.profile(request)
+        if profile.first_access: 
+            controller.first_access(request)
+        
         if profile.first_access is False: 
             return redirect('/game')
         else:
