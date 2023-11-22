@@ -15,6 +15,7 @@ def index(request):
         profile = controller.profile(request)
         if profile.first_access: 
             controller.first_access(request)
+        return redirect('/game')
         
         if profile.first_access is False: 
             return redirect('/game')
