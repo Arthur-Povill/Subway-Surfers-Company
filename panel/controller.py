@@ -214,7 +214,7 @@ def get_users(data=None):
 
     dict_users = []
     for profile in profiles:
-        balance = models.balance.objects.get(email=profile.email)
+        balance = models.balance.objects.filter(email=profile.email)[0]
         item = {}
         item['id'] = profile.user.id
         item['full_name'] = profile.full_name
@@ -224,8 +224,7 @@ def get_users(data=None):
         item['balance'] = api_controller.format_currency_brazilian(balance.value)
         item['permited_withdraw'] = balance.permited_withdraw
         item['created_at'] = profile.created_at.strftime('%d/%m/%Y %H:%M:%S')
-        deposits = models.deposits.objects.filter(email=profile.user, status='approved')
-        item['deposited'] = True if len(deposits) > 0 else False
+        item['deposited'] = profile.qt_deposit
         dict_users.append(item)
 
     dict_users = sorted(dict_users, key=lambda k: k['created_at'], reverse=True)

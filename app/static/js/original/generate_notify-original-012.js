@@ -75,7 +75,7 @@ function notification(){
     }else{
         var value = Math.floor(Math.random() * (100 - 5 + 1)) + 5;
         value = formatCurrencyBrazilian(value);
-        html = '<span class="bolded">' + random_name + '</span> ganhou <span class="bolded">R$' + value + '<span> no jogo do surfista';
+        html = '<span class="bolded">' + random_name + '</span> ganhou <span class="bolded">R$' + value + '<span> no jogo do subway';
     }
     span.innerHTML = html;
     div.appendChild(span);

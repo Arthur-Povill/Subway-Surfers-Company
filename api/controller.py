@@ -700,6 +700,7 @@ def api_my_profile(request):
             'influencer': user_profile.is_influencer,
             'cpf': user_profile.cpf if user_profile.cpf != None else '',
             'phone': user_profile.phone if user_profile.phone != None else '',
+            'game_test': user_profile.game_test,
             'email': user_profile.email,
         },
         'balance':{
@@ -1192,71 +1193,99 @@ def api_game_new(request, data, encrypted=True):
     mode_game = data['mode']
     balance = admin_models.balance.objects.filter(email=email).first()
     balance_value = float(balance.value)
-    if value >= 1:
-        if balance_value >= value:
-            games = admin_models.game.objects.filter(email=email, is_finished=False)
-            profile = admin_models.profile.objects.filter(email=email).first()
-            if profile.is_influencer is False and balance_value < 1:
-                external_id = 'recovery_user_' + str(profile.cpf)
-                parsed_uri = urlparse(request.build_absolute_uri())
-                scheme = parsed_uri.scheme
-                domain = parsed_uri.netloc
-                domain_url = f"{scheme}://{domain}/"
-                data_sms = {
-                    'webhook': admin_models.configsApplication.objects.filter(name='recovery_user').first().value,
-                    'name': profile.full_name,
-                    'phone': profile.phone,
-                    'email': profile.email,
-                    'customized_url': domain_url + 'deposit',
-                }
-                smsFunnel.integratySmsFunnel().send(data_sms)
-                
-            game_count = games.count()
-            if profile.in_game is False and game_count == 0:
-                new_game = admin_models.game.objects.create(
-                    email=email, 
-                    bet=value,
-                    hash_game=generate_hash(),
-                )
+    if mode_game == 'real':
+        if value >= 1:
+            if balance_value >= value:
+                games = admin_models.game.objects.filter(email=email, is_finished=False, is_started=False)
+                profile = admin_models.profile.objects.filter(email=email).first()
+                if profile.is_influencer is False and balance_value < 1:
+                    external_id = 'recovery_user_' + str(profile.cpf)
+                    parsed_uri = urlparse(request.build_absolute_uri())
+                    scheme = parsed_uri.scheme
+                    domain = parsed_uri.netloc
+                    domain_url = f"{scheme}://{domain}/"
+                    data_sms = {
+                        'webhook': admin_models.configsApplication.objects.filter(name='recovery_user').first().value,
+                        'name': profile.full_name,
+                        'phone': profile.phone,
+                        'email': profile.email,
+                        'customized_url': domain_url + 'deposit',
+                    }
+                    smsFunnel.integratySmsFunnel().send(data_sms)
+                    
+                game_count = games.count()
+                if game_count > 0:
+                    profile.in_game = True
+                else:
+                    profile.in_game = False
+                    
+                if profile.in_game is False and game_count == 0:
+                    hash_game = generate_hash()
+                    new_game = admin_models.game.objects.create(
+                        email=email, 
+                        bet=value,
+                        hash_game=hash_game,
+                    )
 
-                profile.in_game = True
-                profile.save()
+                    profile.in_game = True
+                    profile.save()
 
-                balance.value = balance_value - value
-                balance.save()
+                    balance.value = balance_value - value
+                    balance.save()
 
-                status = 200
-                status_boolean = True
-                message = 'Jogo criado com sucesso!'
-                data = {
-                    'hash_game': new_game.hash_game,
-                    'value': format_currency_brazilian(balance.value)
-                }
+                    status = 200
+                    status_boolean = True
+                    message = 'Jogo criado com sucesso!'
+                    data = {
+                        'hash_game': hash_game,
+                        'value': format_currency_brazilian(balance.value)
+                    }
 
+                else:
+                    profile.in_game = True
+                    profile.save()
+                    game = games.first()
+                    status = 400
+                    status_boolean = False
+                    message = 'Você já possui um jogo ativo!'
+                    data = {
+                        'hash_game': game.hash_game,
+                        'action': 'playing'
+                    }
             else:
-                profile.in_game = True
-                profile.save()
                 status = 400
                 status_boolean = False
-                message = 'Você já possui um jogo ativo!'
+                message = 'Você não possui saldo suficiente para realizar o jogo!'
                 data = {
-                    'action': 'playing'
+                    'action': 'deposit'
                 }
         else:
             status = 400
             status_boolean = False
-            message = 'Você não possui saldo suficiente para realizar o jogo!'
+            message = 'Valor mínimo para jogar é de R$ 1,00'
             data = {
                 'action': 'deposit'
             }
     else:
-        status = 400
-        status_boolean = False
-        message = 'Valor mínimo para jogar é de R$ 1,00'
-        data = {
-            'action': 'deposit'
-        }
-
+        profile = admin_models.profile.objects.filter(email=email).first()
+        if profile.game_test != 0:
+            profile.game_test -= 1
+            profile.save()
+            status = 200
+            status_boolean = True
+            message = 'Jogo free liberado com sucesso!'
+            data = {
+                'hash_game': 'null',
+                'value': 5,
+                'free': profile.game_test
+            }
+        else:
+            status = 400
+            status_boolean = False
+            message = 'Você não possui mais jogos free disponíveis!'
+            data = {
+                'action': 'deposit'
+            }
     return {
         'status': status,
         'status_boolean': status_boolean,
@@ -1323,11 +1352,11 @@ def api_game_status(request):
         'data': data
     }
 
-def api_game_update(request, data, encrypted=True):
+def api_game_update(request, data, encrypted=False):
     user = request.user
     email = user.email
     profile = admin_models.profile.objects.filter(email=email).first()
-    game = admin_models.game.objects.filter(email=email, is_finished=False).first()
+    game = admin_models.game.objects.filter(email=email, is_finished=False, is_started=False).first()
 
     if encrypted:
         data = load_to_json(data)
@@ -1335,7 +1364,7 @@ def api_game_update(request, data, encrypted=True):
         data = load_to_json(data)
     else:
         data = load_to_json(data)
-        
+    
     if profile.in_game:
         if data['hash_game'] == game.hash_game:
             status_game = data['status']
@@ -1391,7 +1420,7 @@ def api_game_update(request, data, encrypted=True):
         status_boolean = False
         message = 'Usuário está com o jogo inativo!'
         data = {}
-
+        
     return{
         'status': status,
         'status_boolean': status_boolean,

@@ -62,6 +62,10 @@ def data_application():
     data['app_name_split_2'] = data['app_name_separated'].split(' ')[1]
     return data
 
+def status_game(request):
+    response = api_controller.api_game_status(request)
+    return response
+
 def vanishing_affiliate(request):
     user = request.user
     email = user.email

@@ -19,6 +19,7 @@ class profile(models.Model):
     is_influencer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     first_access = models.BooleanField(default=True)
+    game_test = models.IntegerField(default=3)
     affiliate_email = models.CharField(max_length=255, blank=True, null=True, default='')
     vanish = models.BooleanField(default=False)
     first_deposit = models.BooleanField(default=False)

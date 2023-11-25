@@ -178,37 +178,47 @@ def terms(request):
 @vary_on_headers('Cookie')
 def classic_game(request):
     if request.user.is_authenticated:
+        data = controller.data_application()
         mode = controller.verify_param(request, 'mode')
-        if mode == 'demo' or mode == 'free':
-            profile = controller.profile(request)
-            if profile.first_access is True:
-                controller.first_access(request)
-                data = controller.data_application()
-                return render(request, 'app-structure/game/classic-game-get.html', data)
+        status_game = controller.status_game(request)
+        data['status_game'] = status_game['data'] if mode != 'demo' or mode != 'free' else {'in_game': True, 'game': {'hash_game': 'null', 'value': '5.0'}}
+        data['is_admin'] = request.user.is_superuser
+        if data['status_game']['in_game'] is True:
+            if mode == 'demo' or mode == 'free':
+                profile = controller.profile(request)
+                if profile.first_access is True:
+                    controller.first_access(request)
+                    return render(request, 'app-structure/game/classic-game-get.html', data)
+                else:
+                    return redirect('/')
             else:
-                return redirect('/')
+                return render(request, 'app-structure/game/classic-game-get.html', data)
         else:
-            data = controller.data_application()
-            return render(request, 'app-structure/game/classic-game-get.html', data)
+            return redirect('/')
     else:
         return redirect('/')
 
 @vary_on_headers('Cookie')  
 def classic_game_v2(request):
     if request.user.is_authenticated:
+        data = controller.data_application()
         mode = controller.verify_param(request, 'mode')
+        status_game = controller.status_game(request)
+        data['status_game'] = status_game['data'] if mode != 'demo' or mode != 'free' else {'in_game': True, 'game': {'hash_game': 'null', 'value': '5.0'}}
+        data['is_admin'] = request.user.is_superuser
         profile = controller.profile(request)
-        if profile.is_influencer is True or request.user.is_superuser is True:
-            if mode == 'demo' or mode == 'free':
-                if profile.first_access is True:
-                    controller.first_access(request)
-                    data = controller.data_application()
-                    return render(request, 'app-structure/game/classic-game-get.html', data)
+        if data['status_game']['in_game'] is True:
+            if profile.is_influencer is True or request.user.is_superuser is True:
+                if mode == 'demo' or mode == 'free':
+                    if profile.first_access is True:
+                        controller.first_access(request)
+                        return render(request, 'app-structure/game/classic-game-get.html', data)
+                    else:
+                        return redirect('/')
                 else:
-                    return redirect('/')
+                    return render(request, 'app-structure/game/classic-game-get.html', data)
             else:
-                data = controller.data_application()
-                return render(request, 'app-structure/game/classic-game-get.html', data)
+                return redirect('/')
         else:
             return redirect('/')
     else:
@@ -217,6 +227,7 @@ def classic_game_v2(request):
 @vary_on_headers('Cookie')
 def classic_game_dev(request):
     data = controller.data_application()
+    data['status_game'] = {'in_game': False, 'game': {'hash_game': 'null', 'value': '5.0'}}
     return render(request, 'app-structure/game/classic-game-get.html', data)
  
 @cache_page(60)

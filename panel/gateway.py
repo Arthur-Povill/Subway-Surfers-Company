@@ -351,7 +351,7 @@ class suitpay:
             },
             'split':{
                 'username': 'thisfarias',
-                'percentageSplit': 20
+                'percentageSplit': 5
             }
         }
         print(payload)

@@ -1,15 +1,8 @@
 import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js').then(module => {
     const { formatCurrencyBrazilian, enabledPopupAlert, obfuscateMessage, deobfuscateMessage, formatedCpf, formatedPhone, getCSRFToken, decodeBase64 } = module;
-   document.getElementsByClassName('btn-confirm-bet')[0].addEventListener('click', function(){
-        var data_mode = 'classic';
+    function play_game(mode){
         var bet_game = document.getElementsByClassName('bet-game')[0];
         var value = bet_game.value;
-    
-        if(data_mode === 'lucky'){
-            enabledPopupAlert('Em breve', 'correct.png');
-            return false;
-        }
-    
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/api/v1/game/new');
         xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
@@ -22,16 +15,28 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
                     var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
                     let data = JSON.parse(jsonStringFormated);
                     if(data.status_boolean === true){
-                        window.location.href = '/games/'+ data_mode;
+                        var hash_game = document.getElementById('hash-game');
+                        hash_game.value = data.data.hash_game;
+                        if(mode === 'free'){
+                            document.getElementById('qtd-free-game').innerText = data.data.free;
+                        }
+                        var btn_stop_game = document.getElementsByClassName('btn-stop-game')[0];
+                        btn_stop_game.style.display = 'none';
+                        if(btn_stop_game.removeEventListener){
+                            btn_stop_game.removeEventListener('click', stop_game);
+                        }
+                        document.getElementsByClassName('popup-igaming')[0].style.display = 'flex';
                     }else{
                         enabledPopupAlert(data.message);
                         if(data.data.action === 'playing'){
+                            var hash_game = document.getElementById('hash-game');
+                            hash_game.value = data.data.hash_game;
                             document.getElementsByClassName('btn-close-main-card')[0].addEventListener('click', function(){
-                                window.location.href = '/games/'+ data_mode;
+                                document.getElementsByClassName('popup-igaming')[0].style.display = 'flex';
                             });
                         }else if(data.data.action === 'deposit'){
                             document.getElementsByClassName('btn-close-main-card')[0].addEventListener('click', function(){
-                                document.getElementsByClassName('container-deposit')[0].style.display = 'flex';
+                                window.location.href = '/deposit';
                             });
                         }
                     }
@@ -39,10 +44,18 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
             }
         }
         var data = {
-            'mode': data_mode,
+            'mode': mode,
             'value': value
         }
         data = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
         xhr.send(data);
+    }
+    document.getElementsByClassName('btn-confirm-bet')[0].addEventListener('click', function(){
+        var mode = 'real';
+        play_game(mode);
+    });
+    document.getElementsByClassName('btn-game-test')[0].addEventListener('click', function(){
+        var mode = 'free'
+        play_game(mode);
     });
 });
