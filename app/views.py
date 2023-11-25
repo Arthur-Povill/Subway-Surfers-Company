@@ -217,9 +217,8 @@ def classic_game_v2(request):
 @vary_on_headers('Cookie')
 def classic_game_dev(request):
     data = controller.data_application()
-    print(data)
     return render(request, 'app-structure/game/classic-game-get.html', data)
-
+ 
 @cache_page(60)
 def handler_not_found(request, exception):
     return redirect('/')

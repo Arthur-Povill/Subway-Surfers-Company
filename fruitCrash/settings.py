@@ -29,7 +29,7 @@ CACHES = {
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'subwaysurfer1-production.up.railway.app',
@@ -107,9 +107,9 @@ DATABASES = {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'railway',
        'USER': 'postgres',
-       'PASSWORD': 'gBcDGfDEeabGF5FG2cEdDb-g6c1aDaFf',
+       'PASSWORD': 'AdaE1e-G62DDf4FcC5116f1BDFaGGeG3',
        'HOST': 'monorail.proxy.rlwy.net',
-       'PORT': '36835',
+       'PORT': '47943',
    }
 }
 
