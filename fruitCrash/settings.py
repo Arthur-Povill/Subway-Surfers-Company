@@ -32,7 +32,7 @@ CACHES = {
 DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'subwaysurfer1-production.up.railway.app',
+    'subwaysurferscompany-production.up.railway.app',
     'subwaypay.online',
     'www.subwaypay.online'
 ]
@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
-    'https://subwaysurfer1-production.up.railway.app',
+    'https://subwaysurferscompany-production.up.railway.app',
     'http://subwaypay.online',
     'http://www.subwaypay.online'
 ]
