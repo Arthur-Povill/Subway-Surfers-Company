@@ -1213,13 +1213,8 @@ def api_game_new(request, data, encrypted=True):
                     }
                     smsFunnel.integratySmsFunnel().send(data_sms)
                     
-                game_count = games.count()
-                if game_count > 0:
-                    profile.in_game = True
-                else:
-                    profile.in_game = False
-                    
-                if profile.in_game is False and game_count == 0:
+                game_count = games.count()                    
+                if game_count == 0:
                     hash_game = generate_hash()
                     new_game = admin_models.game.objects.create(
                         email=email, 
@@ -1269,6 +1264,7 @@ def api_game_new(request, data, encrypted=True):
     else:
         profile = admin_models.profile.objects.filter(email=email).first()
         if profile.game_test != 0:
+            profile.in_game = True
             profile.game_test -= 1
             profile.save()
             status = 200
@@ -1302,6 +1298,9 @@ def api_game_status(request):
         if games.exists():
             game = games.first()
             if game.is_started is False:
+                profile.in_game = True
+                profile.save()
+
                 status = 200
                 status_boolean = True
                 message = 'Usuário está com o jogo ativo!'
@@ -1341,6 +1340,57 @@ def api_game_status(request):
         status = 400
         status_boolean = False
         message = 'Usuário está com o jogo inativo!'
+        data = {
+            'in_game': profile.in_game,
+        }
+
+    return{
+        'status': status,
+        'status_boolean': status_boolean,
+        'message': message,
+        'data': data
+    }
+
+def verify_status(request):
+    email = request.user.email
+    profile = admin_models.profile.objects.filter(email=email).first()
+    games = admin_models.game.objects.filter(email=email)
+    if profile.in_game:
+        if games.exists():
+            game = games.last()
+            if game.is_started is True and game.is_finished is True:
+                profile.in_game = False
+                profile.save()
+                status = 200
+                status_boolean = True
+                message = 'Jogo encerrado!'
+                data = {
+                    'in_game': profile.in_game,
+                    'game': {
+                        'hash_game': game.hash_game,
+                        'value': float(game.bet), 
+                    }
+                }
+            else:
+                status = 400
+                status_boolean = False
+                message = 'Aguardando jogo ser finalizado!'
+                data = {
+                    'in_game': profile.in_game,
+                }
+        else:
+            profile.in_game = False
+            profile.save()
+            status = 200
+            status_boolean = True
+            message = 'Jogo demo encerrado com sucesso!'
+            data = {
+                'in_game': profile.in_game,
+            }
+    else:
+        status = 200
+        status_boolean = True
+        message = 'Usuário não está em jogo!'
         data = {
             'in_game': profile.in_game,
         }
@@ -1421,6 +1471,80 @@ def api_game_update(request, data, encrypted=False):
         message = 'Usuário está com o jogo inativo!'
         data = {}
         
+    return{
+        'status': status,
+        'status_boolean': status_boolean,
+        'message': message,
+        'data': data
+    }
+
+def api_game_update_external(data):
+    data = load_to_json(data)
+    hash_game= data['hash_game']
+    status_game = data['status_game']
+
+    game = admin_models.game.objects.filter(hash_game=hash_game).first()
+    email = game.email
+    profile = admin_models.profile.objects.filter(email=email).first()
+    if 'started' in status_game:
+        if game.is_started is False and game.is_finished is False:
+            game.is_started = True
+            game.save()
+
+            status = 200
+            status_boolean = True
+            message = 'Jogo iniciado com sucesso!'
+            data = {
+                'in_game': profile.in_game,
+                'game': {
+                    'hash_game': game.hash_game,
+                    'value': game.bet, 
+                }
+            }
+        else:
+            status = 400
+            status_boolean = False
+            message = 'O jogo já foi iniciado!'
+            data = {}
+    elif 'finished' in status_game:
+        if game.is_started and game.is_finished is False:
+            profile.in_game = False
+            profile.save()
+
+            win = True if data['win'] == 'true' else False
+            game.win = win
+            if win:
+                bet_value = float(game.bet)
+                gain = bet_value * 1.5
+                game.payout = gain - bet_value
+                balance = admin_models.balance.objects.filter(email=email).first()
+                balance.value = float(balance.value) + gain
+                balance.save()
+
+            game.is_finished = True
+            game.save()
+
+            status = 200
+            status_boolean = True
+            message = 'Jogo encerrado com sucesso!'
+            data = {
+                'in_game': profile.in_game,
+                'game': {
+                    'hash_game': game.hash_game,
+                    'value': game.bet, 
+                }
+            }
+        else:
+            status = 400
+            status_boolean = False
+            message = 'O jogo já foi finalizado!'
+            data = {}
+    else:
+        status = 400
+        status_boolean = False
+        message = 'Status do jogo não encontrado!'
+        data = {}
+    
     return{
         'status': status,
         'status_boolean': status_boolean,

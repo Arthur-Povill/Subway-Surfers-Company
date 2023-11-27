@@ -169,6 +169,14 @@ def api_game_status(request):
     else:
         return JsonResponse(response_method)
     
+def api_game_status_verify(request):
+    response_method = controller.verify_request_method(request.method, ['GET'])
+    if response_method['status_boolean']:
+        response = controller.verify_status(request)
+        return JsonResponse(response)
+    else:
+        return JsonResponse(response_method)
+    
 def api_game_update(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
@@ -181,7 +189,17 @@ def api_game_update(request):
             return JsonResponse({"response": controller.obfuscate_message(response_auth)})
     else:
         return JsonResponse(response_method)
-    
+
+@csrf_exempt
+def api_game_update_external(request):
+    response_method = controller.verify_request_method(request.method, ['POST'])
+    if response_method['status_boolean']:           
+        data = request.body.decode('utf-8')
+        response = controller.api_game_update_external(data)
+        return JsonResponse(response)
+    else:
+        return JsonResponse(response_method) 
+
 def api_game_started(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:

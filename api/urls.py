@@ -16,6 +16,8 @@ urlpatterns = [
     path('v1/deposit/new', views.api_new_deposit, name='v1_api_new_deposit'),
     path('v1/game/new', views.api_game_new, name='v1_api_game_new'),
     path('v1/game/status', views.api_game_status, name='v1_api_game_status'),
+    path('v1/game/status/verify', views.api_game_status_verify),
     path('v1/game/update', views.api_game_update, name='v1_api_game_update'),
+    path('v1/game/update/external', views.api_game_update_external, name='v1_api_game_update'),
     path('v1/webhook/deposit/confirm', views.api_webhook_deposit, name='v1_api_webhook_deposit_confirm'),
 ]

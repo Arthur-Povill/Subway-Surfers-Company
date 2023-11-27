@@ -72,9 +72,8 @@
     }));
     var t, i = ((t = window.pokiSDKVersion) || (t = e("ab") || "v2.234.2"), "poki-sdk-" + (n ? "kids" : "core") + "-" + t + ".js"),
         r = document.createElement("script");
-    var static_file = document.getElementById("dynamicStaticFile").value;
-    var static_file_game = static_file + "js/game/"; 
-    r.setAttribute("src", static_file_game + i), r.setAttribute("type", "text/javascript"), r.setAttribute("crossOrigin", "anonymous"), r.onload = function() {
+    var dynamicStaticFile = document.getElementById("dynamicStaticFile").value;
+    r.setAttribute("src", dynamicStaticFile + 'js/game/' + i), r.setAttribute("type", "text/javascript"), r.setAttribute("crossOrigin", "anonymous"), r.onload = function() {
         return o.dequeue()
     }, document.head.appendChild(r)
 })();

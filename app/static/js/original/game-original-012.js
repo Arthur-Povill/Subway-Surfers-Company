@@ -15,24 +15,17 @@ import(dynamicStaticFile + 'js/app-structure/default-client/funct-min-82092.js')
                     var jsonStringFormated = response_decrypted.replace(/'/g, "\"");
                     let data = JSON.parse(jsonStringFormated);
                     if(data.status_boolean === true){
-                        var hash_game = document.getElementById('hash-game');
-                        hash_game.value = data.data.hash_game;
                         if(mode === 'free'){
                             document.getElementById('qtd-free-game').innerText = data.data.free;
+                            window.location.href = '/games/classic?mode=demo';
+                        }else{
+                            window.location.href = '/games/classic';
                         }
-                        var btn_stop_game = document.getElementsByClassName('btn-stop-game')[0];
-                        btn_stop_game.style.display = 'none';
-                        if(btn_stop_game.removeEventListener){
-                            btn_stop_game.removeEventListener('click', stop_game);
-                        }
-                        document.getElementsByClassName('popup-igaming')[0].style.display = 'flex';
                     }else{
                         enabledPopupAlert(data.message);
                         if(data.data.action === 'playing'){
-                            var hash_game = document.getElementById('hash-game');
-                            hash_game.value = data.data.hash_game;
                             document.getElementsByClassName('btn-close-main-card')[0].addEventListener('click', function(){
-                                document.getElementsByClassName('popup-igaming')[0].style.display = 'flex';
+                                window.location.href = '/games/classic';
                             });
                         }else if(data.data.action === 'deposit'){
                             document.getElementsByClassName('btn-close-main-card')[0].addEventListener('click', function(){

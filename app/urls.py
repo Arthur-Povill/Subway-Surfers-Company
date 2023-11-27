@@ -16,8 +16,7 @@ urlpatterns = [
     path('terms/', views.terms, name='terms'),
     path('legal/', views.terms, name='terms'),
     path('game/', views.game, name='game'),
-    path('game/v2', views.game_v2, name='game'),
     path('games/classic', views.classic_game, name='classic_game'),
-    path('games/v2/classic', views.classic_game_v2, name='classic_game'),
-    path('games/classic/dev', views.classic_game_dev)
+    path('games/classic/dev', views.classic_game_dev),
+    path('games/classic/js/workers/worker.0a8b30d0071f04d38b17.js', views.classic_worker_js),
 ]

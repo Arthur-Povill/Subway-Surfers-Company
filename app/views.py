@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
+from django.http import HttpResponse
+import requests
 from . import controller
 
 # Create your views here.
@@ -150,20 +152,6 @@ def game(request):
     else:
         return redirect('/auth/register')
 
-@vary_on_headers('Cookie')
-def game_v2(request):
-    if request.user.is_authenticated:
-        data = controller.data_application()
-        data_profile = controller.api_profile(request)
-        data['profile'] = data_profile
-        data['is_admin'] = request.user.is_superuser
-        if data_profile['user']['influencer'] is True or request.user.is_superuser is True:
-            return render(request, 'app-structure/original/index-game-easy.html', data)
-        else:
-            return redirect('/')
-    else:
-        return redirect('/auth/register')
-
 @cache_page(60)
 def terms(request):
     data = controller.data_application()
@@ -178,59 +166,50 @@ def terms(request):
 @vary_on_headers('Cookie')
 def classic_game(request):
     if request.user.is_authenticated:
+        domain = request.META['HTTP_HOST']
         data = controller.data_application()
         mode = controller.verify_param(request, 'mode')
         status_game = controller.status_game(request)
-        data['status_game'] = status_game['data'] if mode != 'demo' or mode != 'free' else {'in_game': True, 'game': {'hash_game': 'null', 'value': '5.0'}}
         data['is_admin'] = request.user.is_superuser
-        if data['status_game']['in_game'] is True:
-            if mode == 'demo' or mode == 'free':
-                profile = controller.profile(request)
-                if profile.first_access is True:
+        data['status_game'] = status_game['data'] if mode != 'demo' or mode != 'free' else {'in_game': True, 'game': {'hash_game': 'null', 'value': '5.0'}}
+        data['status_game']['domain'] = domain
+        data['status_game']['email'] = request.user.email
+        data['status_game']['csrf_token'] = request.COOKIES['csrftoken']
+        if mode == 'demo' or mode == 'free':
+            profile = controller.profile(request)
+            if profile.game_test > 0:
+                if profile.first_access:
                     controller.first_access(request)
-                    return render(request, 'app-structure/game/classic-game-get.html', data)
-                else:
-                    return redirect('/')
-            else:
                 return render(request, 'app-structure/game/classic-game-get.html', data)
-        else:
-            return redirect('/')
-    else:
-        return redirect('/')
-
-@vary_on_headers('Cookie')  
-def classic_game_v2(request):
-    if request.user.is_authenticated:
-        data = controller.data_application()
-        mode = controller.verify_param(request, 'mode')
-        status_game = controller.status_game(request)
-        data['status_game'] = status_game['data'] if mode != 'demo' or mode != 'free' else {'in_game': True, 'game': {'hash_game': 'null', 'value': '5.0'}}
-        data['is_admin'] = request.user.is_superuser
-        profile = controller.profile(request)
-        if data['status_game']['in_game'] is True:
-            if profile.is_influencer is True or request.user.is_superuser is True:
-                if mode == 'demo' or mode == 'free':
-                    if profile.first_access is True:
-                        controller.first_access(request)
-                        return render(request, 'app-structure/game/classic-game-get.html', data)
-                    else:
-                        return redirect('/')
-                else:
-                    return render(request, 'app-structure/game/classic-game-get.html', data)
             else:
                 return redirect('/')
         else:
-            return redirect('/')
+            status_game = controller.status_game(request)
+            if status_game['data']['in_game'] is True:
+                print(status_game)
+                return render(request, 'app-structure/game/classic-game-get.html', data)
+            else:
+                return redirect('/')
     else:
         return redirect('/')
 
 @vary_on_headers('Cookie')
 def classic_game_dev(request):
     data = controller.data_application()
-    data['status_game'] = {'in_game': False, 'game': {'hash_game': 'null', 'value': '5.0'}}
+    data['status_game'] = {'in_game': False, 'game': {'hash_game': 'null', 'value': '5.0'}, 'domain': 'test.com'}
+    data['status_game']['email'] = request.user.email
+    data['status_game']['csrf_token'] = request.COOKIES['csrftoken']
     return render(request, 'app-structure/game/classic-game-get.html', data)
  
 @cache_page(60)
 def handler_not_found(request, exception):
     return redirect('/')
 
+def classic_worker_js(request):
+    try:
+        script_js = requests.get('https://thisfarias.com/SubwaySurfers/sbstg_83586/static/js/game/js/workers/worker.0a8b30d0071f04d38b17.js')
+        script_content = script_js.content
+        return HttpResponse(script_content, content_type="application/javascript")
+    except requests.exceptions.RequestException as e:
+        # Lidar com erros de solicitação, como ConnectionError, Timeout, etc.
+        return HttpResponse(f"Erro ao obter o script: {e}", status=500)

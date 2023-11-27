@@ -4,38 +4,116 @@
 {%block title%}Modo: Classico{%endblock%} 
 {%block in_static%}
     <link rel='stylesheet' href='{%static "css/app-structure/personalized/classic-game.css"%}'>
+    <link rel="manifest" href="{%static 'js/game/subwaysurfers.webmanifest'%}">
 {%endblock%} 
 
 
 {%block add_head%}
-   <meta charset="UTF-8">
-   <meta http-equiv="content-type" content="text/html; charset=UTF8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-   <meta name="viewport" content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
-   <meta name="description" content>
-   <title>{{app_name}}</title>
-   <style>
-      body { padding: 0; margin: 0 }
-      .main-container{height:100vh !important;}
-      #unity-container { position: absolute }
-      #unity-container.unity-desktop {width: 100%; height:100vh;}
-      #unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
-      #unity-canvas { background: #231F20 }
-      .unity-mobile #unity-canvas { width: 100%; height: 100% }
-      #unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
-      #unity-logo { width: 154px; height: 130px; background: url('{%static "image/game/unity-logo-dark.png"%}') no-repeat center }
-      #unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('{%static "image/game/progress-bar-empty-dark.png"%}') no-repeat center }
-      #unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('{%static "image/game/progress-bar-full-dark.png"%}') no-repeat center }
-      #unity-footer { position: relative }
-      .unity-mobile #unity-footer { display: none }
-      #unity-webgl-logo { float:left; width: 204px; height: 38px; background: url('{%static "image/game/webgl-logo.png"%}') no-repeat center }
-      #unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
-      #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('{%static "image/game/fullscreen-button.png"%}') no-repeat center }
-      #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
+    <meta name="description" content>
+    <title>{{app_name}}</title>
+    <style>
+        .footer{
+            display: none !important;
+        }
+      body, html { 
+          margin: 0;
+          height: 100%;
+          background-color: #0b316b;
+          overflow: hidden;
+          background-image: url('{{static_url}}/js/game/assets/preload/splash.png');
+          background-repeat: no-repeat;
+          background-position: center;
+      }
 
-   </style>
+      #message {
+          text-align: center;
+          font-size: 8px;
+          z-index: 5;
+          font-family: "Verdana", sans-serif;
+          color: #fff;
+          position: fixed;
+          width: 100%;
+          z-index: 9999;
+      }
+
+      .dot {
+          display: inline;
+          margin-left: 0.2em;
+          margin-right: 0.2em;
+          position: relative;
+          top: -1em;
+          font-size: 3.5em;
+          opacity: 0;
+          animation: showHideDot 2.5s ease-in-out infinite;
+      }
+
+      .dot.one { animation-delay: 0.2s; }
+      .dot.two { animation-delay: 0.4s; }
+      .dot.three { animation-delay: 0.6s; }
+
+      @keyframes showHideDot {
+          0% { opacity: 0; }
+          50% { opacity: 1; }
+          60% { opacity: 1; }
+          100% { opacity: 0; }
+      }
+        .container-btn-stop-game{
+            position: absolute;
+            top: 80%;
+            left: 0;
+            width: 100%;
+            height: fit-content;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .btn-stop-game{
+            width: 6.25rem;
+            height: 6.25rem;
+            background-color: var(--secondary-background-color);
+            border-radius: 10px;
+            box-shadow: 0 0 6px 0 #000;
+            color: var(--opost-text-color);
+            font-family: monospace;
+            z-index: 10;
+            transition: .3s;
+            animation: pulse 1s infinite;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+            font-size: 1.45rem;
+            font-weight: bold;
+            opacity: .85;
+        }
+
+        .btn-stop-game svg{
+            width: 3.5rem;
+            height: auto;
+            transition: .3s;
+            transform: rotate(330deg);
+        }
+
+        .btn-stop-game svg path{
+            fill: var(--opost-text-color);
+        }
+
+        .btn-stop-game:hover{
+            transform: scale(1.1);
+            background-color: var(--light-green);
+            opacity: 1;
+        }
+    </style>
     
 {%endblock%}
 
@@ -50,122 +128,90 @@
     <input value="{{static_url}}" id="dynamicStaticFile" type="hidden" style="display:none;">
     <input value="{{status_game.game.hash_game}}" id="hash-game" type="hidden" style="display:none;">
     <input id="input-first-click" value="0" type="hidden" style="display:none;">
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Subway Surfer</div>
+      <script>
+        window.NOSW = true;
+        window.GAME_CONFIG = {
+            pokiSdkDebug: false,
+            leaderboard: 'mockup',
+            bundlesPath: '{{static_url}}/js/game/bundles',
+            quality: 'high'
+        }
+    </script>
+    <div id="message">
+        <h1>Loading</h1>
+        <h1 class="dot one">.</h1><h1 class="dot two">.</h1><h1 class="dot three">.</h1>
+    </div>
+    <div id="ap" style="opacity:0;"></div>
+    <div id="mk" style="opacity:0;"></div>
+    <div class="container-btn-stop-game" style="display: none;">
+      <div class="btn-stop-game">
+          <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+          width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+          preserveAspectRatio="xMidYMid meet">
+              <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+              fill="#000000" stroke="none">
+                      <path d="M2103 4671 c-254 -73 -423 -294 -423 -554 0 -140 40 -262 118 -360
+                      l30 -38 12 38 c25 76 74 155 131 207 140 130 333 160 506 79 79 -37 181 -140
+                      213 -215 14 -32 28 -58 32 -58 14 0 68 104 89 170 87 279 -48 578 -316 700
+                      -33 15 -84 33 -113 39 -77 16 -207 12 -279 -8z"/>
+                      <path d="M2187 3903 c-62 -21 -131 -83 -165 -147 l-27 -51 -5 -713 -5 -712
+                      -90 142 c-102 162 -146 210 -212 232 -148 50 -305 -19 -358 -157 -38 -99 -32
+                      -121 219 -797 126 -338 245 -646 264 -685 147 -295 429 -508 752 -569 104 -20
+                      272 -20 383 -1 380 66 704 351 820 720 45 144 49 198 45 685 l-3 455 -27 55
+                      c-68 139 -175 213 -340 235 -43 6 -48 9 -59 43 -45 137 -167 225 -329 238
+                      l-87 6 -12 34 c-18 49 -106 141 -163 170 -30 15 -82 29 -133 36 l-84 10 -3
+                      282 c-3 269 -4 283 -26 331 -62 135 -219 205 -355 158z"/>
+              </g>
+          </svg>
+          <span>Parar</span>
       </div>
     </div>
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-      var dynamicStaticFile = document.getElementById("dynamicStaticFile").value;
-      var buildUrl = dynamicStaticFile + "js/game/Build";
-      var loaderUrl = buildUrl + "/Subway.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/Subway.data",
-        frameworkUrl: buildUrl + "/Subway.framework.js",
-        codeUrl: buildUrl + "/Subway.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Subway Surfer Character",
-        productVersion: "0.1",
-        showBanner: unityShowBanner,
-      };
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-      } else {
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
-    </script>
 {%endblock%}
 
 {%block scripts%}
    <script>
-      var dynamicStaticFile = document.getElementById("dynamicStaticFile").value;
-      var hash_game = document.getElementById('hash-game').value;
-      if(hash_game !== 'null'){
-         document.getElementById('unity-canvas').addEventListener('click', function(){
-            var inputFirstClick = document.getElementById('input-first-click').value;
-            if(inputFirstClick == 0){
-               document.getElementById('input-first-click').value = 1;
-               var xhr = new XMLHttpRequest();
-               xhr.open('POST', '/api/v1/game/update', true);
-               xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
-               xhr.setRequestHeader('Content-type', 'application/json');
-               xhr.onload = function() {
-                  if(xhr.status === 200){
-                     var data = JSON.parse(xhr.responseText);
-                     document.getElementById('unity-canvas').removeEventListener('click', function(){});
-                  }
-               }
-               data = {
-                  'hash_game': hash_game,
-                  'status': 'started'
-               }
-               data = JSON.stringify({'response': obfuscateMessage(JSON.stringify(data))})
-               xhr.send(data);
+    function getCSRFToken() {
+        const name = 'csrftoken=';
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+
+        for (let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i].trim();
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length);
             }
-         });
-      }         
+        }
+        return null;
+    }
+    var dynamicStaticFile = document.getElementById("dynamicStaticFile").value;
+    var hash_game = document.getElementById('hash-game').value;
+    if(hash_game !== 'null'){
+        document.getElementById('pixi-canvas').addEventListener('click', function(){
+        var inputFirstClick = document.getElementById('input-first-click').value;
+        if(inputFirstClick == 0){
+            document.getElementById('input-first-click').value = 1;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/v1/game/update', true);
+            xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.onload = function() {
+                if(xhr.status === 200){
+                    var data = JSON.parse(xhr.responseText);
+                    document.getElementById('pixi-canvas').removeEventListener('click', function(){});
+                }
+            }
+            data = {
+                'hash_game': hash_game,
+                'status': 'started'
+            }
+            data = JSON.stringify(data);
+            xhr.send(data);
+        }
+        });
+    }         
    </script>
+   <script src="{%static 'js/game/poki-sdk.js'%}"></script>
+   <script src="{%static 'js/game/js/loading.js'%}?v=0.32"></script>
+   <script src="{%static 'js/game/js/boot.js'%}?v=0.32"></script>
    <script src="{%static 'js/jquery.js'%}" type="text/javascript"></script>
 {%endblock%}
