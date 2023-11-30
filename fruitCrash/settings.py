@@ -34,7 +34,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'subwaysurferscompany-production.up.railway.app',
     'subwaypay.fun',
-    'www.subwaypay.fun'
+    'www.subwaypay.fun',
+    'thisfarias.com'
 ]
 
 
@@ -42,7 +43,16 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',
     'https://subwaysurferscompany-production.up.railway.app',
     'http://subwaypay.fun',
-    'http://www.subwaypay.fun'
+    'http://www.subwaypay.fun',
+    'https://thisfarias.com',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://127.0.0.1',
+    'https://subwaysurferscompany-production.up.railway.app',
+    'http://subwaypay.fun',
+    'http://www.subwaypay.fun',
+    'https://thisfarias.com',
 ]
 
 # Application definition
