@@ -353,6 +353,7 @@ class suitpay:
         
         response = self.s.post(url, json=payload)
         details_response = response.json()
+        print(details_response)
         formated_dict = {
             'payment': details_response['paymentCode'],
             'external_id': details_response['idTransaction'],

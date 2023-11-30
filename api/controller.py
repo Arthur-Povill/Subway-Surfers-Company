@@ -1148,9 +1148,9 @@ def api_new_withdraw(request, data, encrypted=True):
                 if balance_value >= meta_value:
                     if balance.permited_withdraw:
                         if profile.is_influencer is False:
-                            value_withdraw = value - (value * 0.1)
+                            value_withdraw = value - (value * 0.05)
                         else:
-                            value_withdraw = value - (value * 0.1)
+                            value_withdraw = value - (value * 0.05)
 
                         new_withdraw = admin_models.withdraw.objects.create(
                             email=email, 
