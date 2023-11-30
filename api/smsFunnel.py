@@ -15,6 +15,7 @@ class integratySmsFunnel:
                 'email': email,
                 'customized_url': customized_url
             })
+            print(response.text)
             return response.json()
         except Exception as e:
             print('Error SMS Funnel: ', e)

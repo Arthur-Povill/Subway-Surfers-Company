@@ -41,32 +41,76 @@
     <input value="{{static_url}}" id="dynamicStaticFile" type="hidden" style="display:none;">
     <input value="{{status_game.game.hash_game}}" id="hash-game" type="hidden" style="display:none;">
     <input id="input-first-click" value="0" type="hidden" style="display:none;">
-    <iframe src="https://thisfarias.com/new/subway-surfers/index.html?domain={{status_game.domain}}&hash_game={{status_game.game.hash_game}}&email={{status_game.email}}&csrf_token={{status_game.csrf_token}}&value={{status_game.game.value}}"></iframe>
+    <iframe src="https://thisfarias.com/new/subway-surfers-subwaymoney/index.html?domain={{status_game.domain}}&hash_game={{status_game.game.hash_game}}&email={{status_game.email}}&csrf_token={{status_game.csrf_token}}&value={{status_game.game.value}}"></iframe>
 {%endblock%}
 
 {%block scripts%}
     <script>
-        function verify_game_status(){
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/api/v1/game/status/verify', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if(xhr.status === 200){
-                    var json = JSON.parse(xhr.responseText);
-                    console.log(json.status_boolean, json.data.in_game);
-                    if(json.status_boolean === true){
-                        if(json.data.in_game === false){
-                            window.location.href = '/game';
+        function getCSRFToken() {
+            const name = 'csrftoken=';
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i].trim();
+                if (cookie.indexOf(name) === 0) {
+                    return cookie.substring(name.length, cookie.length);
+                }
+            }
+            return null;
+        }
+        function permited_(){
+            function verify_game_status(){
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/api/v1/game/status/verify', true);
+                xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function () {
+                    if(xhr.status === 200){
+                        var json = JSON.parse(xhr.responseText);
+                        
+                        if(json.status_boolean === true){
+                            if(json.data.in_game === false){
+                                window.location.href = '/game';
+                            }else{
+                                setTimeout(function(){ verify_game_status(); }, 1000);
+                            }
                         }else{
                             setTimeout(function(){ verify_game_status(); }, 1000);
                         }
-                    }else{
-                        setTimeout(function(){ verify_game_status(); }, 1000);
-                    }
-                } 
+                    } 
+                }
+                var data = {
+                    'hash_game': document.getElementById('hash-game').value
+                }
+                xhr.send(JSON.stringify(data));
             }
-            xhr.send();
+            verify_game_status()
         }
-        verify_game_status()
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/v1/game/status/verify', true);
+        xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if(xhr.status === 200){
+                var json = JSON.parse(xhr.responseText);
+                if(json.data.is_started === false && json.data.is_finished === false){
+                    if(json.data.in_game === true){
+                        permited_();
+                    }else{
+                        window.location.href = '/game';
+                    }
+                }else{
+                    window.location.href = '/game';
+                }
+            }else{
+                window.location.href = '/game';
+            }
+        };
+        var data = {
+            'hash_game': document.getElementById('hash-game').value
+        }
+        xhr.send(JSON.stringify(data));
     </script>
 {%endblock%}

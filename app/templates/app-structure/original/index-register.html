@@ -32,29 +32,29 @@
    </div>
    <section id="hero" class="hero-section dark wf-section">
       <div class="minting-container w-container">
-         <img src="{%static 'image\app-structure\fruitCash\asset.png'%}" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
+         <img src="{%static 'image\app-structure\fruitCash\money.gif'%}" loading="lazy" width="240" data-w-id="6449f730-ebd9-23f2-b6ad-c6fbce8937f7" alt="Roboto #6340" class="mint-card-image">
          <h2>CADASTRO</h2>
-         <p>É rapidinho, menos de 1 minuto. <br>Vai perder a oportunidade de faturar com o jogo da frutinha?
+         <p>É rapidinho, menos de 1 minuto.
             <br>
          </p>
          <form data-name="" id="auth" name="email-form" method="post" aria-label="Form">
             <div class="properties">
+               <h4 class="rarity-heading">Qual é o seu nome?</h4>
+               <div class="rarity-row roboto-type2">
+                  <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input name-signup" maxlength="256" name="name"  placeholder="Seu nome" id="name" required="" data-gtm-form-interact-field-id="0">
+               </div>
                <h4 class="rarity-heading">E-mail que você usa</h4>
                <div class="rarity-row roboto-type2">
                   <input type="e-mail" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input email-signup" maxlength="256" name="email"  placeholder="seuemail@gmail.com" id="email" required="" data-gtm-form-interact-field-id="0">
                </div>
-               <h4 class="rarity-heading">Repita seu e-mail</h4>
+               <h4 class="rarity-heading">Digite seu telefone</h4>
                <div class="rarity-row roboto-type2">
-                  <input type="e-mail" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input" maxlength="256" name="emailConfirm" placeholder="seuemail@gmail.com" id="emailConfirm" required="" data-gtm-form-interact-field-id="0">
+                  <input type="text" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input phone-signup" maxlength="256" name="phone"  placeholder="44 9999 9999" id="phone" required="" data-gtm-form-interact-field-id="0">
                </div>
                <h4 class="rarity-heading">Digite uma senha</h4>
                <div class="rarity-row roboto-type2">
                   <input type="password" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input password-signup" maxlength="256" name="password" data-name="password" placeholder="Uma senha segura" id="myInput" required="" data-gtm-form-interact-field-id="1">
                   <input type="hidden" name="registerPartner" id="registerPartner" value="ORGANICO" required="">
-               </div>
-               <h4 class="rarity-heading">Repita novamente a senha</h4>
-               <div class="rarity-row roboto-type2">
-                  <input type="password" class="large-input-field w-node-_050dfc36-93a8-d840-d215-4fca9adfe60d-9adfe605 w-input confirm-password" maxlength="256" name="password" data-name="password" placeholder="Confirme sua senha" id="myInput-2" required="" data-gtm-form-interact-field-id="1">
                </div>
                <br>
                <input type="checkbox" id="show-password"> Mostrar senha
@@ -83,13 +83,10 @@
    <script type="text/javascript">
       function myFunction() {
           var x = document.getElementById("myInput");
-          var y = document.getElementById("myInput-2");
           if (x.type === "password") {
               x.type = "text";
-               y.type = "text";
           } else {
               x.type = "password";
-               y.type = "password";
           }
       }
       document.getElementById("show-password").addEventListener("click", myFunction);

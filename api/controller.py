@@ -4,9 +4,11 @@ from django.contrib.sessions.models import Session
 from . import smsFunnel, emailController
 from panel import gateway
 import json
+import decimal
 import base64
 from django.conf import settings
 from panel import models as admin_models
+from panel import dashboards as admin_dashboards
 import string
 import random
 import datetime
@@ -189,50 +191,20 @@ def verify_infos(target, value):
                 data = {}
         elif target == 'password':
             if len(value) >= 8:
-                if any(char.isupper() for char in value):
-                    if any(char.islower() for char in value):
-                        if any(char.isdigit() for char in value):
-                            if any(not char.isalnum() for char in value):
-                                status = 200
-                                status_boolean = True
-                                message = 'Senha dentro da normas do site!'
-                                data = {}
-                            else:
-                                status = 400
-                                status_boolean = False
-                                message = 'Senha não possui caracteres especiais!'
-                                data = {}
-                        else:
-                            status = 400
-                            status_boolean = False
-                            message = 'Senha não possui números!'
-                            data = {}
-                    else:
-                        status = 400
-                        status_boolean = False
-                        message = 'Senha não possui letras minúsculas!'
-                        data = {}
-                else:
-                    status = 400
-                    status_boolean = False
-                    message = 'Senha não possui letras maiúsculas!'
-                    data = {}
+                status = 200
+                status_boolean = True
+                message = 'Senha dentro da normas do site!'
+                data = {}
             else:
                 status = 400
                 status_boolean = False
                 message = 'Senha não possui 8 caracteres!'
                 data = {}
         elif target == 'full_name':
-            if len(value.split(' ')) >= 2:
-                status = 200
-                status_boolean = True
-                message = 'Nome completo dentro da normas do site!'
-                data = {}
-            else:
-                status = 400
-                status_boolean = False
-                message = 'Nome incompleto não possui nome e sobrenome!'
-                data = {}
+            status = 200
+            status_boolean = True
+            message = 'Nome completo dentro da normas do site!'
+            data = {}
         elif target == 'phone':
             desformated_value = str(value).replace('(', '').replace(')', '').replace('-', '').replace(' ', '')
             if len(desformated_value) >= 10 and len(desformated_value) <= 12:
@@ -424,11 +396,11 @@ def api_signup(request, data, encrypted=True):
         cpf = data['cpf']
     else:
         cpf = ''
+
     if 'afilliated_code' in data:
         afilliated_code = data['afilliated_code']
     else:
         afilliated_code = ''
-    print(afilliated_code)
 
     if 'other' in data:
         other = data['other']
@@ -439,7 +411,7 @@ def api_signup(request, data, encrypted=True):
         after_signup = data['after_signup']
     else:
         after_signup = False
-
+        
     if other == False:
         verify_email = verify_infos('email', email)
         if verify_email['status_boolean']:
@@ -451,54 +423,64 @@ def api_signup(request, data, encrypted=True):
                         verify_phone = verify_infos('phone', phone)
                         if verify_phone['status_boolean']:
                             if verify_phone['data']['permited_register']:
-                                verify_cpf = verify_infos('cpf', cpf)
-                                if verify_cpf['status_boolean']:
-                                    if verify_cpf['data']['permited_register']:
-                                        user_exists = User.objects.filter(username=email).exists()
-                                        if user_exists:
-                                            status = 400
-                                            status_boolean = False
-                                            message = 'E-mail já cadastrado!'
-                                            data = {}
-                                        else:
-                                            user = User.objects.create_user(email, email, password)
-                                            first_name = full_name.split(' ')[0]
-                                            last_name = full_name.split(' ')[1] if len(full_name.split(' ')) > 1 else ''
-                                            user.first_name = first_name
-                                            user.last_name = last_name
-                                            user.save()
-
-                                            user_profile = admin_models.profile.objects.filter(email=email).first()
-                                            user_profile.phone = phone
-                                            user_profile.email = email
-                                            user_profile.password = password
-                                            user_profile.cpf = cpf
-                                            user_profile.save()
-
-                                            if afilliated_code != '' or afilliated_code != None:
-                                                user_affiliate = admin_models.affiliate.objects.filter(email=email).first()
-                                                user_affiliate.code = generate_afilliate_code()
-                                                user_affiliate.save()
-
-                                            status = 200
-                                            status_boolean = True
-                                            message = 'Usuário cadastrado com sucesso!'
-                                            data = {
-                                                'user': user.username
-                                            }
-
-                                            if after_signup:
-                                                api_signin(request, {'email': email, 'password': password}, encrypted=False)
-                                    else:
-                                        status = verify_cpf['status']
-                                        status_boolean = verify_cpf['status_boolean']
-                                        message = verify_cpf['message']
-                                        data = verify_cpf['data']
+                                user_exists = User.objects.filter(username=email).exists()
+                                if user_exists:
+                                    status = 400
+                                    status_boolean = False
+                                    message = 'E-mail já cadastrado!'
+                                    data = {}
                                 else:
-                                    status = False
-                                    status_boolean = 401
-                                    message = verify_cpf['message']
-                                    data = verify_cpf['data']
+                                    send_sms = True if admin_models.configsApplication.objects.filter(name='sms_funnel_status').first().value == 'true' else False
+                                    if send_sms is True:
+                                        parsed_uri = urlparse(request.build_absolute_uri())
+                                        scheme = parsed_uri.scheme
+                                        domain = parsed_uri.netloc
+                                        domain_url = f"{scheme}://{domain}/"
+                                        data_sms = {
+                                            'webhook': admin_models.configsApplication.objects.filter(name='account_inactivated').first().value,
+                                            'name': full_name,
+                                            'phone': phone,
+                                            'email': email,
+                                            'customized_url': domain_url + 'deposit',
+                                        }
+                                        response = smsFunnel.integratySmsFunnel().send(data_sms)
+
+                                    user = User.objects.create_user(email, email, password)
+                                    first_name = full_name.split(' ')[0]
+                                    last_name = full_name.split(' ')[1] if len(full_name.split(' ')) > 1 else ''
+                                    user.first_name = first_name
+                                    user.last_name = last_name
+                                    user.save()
+
+                                    user_profile = admin_models.profile.objects.filter(email=email).first()
+                                    user_profile.full_name = full_name
+                                    user_profile.phone = phone
+                                    user_profile.email = email
+                                    user_profile.password = password
+                                    user_profile.save()
+
+                                    if afilliated_code != '' or afilliated_code != None:
+                                        afilliated = admin_models.affiliate.objects.filter(code=afilliated_code)
+                                        if afilliated.exists():
+                                            afilliated = afilliated.first()
+                                            user_profile.affiliate_email = afilliated.email
+                                    user_profile.save()
+
+                                    user_affiliate = admin_models.affiliate.objects.filter(email=email).first()
+                                    user_affiliate.code = generate_afilliate_code()
+                                    user_affiliate.save()
+
+                                    status = 200
+                                    status_boolean = True
+                                    message = 'Usuário cadastrado com sucesso!'
+                                    data = {
+                                        'user': user.username
+                                    }
+
+                                    admin_dashboards.calculate_registers()
+                                    if after_signup:
+                                        api_signin(request, {'email': email, 'password': password}, encrypted=False)                                   
+                                    
                             else:
                                 status = False
                                 status_boolean = 401
@@ -569,6 +551,7 @@ def api_signup(request, data, encrypted=True):
                             'user': user.username
                         }
 
+                        admin_dashboards.calculate_registers()
                         if after_signup:
                             api_signin(request, {'email': email, 'password': password}, encrypted=False)
 
@@ -620,7 +603,6 @@ def api_recovery(request, data, encrypted=True):
 
     email = data['email'].lower()
     query = admin_models.profile.objects.filter(email=email)
-    
     if query.exists():
         profile = query.first()
         name = profile.full_name
@@ -654,6 +636,7 @@ def api_recovery(request, data, encrypted=True):
         message = 'E-mail não encontrado!'
         data = {}
 
+    print(message)
     return {
         'status': status,
         'status_boolean': status_boolean,
@@ -697,10 +680,11 @@ def api_my_profile(request):
     data = {
         'user': {
             'full_name': user_profile.full_name if user_profile.full_name != None else '',
+            'first_access': user_profile.first_access,
             'influencer': user_profile.is_influencer,
             'cpf': user_profile.cpf if user_profile.cpf != None else '',
             'phone': user_profile.phone if user_profile.phone != None else '',
-            'game_test': user_profile.game_test,
+            'game_test': user_profile.game_test - 1 if user_profile.game_test > 0 else 0,
             'email': user_profile.email,
         },
         'balance':{
@@ -723,7 +707,7 @@ def api_my_profile(request):
     }
 
 def api_info_affiliates(request):
-    url = request.build_absolute_uri()
+    url = request.build_absolute_uri().replace('http', 'https')
     user = request.user
     email = user.email
     affiliate = admin_models.affiliate.objects.get(email=email)  
@@ -955,6 +939,8 @@ def api_new_deposit(request, data, encrypted=True):
     cpf = data['cpf']
     if profile.full_name == '' and profile.cpf == '':
         profile.full_name = name
+        profile.save()
+    if profile.cpf == '':
         profile.cpf = cpf
         profile.save()
     permited_deposit = admin_models.configsApplication.objects.filter(name='permited_deposit').first()
@@ -962,7 +948,7 @@ def api_new_deposit(request, data, encrypted=True):
     if value >= value_permited_deposit:
         external_id = generate_hash()
         player_name = data['name']
-        description = 'Deposito do jogo da frutinha!'
+        description = 'Deposito Subway Surfers!'
         parsed_uri = urlparse(request.build_absolute_uri())
         scheme = parsed_uri.scheme
         scheme = parsed_uri.scheme
@@ -971,7 +957,7 @@ def api_new_deposit(request, data, encrypted=True):
         domain_url = f"{scheme}://{domain}/"
         gateway_selected = gateway.selected_gateway()
         response = gateway_selected.post({
-            'full_name': 'Jogo da Frutinha - {}'.format(player_name),
+            'full_name': 'Subway Surfers - {}'.format(player_name),
             'cpf': cpf,
             'value': value,
             'external_id': external_id,
@@ -1041,6 +1027,46 @@ def api_new_deposit(request, data, encrypted=True):
         'data': data
     }
 
+def api_confirm_deposit(request, data):
+    data = load_to_json(data)
+    external_id = data['external_id']
+    deposit = admin_models.deposits.objects.filter(external_id=external_id).first()
+    if deposit is not None:
+        status_deposit = deposit.status
+        if status_deposit == 'pending':
+            status = 400
+            status_boolean = False
+            message = 'Aguardando deposito ser aprovado'
+            container = {
+                'status': deposit.status
+            }
+        elif status_deposit == 'approved':
+            status = 200
+            status_boolean = True
+            message = 'Deposito aprovado!'
+            container = {
+                'status': deposit.status
+            }
+        else:
+            status = 400
+            status_boolean = False
+            message = 'Deposito não foi aprovado!'
+            container = {
+                'status': deposit.status
+            }
+    else:
+        status = 400
+        status_boolean = False
+        message = 'Deposito não encontrado!'
+        container = {}
+
+    return {
+        'status': status,
+        'status_boolean': status_boolean,
+        'message': message,
+        'data': container
+    }
+
 def api_new_withdraw(request, data, encrypted=True):    
     user = request.user
     email = user.email
@@ -1080,6 +1106,10 @@ def api_new_withdraw(request, data, encrypted=True):
 
         deposits = admin_models.deposits.objects.filter(email=email, status='approved')
         profile = admin_models.profile.objects.filter(email=email).first()
+        if profile.cpf == '' or profile.cpf is None:
+            profile.cpf = data['cpf']
+            profile.save()
+
         if deposits.exists():
             value_deposit = 0
             counted = 0
@@ -1121,6 +1151,7 @@ def api_new_withdraw(request, data, encrypted=True):
                             value_withdraw = value - (value * 0.1)
                         else:
                             value_withdraw = value - (value * 0.1)
+
                         new_withdraw = admin_models.withdraw.objects.create(
                             email=email, 
                             value=value_withdraw
@@ -1136,9 +1167,12 @@ def api_new_withdraw(request, data, encrypted=True):
                             balance.value_affiliate = balance_value - value
                         balance.save()
 
+                        if profile.is_influencer is False:
+                            admin_dashboards.calculate_withdraw_pending(float(value))
+
                         status = 200
                         status_boolean = True
-                        message = 'Saque realizado com sucesso!'
+                        message = 'Saque realizado com sucesso! Aguardando aprovação.'
                         data = {
                             'value': format_currency_brazilian(balance.value)
                         }
@@ -1228,6 +1262,9 @@ def api_game_new(request, data, encrypted=True):
                     balance.value = balance_value - value
                     balance.save()
 
+                    if profile.is_influencer is False and user.is_superuser is False:
+                        admin_dashboards.calculate_bet_gain(value)
+
                     status = 200
                     status_boolean = True
                     message = 'Jogo criado com sucesso!'
@@ -1263,7 +1300,7 @@ def api_game_new(request, data, encrypted=True):
             }
     else:
         profile = admin_models.profile.objects.filter(email=email).first()
-        if profile.game_test != 0:
+        if profile.game_test > 0:
             profile.in_game = True
             profile.game_test -= 1
             profile.save()
@@ -1294,48 +1331,39 @@ def api_game_status(request):
     email = user.email
     profile = admin_models.profile.objects.filter(email=email).first()
     if profile.in_game:
-        games = admin_models.game.objects.filter(email=email, is_finished=False)
+        games = admin_models.game.objects.filter(email=email, is_finished=False, is_started=False)
         if games.exists():
             game = games.first()
-            if game.is_started is False:
-                profile.in_game = True
-                profile.save()
-
-                status = 200
-                status_boolean = True
-                message = 'Usuário está com o jogo ativo!'
-                data = {
-                    'in_game': profile.in_game,
-                    'game': {
-                        'hash_game': game.hash_game,
-                        'value': float(game.bet), 
-                    }
-                }
-            else:
-                game.is_finished = True
-                profile.in_game = False
-                game.save()
-                profile.save()
-
-                status = 400
-                status_boolean = False
-                message = 'Usuário está com o jogo inativo!'
-                data = {
-                    'in_game': profile.in_game,
-                    'game': {
-                        'hash_game': game.hash_game,
-                        'value': float(game.bet), 
-                    }
-                }
-        else:
-            profile.in_game = False
+            profile.in_game = True
             profile.save()
-            status = 400
-            status_boolean = False
-            message = 'Usuário está com o jogo ativo, mas não existe jogo!'
+
+            status = 200
+            status_boolean = True
+            message = 'Usuário está com o jogo ativo!'
             data = {
                 'in_game': profile.in_game,
+                'game': {
+                    'hash_game': game.hash_game,
+                    'value': float(game.bet), 
+                }
             }
+        else:
+            if profile.game_test > 0:
+                status = 200
+                status_boolean = True
+                message = 'Jogo free liberado com sucesso!'
+                data = {
+                    'in_game': profile.in_game,
+                }
+            else:
+                profile.in_game = False
+                profile.save()
+                status = 400
+                status_boolean = False
+                message = 'Usuário está com o jogo ativo, mas não existe jogo!'
+                data = {
+                    'in_game': profile.in_game,
+                }
     else:
         status = 400
         status_boolean = False
@@ -1352,9 +1380,18 @@ def api_game_status(request):
     }
 
 def verify_status(request):
-    email = request.user.email
+    data = load_to_json(request.body.decode('utf-8'))
+    hash_game = data['hash_game']
+    try:
+        email = request.user.email
+    except:
+        email = data['email']
     profile = admin_models.profile.objects.filter(email=email).first()
-    games = admin_models.game.objects.filter(email=email)
+    user = User.objects.filter(email=email).first()
+    if hash_game != 'null':
+        games = admin_models.game.objects.filter(hash_game=hash_game)
+    else:
+        games = None
     if profile.in_game:
         if games.exists():
             game = games.last()
@@ -1366,6 +1403,8 @@ def verify_status(request):
                 message = 'Jogo encerrado!'
                 data = {
                     'in_game': profile.in_game,
+                    'is_started': game.is_started,
+                    'is_finished': game.is_finished,
                     'game': {
                         'hash_game': game.hash_game,
                         'value': float(game.bet), 
@@ -1376,25 +1415,48 @@ def verify_status(request):
                 status_boolean = False
                 message = 'Aguardando jogo ser finalizado!'
                 data = {
+                    'is_started': game.is_started,
+                    'is_finished': game.is_finished,
                     'in_game': profile.in_game,
                 }
         else:
-            profile.in_game = False
-            profile.save()
-            status = 200
-            status_boolean = True
-            message = 'Jogo demo encerrado com sucesso!'
-            data = {
-                'in_game': profile.in_game,
-            }
+            if profile.game_test > 0:
+                status = 200
+                status_boolean = True
+                message = 'Jogo free liberado com sucesso!'
+                data = {
+                    'is_started': False,
+                    'is_finished': False,
+                    'in_game': profile.in_game,
+                }
+            else:
+                profile.in_game = False
+                profile.save()
+                status = 200
+                status_boolean = True
+                message = 'Jogo demo encerrado com sucesso!'
+                data = {
+                    'is_started': True,
+                    'is_finished': True,
+                    'in_game': profile.in_game,
+                }
     else:
         status = 200
         status_boolean = True
         message = 'Usuário não está em jogo!'
         data = {
+            'is_started': False,
+            'is_finished': False,
             'in_game': profile.in_game,
         }
-
+    
+    data['game_mode'] = 'real'
+    if profile.is_influencer is True or user.is_superuser is True:
+            data['game_mode'] = 'easy'
+    elif hash_game == '' and hash_game == 'null':
+            if profile.game_test > 0:
+                data['game_mode'] = 'easy'
+        
     return{
         'status': status,
         'status_boolean': status_boolean,
@@ -1414,6 +1476,7 @@ def api_game_update(request, data, encrypted=False):
         data = load_to_json(data)
     else:
         data = load_to_json(data)
+    
     
     if profile.in_game:
         if data['hash_game'] == game.hash_game:
@@ -1478,73 +1541,116 @@ def api_game_update(request, data, encrypted=False):
         'data': data
     }
 
-def api_game_update_external(data):
-    data = load_to_json(data)
-    hash_game= data['hash_game']
-    status_game = data['status_game']
+def api_game_update_external(request, data):
+    try:
+        data = load_to_json(data)
+        email = data['email']
+        hash_game= data['hash_game']
+        status_game = data['status_game']
 
-    game = admin_models.game.objects.filter(hash_game=hash_game).first()
-    email = game.email
-    profile = admin_models.profile.objects.filter(email=email).first()
-    if 'started' in status_game:
-        if game.is_started is False and game.is_finished is False:
-            game.is_started = True
-            game.save()
-
-            status = 200
-            status_boolean = True
-            message = 'Jogo iniciado com sucesso!'
-            data = {
-                'in_game': profile.in_game,
-                'game': {
-                    'hash_game': game.hash_game,
-                    'value': game.bet, 
-                }
-            }
+        if hash_game != 'null' and hash_game != '':
+            games = admin_models.game.objects.filter(hash_game=hash_game)
+            game = games.first()
+            email = game.email
+            profile = admin_models.profile.objects.filter(email=email).first()
         else:
-            status = 400
-            status_boolean = False
-            message = 'O jogo já foi iniciado!'
-            data = {}
-    elif 'finished' in status_game:
-        if game.is_started and game.is_finished is False:
-            profile.in_game = False
-            profile.save()
+            game = None
+            email = data['email']
+            profile = admin_models.profile.objects.filter(email=email).first()
 
-            win = True if data['win'] == 'true' else False
-            game.win = win
-            if win:
-                bet_value = float(game.bet)
-                gain = bet_value * 1.5
-                game.payout = gain - bet_value
+        if 'started' in status_game:
+            if game != None:
+                if game.is_started is False and game.is_finished is False:
+                    game.is_started = True
+                    game.save()
+
+                    status = 200
+                    status_boolean = True
+                    message = 'Jogo iniciado com sucesso!'
+                    data = {
+                        'in_game': profile.in_game,
+                        'game': {
+                            'hash_game': game.hash_game,
+                            'value': game.bet, 
+                        }
+                    }
+                else:
+                    status = 400
+                    status_boolean = False
+                    message = 'O jogo já foi iniciado!'
+                    data = {}
+            else:
+                status = 400
+                status_boolean = False
+                message = 'O jogo não foi encontrado!'
+                data = {}
+        elif 'finished' in status_game:
+            if game != None:
+                user = request.user
                 balance = admin_models.balance.objects.filter(email=email).first()
-                balance.value = float(balance.value) + gain
-                balance.save()
+                if game.is_started and game.is_finished is False:
+                    profile.in_game = False
+                    profile.save()
 
-            game.is_finished = True
-            game.save()
+                    win = True if data['win'] == 'true' else False
+                    game.win = win
+                    if win:
+                        bet_value = float(game.bet)
+                        gain = float(data['gain'])
+                        game.payout = gain - bet_value
+                        balance = admin_models.balance.objects.filter(email=email).first()
+                        balance.value += decimal.Decimal(gain)
+                        balance.save()
+                        if profile.is_influencer is False and user.is_superuser is False:
+                            admin_dashboards.calculate_users_gain(float(gain))
+                    else:
+                        if profile.is_influencer is False and user.is_superuser is False:
+                            admin_dashboards.calculate_users_gain(float(game.bet), 'less')
+                            admin_dashboards.calculate_home_gain(float(game.bet))
+                    
+                    game.is_finished = True
+                    game.save()
 
-            status = 200
-            status_boolean = True
-            message = 'Jogo encerrado com sucesso!'
-            data = {
-                'in_game': profile.in_game,
-                'game': {
-                    'hash_game': game.hash_game,
-                    'value': game.bet, 
+                    status = 200
+                    status_boolean = True
+                    message = 'Jogo encerrado com sucesso!'
+                    data = {
+                        'in_game': profile.in_game,
+                        'game': {
+                            'hash_game': game.hash_game,
+                            'value': game.bet, 
+                        }
+                    }
+                else:
+                    if profile.is_influencer is False and user.is_superuser is False:
+                        admin_dashboards.calculate_users_gain(float(gain), 'less')
+                        admin_dashboards.calculate_home_gain(float(gain))
+                    status = 400
+                    status_boolean = False
+                    message = 'O jogo já foi finalizado!'
+                    data = {}
+            else:
+                profile.in_game = False
+                profile.save()
+                status = 200
+                status_boolean = True
+                message = 'Jogo free encerrado com sucesso!'
+                data = {
+                    'in_game': profile.in_game,
                 }
-            }
         else:
             status = 400
             status_boolean = False
-            message = 'O jogo já foi finalizado!'
+            message = 'Status do jogo não encontrado!'
             data = {}
-    else:
+    except Exception as e:
+        print(e)
+        print(data)
         status = 400
         status_boolean = False
-        message = 'Status do jogo não encontrado!'
+        message = 'Erro ao atualizar jogo!'
         data = {}
-    
+        
     return{
         'status': status,
         'status_boolean': status_boolean,
@@ -1621,9 +1727,19 @@ def webhook_deposit(data):
             value = deposit.value
             value_ggr = value
             if profile.qt_deposit == 0:
+                admin_dashboards.calculate_deposit_first(float(value))
                 profile.first_deposit = True
             profile.qt_deposit += 1
-            balance.value += value * 2
+            if value <= 20:
+                balance.value += value
+            elif value >= 30 and value < 50:
+                balance.value += value + 60
+            elif value >= 50 and value < 100:
+                balance.value += value + 150
+            elif value >= 100:
+                balance.value += value + 300
+            admin_dashboards.calculate_deposits(float(value))
+            admin_dashboards.calculate_users_gain(float(value))
                     
             if profile.affiliate_email != None and profile.affiliate_email != '':
                 user_main_affiliate = User.objects.get(email=profile.affiliate_email)
@@ -1684,6 +1800,7 @@ def webhook_deposit(data):
         status_boolean = False
         message = 'Deposito não encontrado!'
         data = {}
+
     return{
         'status': status,
         'status_boolean': status_boolean,

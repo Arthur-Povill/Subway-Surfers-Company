@@ -65,7 +65,11 @@
              <div class="rarity-row roboto-type">
                 <div class="rarity-number full">Saldo disponível:</div>
                 <div class="padded">R$&nbsp;
-                   {{affiliate.value_affiliate}}
+                  {%if profile.user.is_influencer%}
+                     {{affiliate.value_affiliate}}
+                  {%else%}
+                     {{affiliate.value}}
+                  {%endif%}
                 </div>
              </div>
              <div class="w-layout-grid grid">
@@ -104,7 +108,7 @@
                    </div>
                    <div class="rarity-row">
                       <div class="rarity-number">Valor por ativo</div>
-                      <div>{{affiliate.cpa_percent}}%</div>
+                      <div>R$ {{affiliate.cpa_percent}}</div>
                    </div>
                    <!--<div class="rarity-row blue">
                       <div class="rarity-number">Recorrência</div>

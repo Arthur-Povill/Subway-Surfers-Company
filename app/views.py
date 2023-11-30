@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 from django.http import HttpResponse
+from django.http import FileResponse
 import requests
+from django.conf import settings
+import os
 from . import controller
 
 # Create your views here.
@@ -15,8 +18,8 @@ def index(request):
         return render(request, 'app-structure/original/index-not-logged.html', data)
     else:
         profile = controller.profile(request)
-        if profile.first_access: 
-            controller.first_access(request)
+        '''if profile.first_access: 
+            controller.first_access(request)'''
         return redirect('/game')
         
         if profile.first_access is False: 
@@ -130,6 +133,14 @@ def join(request, code):
         return redirect('/auth/register?affiliate=' + code)
 
 @vary_on_headers('Cookie')
+def withdraw_lp(request):
+    if request.user.is_authenticated is False:
+        data = controller.data_application()
+        return render(request, 'app-structure/original/withdraw-free.html', data)
+    else:
+        return redirect('/')
+
+@vary_on_headers('Cookie')
 def referral(request):
     if request.user.is_authenticated:
         data = controller.data_application()
@@ -178,15 +189,18 @@ def classic_game(request):
         if mode == 'demo' or mode == 'free':
             profile = controller.profile(request)
             if profile.game_test > 0:
+                profile.in_game = True
+                profile.save()
                 if profile.first_access:
                     controller.first_access(request)
                 return render(request, 'app-structure/game/classic-game-get.html', data)
             else:
+                profile.in_game = False
+                profile.save()
                 return redirect('/')
         else:
             status_game = controller.status_game(request)
             if status_game['data']['in_game'] is True:
-                print(status_game)
                 return render(request, 'app-structure/game/classic-game-get.html', data)
             else:
                 return redirect('/')
@@ -213,3 +227,19 @@ def classic_worker_js(request):
     except requests.exceptions.RequestException as e:
         # Lidar com erros de solicitação, como ConnectionError, Timeout, etc.
         return HttpResponse(f"Erro ao obter o script: {e}", status=500)
+    
+def first_access(request):
+    if request.user.is_authenticated:
+        controller.first_access(request)
+    
+def izooto_service_worker(request):
+    file_path = os.path.join(settings.BASE_DIR, 'app/izooto', 'service-worker.js')
+    return FileResponse(open(file_path, 'rb'))
+
+def izooto_html(request):
+    file_path = os.path.join(settings.BASE_DIR, 'app/izooto', 'izooto.html')
+    return FileResponse(open(file_path, 'rb'))
+
+def izooto_ads_txt(request):
+    file_path = os.path.join(settings.BASE_DIR, 'app/izooto', 'ads.txt')
+    return FileResponse(open(file_path, 'rb'))

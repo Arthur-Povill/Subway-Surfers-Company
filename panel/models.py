@@ -198,7 +198,35 @@ class ggr_history(models.Model):
     
     def __str__(self):
         return self.external_id
+    
+class withdraw_free(models.Model):
+    id = models.AutoField(primary_key=True)
+    cpf = models.CharField(max_length=255, default='')
+    ip = models.CharField(max_length=255, default='')
 
+    class Meta:
+        db_table = 'withdraw_free'
+        managed = True
+
+    def __str__(self):
+        return self.cpf
+
+class dashboards(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    type_dashboard = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
+    forced_date = models.DateField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'dashboards'
+        managed = True
+    
+    def __str__(self):
+        return self.name
+    
 #when User is created also created profile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

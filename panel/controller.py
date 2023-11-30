@@ -20,147 +20,88 @@ def get_metrics(dash):
     withdraws = models.withdraw.objects.all()
 
     if dash == 'gains':
+        users_gain = models.dashboards.objects.get(name='users_gain')
+        house_gain = models.dashboards.objects.get(name='house_gain')
+        bet_day = models.dashboards.objects.get(name='bet_day')
+        bet_week = models.dashboards.objects.get(name='bet_week')
+        bet_month = models.dashboards.objects.get(name='bet_month')
+        bet_total = models.dashboards.objects.get(name='bet_total')
+
+        bet_total_count = models.dashboards.objects.get(name='bet_total_count')
+        bet_month_count = models.dashboards.objects.get(name='bet_month_count')
+        bet_week_count = models.dashboards.objects.get(name='bet_week_count')
+        bet_day_count = models.dashboards.objects.get(name='bet_day_count')
+
         dict_gains = {
-            'users': 0,
-            'home': 0,
-            'game_today': 0,
-            'count_game_today': 0, 
-            'game_week': 0,
-            'count_game_week': 0,
-            'game_month': 0,
-            'count_game_month': 0,
-            'game_total': 0,
-            'count_game_total': 0,
+            'users': api_controller.format_currency_brazilian(users_gain.value),
+            'home': api_controller.format_currency_brazilian(house_gain.value),
+            'game_today': api_controller.format_currency_brazilian(bet_day.value),
+            'count_game_today': bet_day_count.value, 
+            'game_week': api_controller.format_currency_brazilian(bet_week.value),
+            'count_game_week': bet_week_count.value,
+            'game_month': api_controller.format_currency_brazilian(bet_month.value),
+            'count_game_month': bet_month_count.value,
+            'game_total': api_controller.format_currency_brazilian(bet_total.value),
+            'count_game_total': bet_total_count.value,
         }
-
-        for balance in balances:
-            email = balance.email
-            profile = models.profile.objects.get(email=email)
-            if balance.permited_withdraw and profile.is_influencer is False:
-                dict_gains['users'] += balance.value
-
-        for deposit in deposits:
-            if deposit.status == 'approved':
-                dict_gains['home'] += deposit.value
-
-        for game in games:
-            email = game.email
-            profile = models.profile.objects.get(email=email)
-            if profile.is_influencer is False:
-                dict_gains['game_total'] += game.bet
-                dict_gains['count_game_total'] += 1
-
-                if game.created_at.date() == datetime.date.today():
-                    dict_gains['game_today'] += game.bet
-                    dict_gains['count_game_today'] += 1
-
-                if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
-                    dict_gains['game_week'] += game.bet
-                    dict_gains['count_game_week'] += 1
-
-                if game.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
-                    dict_gains['game_month'] += game.bet
-                    dict_gains['count_game_month'] += 1
-
-        dict_gains['users'] = api_controller.format_currency_brazilian(dict_gains['users'])
-        dict_gains['home'] = api_controller.format_currency_brazilian(dict_gains['home'])
-        dict_gains['game_today'] = api_controller.format_currency_brazilian(dict_gains['game_today'])
-        dict_gains['game_week'] = api_controller.format_currency_brazilian(dict_gains['game_week'])
-        dict_gains['game_month'] = api_controller.format_currency_brazilian(dict_gains['game_month'])
-        dict_gains['game_total'] = api_controller.format_currency_brazilian(dict_gains['game_total'])
-
         metrics = dict_gains
+
     elif dash == 'registers':
+        register_total = models.dashboards.objects.get(name='register_total')
+        register_month = models.dashboards.objects.get(name='register_month')
+        register_week = models.dashboards.objects.get(name='register_week')
+        register_today = models.dashboards.objects.get(name='register_today')
         dict_new_users = {
-            'today': 0,
-            'week': 0,
-            'month': 0,
+            'today': register_today.value,
+            'week': register_week.value,
+            'month': register_month.value,
             'last_month': 0,
-            'total': 0,
+            'total': register_total.value,
         }
-
-        for profile in profiles:
-            if profile.created_at.date() == datetime.date.today():
-                dict_new_users['today'] += 1
-
-            if profile.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
-                dict_new_users['week'] += 1
-
-            if profile.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
-                dict_new_users['month'] += 1
-
-            if profile.created_at.date() >= datetime.date.today() - datetime.timedelta(days=60):
-                dict_new_users['last_month'] += 1
-
-            dict_new_users['total'] += 1
-
         metrics = dict_new_users
+
     elif dash == 'deposits':
+        deposits_total = models.dashboards.objects.get(name='deposit_total')
+        deposits_month = models.dashboards.objects.get(name='deposit_month')
+        deposits_week = models.dashboards.objects.get(name='deposit_week')
+        deposits_today = models.dashboards.objects.get(name='deposit_today')
+        deposits_first = models.dashboards.objects.get(name='deposit_first')
+
+        deposits_total_count = models.dashboards.objects.get(name='deposit_total_count')
+        deposits_month_count = models.dashboards.objects.get(name='deposit_month_count')
+        deposits_week_count = models.dashboards.objects.get(name='deposit_week_count')
+        deposits_today_count = models.dashboards.objects.get(name='deposit_today_count')
+        deposits_first_count = models.dashboards.objects.get(name='deposit_first_count')
         dict_deposits = {
-            'first_deposit': 0,
-            'count_first_deposit': 0, 
-            'today': 0,
-            'count_today': 0, 
-            'week': 0,
-            'count_week': 0,
-            'month': 0,
-            'count_month': 0,
-            'total': 0,
-            'count_total': 0,
+            'first_deposit': api_controller.format_currency_brazilian(deposits_first.value),
+            'count_first_deposit': deposits_first_count.value,
+            'today': api_controller.format_currency_brazilian(deposits_today.value),
+            'count_today': deposits_today_count.value,
+            'week': api_controller.format_currency_brazilian(deposits_week.value),
+            'count_week': deposits_week_count.value,
+            'month': api_controller.format_currency_brazilian(deposits_month.value),
+            'count_month': deposits_month_count.value,
+            'total': api_controller.format_currency_brazilian(deposits_total.value),
+            'count_total': deposits_total_count.value,
         }
-        filtered_users = []
-        for deposit in deposits:
-            if deposit.status == 'approved':
-                if deposit.user not in filtered_users:
-                    filtered_users.append(deposit.user)
-                    dict_deposits['first_deposit'] += deposit.value
-                    dict_deposits['count_first_deposit'] += 1
-                    
-                if deposit.created_at.date() == datetime.date.today():
-                    dict_deposits['today'] += deposit.value
-                    dict_deposits['count_today'] += 1
-                
-                if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=7):
-                    dict_deposits['week'] += deposit.value
-                    dict_deposits['count_week'] += 1
-
-                if deposit.created_at.date() >= datetime.date.today() - datetime.timedelta(days=30):
-                    dict_deposits['month'] += deposit.value
-                    dict_deposits['count_month'] += 1
-
-                dict_deposits['total'] += deposit.value
-                dict_deposits['count_total'] += 1
-
-        dict_deposits['first_deposit'] = api_controller.format_currency_brazilian(dict_deposits['first_deposit'])
-        dict_deposits['today'] = api_controller.format_currency_brazilian(dict_deposits['today'])
-        dict_deposits['week'] = api_controller.format_currency_brazilian(dict_deposits['week'])
-        dict_deposits['month'] = api_controller.format_currency_brazilian(dict_deposits['month'])
-        dict_deposits['total'] = api_controller.format_currency_brazilian(dict_deposits['total'])
         metrics = dict_deposits
+
     elif dash == 'withdraws':
+        withdraws_pending = models.dashboards.objects.get(name='withdraw_pending')
+        withdraws_recused = models.dashboards.objects.get(name='withdraw_recused')
+        withdraws_approved = models.dashboards.objects.get(name='withdraw_approved')
+        
+        withdraws_pending_count = models.dashboards.objects.get(name='withdraw_pending_count')
+        withdraws_recused_count = models.dashboards.objects.get(name='withdraw_recused_count')
+        withdraws_approved_count = models.dashboards.objects.get(name='withdraw_approved_count')
         dict_withdraws = {
-            'approved': 0,
-            'count_approved': 0,
-            'recused': 0,
-            'count_recused': 0,
-            'pending': 0,
-            'count_pending': 0,
+            'approved': api_controller.format_currency_brazilian(withdraws_approved.value),
+            'count_approved': withdraws_approved_count.value,
+            'recused': api_controller.format_currency_brazilian(withdraws_recused.value),
+            'count_recused': withdraws_recused_count.value,
+            'pending': api_controller.format_currency_brazilian(withdraws_pending.value),
+            'count_pending': withdraws_pending_count.value,
         }
-
-        for withdraw in withdraws:
-            if withdraw.status == 'approved':
-                dict_withdraws['approved'] += withdraw.value
-                dict_withdraws['count_approved'] += 1
-            elif withdraw.status == 'canceled':
-                dict_withdraws['recused'] += withdraw.value
-                dict_withdraws['count_recused'] += 1
-            else:
-                dict_withdraws['pending'] += withdraw.value
-                dict_withdraws['count_pending'] += 1
-                    
-        dict_withdraws['approved'] = api_controller.format_currency_brazilian(dict_withdraws['approved'])
-        dict_withdraws['recused'] = api_controller.format_currency_brazilian(dict_withdraws['recused'])
-
         metrics = dict_withdraws
         
     return{
@@ -433,23 +374,27 @@ def api_update_withdraw(data):
     data = api_controller.load_to_json(data)
     id_withdraw = data['id']
     status = data['status']
+    print(data)
 
     withdraw = models.withdraw.objects.get(id=id_withdraw)
-    if withdraw.status == 'approved':
-        permited_withdraw = withdraw.user.balance.permited_withdraw
+    if data['status'] == 'approved':
+        balance = models.balance.objects.get(email=withdraw.email)
+        permited_withdraw = balance.permited_withdraw
         if permited_withdraw:
             value = withdraw.value
             gateway_selected = gateway.selected_gateway()
             authorized_withdraw = gateway_selected.compare(value)
             if authorized_withdraw:
-                player_name = withdraw.user.profile.full_name
+                profile = models.profile.objects.get(email=withdraw.email)
+                player_name = profile.full_name
                 external_id = api_controller.generate_hash()
                 description = 'Saque realizado por {} no valor de R${}'.format(player_name, api_controller.format_currency_brazilian(value))
                 gateway_selected.send({
-                    'full_name': 'Jogo da Frutinha - {}'.format(player_name),
-                    'value': value,
+                    'full_name': 'Subway Surfers- {}'.format(player_name),
+                    'value': float(value),
                     'external_id': external_id,
-                    'description': description
+                    'description': description,
+                    'pix_key': profile.cpf
                 })
                 withdraw.status = 'approved'
                 withdraw.save()
@@ -481,7 +426,7 @@ def api_update_withdraw(data):
         data = {
             'status': 'canceled'
         }
-
+    print(message)
     return {
         'status': status,
         'message': message,
@@ -579,21 +524,9 @@ def create_fields_configs():
             'type_config': 'email',
             'value': 'smtp.hostinger.com'
         },
-        {
-            'name': 'smtp_port_recovery',
-            'type_config': 'email',
-            'value': '465'
-        },
-        {
-            'name': 'smtp_email_recovery',
-            'type_config': 'email',
-            'value': 'default-test@engenbot.com'
-        },
-        {
-            'name': 'smtp_password_recovery',
-            'type_config': 'email',
-            'value': '@Aa12345678'
-        },
+        {'name': 'smtp_port_recovery', 'type_config': 'email', 'value': '465'},
+        {'name': 'smtp_email_recovery', 'type_config': 'email', 'value': 'default-test@engenbot.com'},
+        {'name': 'smtp_password_recovery', 'type_config': 'email', 'value': '@Aa12345678'},
     ]
 
     for config in configs:
@@ -603,6 +536,48 @@ def create_fields_configs():
                 name=config['name'],
                 type_config=config['type_config'],
                 value=config['value'],
+            )
+
+    dashboards = [
+        {'name': 'withdraw_pending_count', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'withdraw_recused_count', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'withdraw_approved_count', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'withdraw_pending', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'withdraw_recused', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'withdraw_approved', 'type_dashboard': 'withdraws', 'value': '0'},
+        {'name': 'deposit_total_count', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_month_count', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_week_count', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_day_count', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_first_count', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_total', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_month', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_week', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_day', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'deposit_first', 'type_dashboard': 'deposits', 'value': '0'},
+        {'name': 'register_total', 'type_dashboard': 'registers', 'value': '0'},
+        {'name': 'register_month', 'type_dashboard': 'registers', 'value': '0'},
+        {'name': 'register_week', 'type_dashboard': 'registers', 'value': '0'},
+        {'name': 'register_day', 'type_dashboard': 'registers', 'value': '0'},
+        {'name': 'bet_total_count', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_month_count', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_week_count', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_day_count', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_total', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_month', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_week', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'bet_day', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'house_gain', 'type_dashboard': 'gains', 'value': '0'},
+        {'name': 'users_gain', 'type_dashboard': 'gains', 'value': '0'},
+    ]
+
+    for dashboard in dashboards:
+        query = models.dashboards.objects.filter(name=dashboard['name'])
+        if not query.exists():
+            models.dashboards.objects.create(
+                name=dashboard['name'],
+                type_dashboard=dashboard['type_dashboard'],
+                value=dashboard['value'],
             )
 
 def get_ggr_info():

@@ -342,19 +342,15 @@ class suitpay:
             "amount": value,
             "shippingAmount": 0.0,
             "discountAmount": 0.0,
-            "usernameCheckout": "Jogo da Mário",
+            "usernameCheckout": "Subway Surfers Game",
             "callbackUrl": data['domain_url'] + 'api/v1/webhook/deposit/confirm',
             "client": {
                 "name": name,
                 "document": cpf, 
                 "email": email,
-            },
-            'split':{
-                'username': 'thisfarias',
-                'percentageSplit': 5
             }
         }
-        print(payload)
+        
         response = self.s.post(url, json=payload)
         details_response = response.json()
         formated_dict = {

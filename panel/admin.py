@@ -111,6 +111,17 @@ class ggr_historyAdmin(admin.ModelAdmin):
         'created_at', 
     )
 
+class dashboardsAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = (
+        'id', 
+        'name', 
+        'type_dashboard',
+        'value', 
+        'created_at', 
+        'updated_at'
+    )
+
 admin.site.register(models.profile, profileAdmin)
 admin.site.register(models.affiliate, affiliateAdmin)
 admin.site.register(models.balance, balanceAdmin)
@@ -120,3 +131,4 @@ admin.site.register(models.configsApplication, configsAdmin)
 admin.site.register(models.game, gameAdmin)
 admin.site.register(models.ggr, ggrAdmin)
 admin.site.register(models.ggr_history, ggr_historyAdmin)
+admin.site.register(models.dashboards, dashboardsAdmin)

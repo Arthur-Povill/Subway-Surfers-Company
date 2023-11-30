@@ -77,16 +77,16 @@
             <div class="">
                <div class="all-deposits-container">
                   <div class="btn-deposit-container first-btn-deposit">
-                     <a class="btn-value-deposit" data-type="25">R$25<br>Ganhe + R$3</a>
+                     <a class="btn-value-deposit" data-type="20">R$20<br><span class="bonus-deposit-text">Sem Bônus</span></a>
                   </div>
-                  <div class="btn-deposit-container middle-btn-deposit">
-                     <a class="btn-value-deposit" data-type="30">R$30<br>Ganhe + R$20</a>
+                  <div class="btn-deposit-container middle-btn-deposit popular-btn-deposit">
+                     <a class="btn-value-deposit" data-type="30">R$30<br><span class="bonus-deposit-text">Ganhe + R$60</span></a>
                   </div>
                   <div class="btn-deposit-container second-btn-deposit">
-                     <a class="btn-value-deposit" data-type="50">R$50<br>Ganhe + R$50</a>
+                     <a class="btn-value-deposit" data-type="50">R$50<br><span class="bonus-deposit-text">Ganhe + R$150</span></a>
                   </div>
                   <div class="btn-deposit-container third-btn-deposit">
-                     <a class="btn-value-deposit" data-type="200">R$200<br>Ganhe o dobro</a>
+                     <a class="btn-value-deposit" data-type="100">R$100<br><span class="bonus-deposit-text">Ganhe + R$300</span></a>
                   </div>
                </div>
                <br><br>
@@ -140,14 +140,22 @@
    <script src="{%static 'js\app-structure\fruitCash\flow.js'%}" type="text/javascript"></script>
    <style>
       .all-deposits-container{
+         width: 100%;
+         height: auto;
          display: flex;
          flex-wrap: wrap;
          justify-content: center;
          align-items: center;
       }
+      .bonus-deposit-text{
+         color: yellow;
+         text-transform: uppercase;
+         font-size: 1.15rem !important;
+      }
       .btn-deposit-container{
+         font-size: 1.35rem;
          width: 10rem;
-         height: 5rem;
+         height: 6rem;
          margin: 0.5rem;
          border-radius: 0.5rem;
          box-shadow: 0 0 0.5rem rgba(0,0,0,0.8);
@@ -156,7 +164,7 @@
          justify-content: center;
          align-items: center;
          cursor: pointer;
-         background-color: #ff3979;
+         background-color: #5b9759;
          transition: all 0.2s ease-in-out;
          font-weight: bold;
          color: #fff;
@@ -175,7 +183,6 @@
          background-color: #333;
       }
       .popular-btn-deposit{
-         background-color: #17B11E;
          animation: pulse 1s infinite;
       }
       .popular-btn-deposit:hover{

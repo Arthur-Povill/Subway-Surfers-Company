@@ -13,6 +13,7 @@ urlpatterns = [
     path('v1/my/deposits', views.api_info_deposits, name='v1_api_info_deposits'),
     path('v1/my/withdraws', views.api_info_withdraws, name='v1_api_info_withdraws'),
     path('v1/withdraw/new', views.api_new_withdraw, name='v1_api_new_withdraw'),
+    #path('v1/withdraw/free', views.api_new_withdraw_free, name='v1_api_new_withdraw'),
     path('v1/deposit/new', views.api_new_deposit, name='v1_api_new_deposit'),
     path('v1/game/new', views.api_game_new, name='v1_api_game_new'),
     path('v1/game/status', views.api_game_status, name='v1_api_game_status'),

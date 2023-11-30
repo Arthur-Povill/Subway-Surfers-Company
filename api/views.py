@@ -41,6 +41,7 @@ def api_signout(request):
     
 def api_recovery(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
+    print(response_method)
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
         response = controller.api_recovery(request, data)
@@ -168,9 +169,10 @@ def api_game_status(request):
             return JsonResponse({"response": controller.obfuscate_message(response_auth)})
     else:
         return JsonResponse(response_method)
-    
+
+@csrf_exempt
 def api_game_status_verify(request):
-    response_method = controller.verify_request_method(request.method, ['GET'])
+    response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:
         response = controller.verify_status(request)
         return JsonResponse(response)
@@ -195,7 +197,7 @@ def api_game_update_external(request):
     response_method = controller.verify_request_method(request.method, ['POST'])
     if response_method['status_boolean']:           
         data = request.body.decode('utf-8')
-        response = controller.api_game_update_external(data)
+        response = controller.api_game_update_external(request, data)
         return JsonResponse(response)
     else:
         return JsonResponse(response_method) 
@@ -218,7 +220,7 @@ def api_webhook_deposit(request):
     if response_method['status_boolean']:
         data = request.body.decode('utf-8')
         response = controller.webhook_deposit(data)
-        return JsonResponse({"response": controller.obfuscate_message(response)})
+        return JsonResponse(response)
     else:
         return redirect('/')
     

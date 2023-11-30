@@ -25,6 +25,7 @@
       #unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
       #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('{%static "image/game/fullscreen-button.png"%}') no-repeat center }
       #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+      #close-video {cursor: pointer !important; user-select:none}
    </style>
 {%endblock%}
 
@@ -116,7 +117,9 @@
             </div>
             <h2>INICIAR CORRIDA</h2>
             <p>
-               Pronto para iniciar mais uma corrida? Escolha o valor da sua aposta e clique em "Correr" para começar.
+               Bem vindo ao {{app_name}}! 🕹 <br>
+               Atinja a meta ✅<br>
+               Saque suas moedas.🤑 <br>
             </p>
             <form data-name="" id="auth" method="post" aria-label="Form">
                <div class="properties">
@@ -138,7 +141,6 @@
                   <input value="Testar" class="primary-button w-button btn-game-test"><br><br>
                </div>
             </form>
-            <p>Valores para jogar: R$1.00 à R$25.00</p>
          </div>
          <div id="wins" style="
             display: block;
@@ -192,9 +194,27 @@
       </div>
       <div class="follow-test">{{app_email}}</div>
    </div>
+   {%if profile.user.first_access%}
+      <div style=" position: absolute; top:0; left:0; width: 100vw; height: 100vh; background: #000000cc; z-index: 10000;" id="container-video-intro">
+         <div style=" position: fixed; top: 10px; right: 10px; color: #fff; font-size: 30px;" id="close-video">X</div>
+         <video width="290" height="515" controls="" style=" display: block; margin: calc(50vh - 330px) auto 0 auto;" autoplay="autoplay" loop="">
+            <source src="" type="video/mp4" id="video-intro">
+         </video>
+      </div>
+   {%endif%}
    {%block scripts-page%}
       <script type="module" src='{%static "js/original/game-original-012.js"%}'></script>
       <script src="{%static 'js\app-structure\fruitCash\jquery.js'%}" type="text/javascript"></script>
       <script src="{%static 'js\app-structure\fruitCash\flow.js'%}" type="text/javascript"></script>
+      <script>
+         document.getElementById("close-video").addEventListener("click", function(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/first_access", true);
+            xhr.send();
+            document.getElementById("container-video-intro").style.display = "none";
+            document.getElementById("video-intro").pause();
+
+         });
+      </script>
    {%endblock%}
 {%endblock%}
